@@ -1,0 +1,48 @@
+<div class="align-middle justify-items-center flex-auto">
+  <tui-app-bar class="color">
+    <button
+      appearance="secondary"
+      icon="tuiIconPlus"
+      tuiButton
+      tuiSlot="right"
+    >
+      Create
+    </button>
+    <button
+      iconRight="tuiIconBell"
+      tuiIconButton
+      tuiSlot="right"
+    >
+      Notifications
+    </button>
+    <button
+      iconRight="tuiIconMoreHorizontal"
+      tuiIconButton
+      tuiSlot="right"
+    >
+      More
+    </button>
+    <a
+      icon="tuiIconUserLarge"
+      title="User"
+      tuiIconButton
+      tuiSlot="right"
+      (click)="logout()"
+    ></a>
+    <button
+      appearance="secondary"
+      iconLeft="tuiIconGrid"
+      tuiIconButton
+      tuiSlot="left"
+    >
+      <tui-icon icon="tuiIconHome"></tui-icon>
+    </button>
+    <a
+      routerLink="/rehabilitation/data"
+      tuiSlot="left"
+    >
+      Название организации
+    </a>
+  </tui-app-bar>
+
+</div>
