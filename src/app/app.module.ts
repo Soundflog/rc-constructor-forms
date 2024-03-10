@@ -19,14 +19,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import {
   TuiAppearanceModule, TuiAvatarModule, TuiBadgeNotificationModule, TuiButtonGroupModule,
   TuiCardModule, TuiFadeModule, TuiHeaderModule,
-  TuiIconModule, TuiIconsDirective,
-  TuiIconsModule,
+  TuiIconModule, TuiIconsModule,
   TuiNavigationModule, TuiSurfaceModule, TuiTitleModule
 } from '@taiga-ui/experimental'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeTableFormsComponent } from './pages/home-table-forms/home-table-forms.component';
 import {
+  TuiArrowModule,
   TuiBadgedContentModule,
   TuiBadgeModule, TuiIslandModule,
   TuiMarkerIconModule,
@@ -39,6 +39,7 @@ import { NavigationFullComponent } from './pages/navigation-full/navigation-full
 import {TuiDocNavigationModule} from "@taiga-ui/addon-doc";
 import {TuiRepeatTimesModule} from "@taiga-ui/cdk";
 import { FormsHomeComponent } from './components/forms-home/forms-home.component';
+import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdown-menu-nav.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { FormsHomeComponent } from './components/forms-home/forms-home.component
     HomeTableFormsComponent,
     NavBarComponent,
     NavigationFullComponent,
-    FormsHomeComponent
+    FormsHomeComponent,
+    DropdownMenuNavComponent
   ],
   imports: [
     BrowserModule,
@@ -86,6 +88,7 @@ import { FormsHomeComponent } from './components/forms-home/forms-home.component
     TuiAvatarModule,
     TuiButtonGroupModule,
     TuiIslandModule,
+    TuiArrowModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]
