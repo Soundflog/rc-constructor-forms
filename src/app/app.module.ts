@@ -11,7 +11,7 @@ import {
   TuiExpandModule,
   TuiSvgDefsHostModule,
   TuiDropdownModule,
-  TuiTextfieldControllerModule
+  TuiTextfieldControllerModule, TuiGroupModule, TuiHintModule
 } from "@taiga-ui/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
@@ -28,9 +28,9 @@ import { HomeTableFormsComponent } from './pages/home-table-forms/home-table-for
 import {
   TuiArrowModule,
   TuiBadgedContentModule,
-  TuiBadgeModule, TuiIslandModule,
+  TuiBadgeModule, TuiInputModule, TuiIslandModule,
   TuiMarkerIconModule,
-  TuiTabsModule,
+  TuiTabsModule, TuiTextareaModule,
   TuiTilesModule
 } from "@taiga-ui/kit";
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
@@ -40,6 +40,8 @@ import {TuiDocNavigationModule} from "@taiga-ui/addon-doc";
 import {TuiRepeatTimesModule} from "@taiga-ui/cdk";
 import { FormsHomeComponent } from './components/forms-home/forms-home.component';
 import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdown-menu-nav.component';
+import { NewFormPageComponent } from './pages/new-form-page/new-form-page.component';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -48,12 +50,15 @@ import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdow
     NavBarComponent,
     NavigationFullComponent,
     FormsHomeComponent,
-    DropdownMenuNavComponent
+    DropdownMenuNavComponent,
+    NewFormPageComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
+    TuiHintModule,
     TuiRootModule,
     TuiDialogModule,
     TuiAlertModule,
@@ -89,6 +94,10 @@ import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdow
     TuiButtonGroupModule,
     TuiIslandModule,
     TuiArrowModule,
+    ReactiveFormsModule,
+    TuiInputModule,
+    TuiTextareaModule,
+    TuiGroupModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]
