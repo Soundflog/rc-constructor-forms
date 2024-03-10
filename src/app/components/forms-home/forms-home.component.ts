@@ -1,7 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
-import {IForm} from "../../models/IForm";
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {forms} from "../../data/forms";
-import {tuiIconPlus} from "@taiga-ui/icons";
 
 @Component({
   selector: 'app-forms-home',
@@ -11,7 +9,6 @@ import {tuiIconPlus} from "@taiga-ui/icons";
 })
 export class FormsHomeComponent {
   forms = forms;
-  protected readonly tuiIconPlus = tuiIconPlus;
   maxLength: number = 20;
   // Напиши фукнцию, которая будет обрезаннаю возвращать строку, с максимальной длинной
   shortString(str: string): string {
