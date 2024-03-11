@@ -1,13 +1,13 @@
 <div class="container">
   <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
-  <form [formGroup]="formGroup" (ngSubmit)="onSubmitForm()">
+  <form [formGroup]="mainFG" (ngSubmit)="onSubmitForm()">
     <tui-island
       class="tui-space_bottom-5"
       [hoverable]=false
       size="l"
       textAlign="left">
 
-      <div *ngFor="let rfield of requestedFields; let i = index">
+      <div *ngFor="let rfield of notEditableFields; let i = index">
         <tui-textarea
           class="tui-space_bottom-5"
           [tuiTextfieldSize]="rfield.size"
@@ -40,64 +40,68 @@
   </form>
   <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
 
-  <form [formGroup]="questionFormGroup" (ngSubmit)="onSubmit()">
+  <form [formGroup]="questionsFG" (ngSubmit)="onSubmit()">
     <tui-tiles
       class="tiles"
       [(order)]="order"
     >
       <tui-tile
+        class=""
         *ngFor="let field of fields; let index = index"
         tuiTileHandle
         [class.tile_tall]="field.name === 'field0'"
         [style.order]="order.get(index)"
       >
-        <div class="content">
-          <button tuiButton>Test</button>
-          <!--<tui-textarea
-            class="justify-center"
-            [tuiTextfieldCleaner]=true
-            [tuiTextfieldSize]="field.size"
-            formControlName="{{field.name}}"
-          >
-            {{ field.label }}
-            <textarea
-              maxlength="97"
-              placeholder="{{field.label}}"
-              tuiTextfield
-            ></textarea>
-          </tui-textarea>
-          <ng-template tuiAccordionItemContent>
-            &lt;!&ndash;        Нижняя панель управления вопросом - Компонент&ndash;&gt;
-            <div tuiGroup class="group" [collapsed]="true">
-              <button
-                appearance="outline"
-                tuiButton
-                size="s"
-                (click)="addField()"
-              >
-                Добавить
-              </button>
-              <button
-                appearance="outline"
-                tuiButton
-                size="s"
-                (click)="removeField(index)"
-              >
-                Удалить
-              </button>
-            </div>
-          </ng-template>-->
-        </div>
+        <tui-island>
+          <div class="justify-items-center">
+            <tui-textarea
+              class="justify-center tui-space_bottom-5"
+              [tuiTextfieldCleaner]=true
+              [tuiTextfieldSize]="field.size"
+              formControlName="{{field.name}}"
+            >
+              {{ field.label }}
+              <textarea
+                maxlength="97"
+                placeholder="{{field.label}}"
+                tuiTextfield
+              ></textarea>
+            </tui-textarea>
+
+            <ng-container tuiAccordionItemContent>
+              <!--        Нижняя панель управления вопросом - Компонент-->
+              <div tuiGroup class="group" [collapsed]="true">
+                <button
+                  appearance="outline"
+                  tuiButton
+                  size="s"
+                  (click)="addField()"
+                >
+                  Добавить
+                </button>
+                <button
+                  appearance="outline"
+                  tuiButton
+                  size="s"
+                  (click)="removeField(index)"
+                >
+                  Удалить
+                </button>
+              </div>
+            </ng-container>
+          </div>
+        </tui-island>
       </tui-tile>
     </tui-tiles>
-      <button
-        tuiButton
-        size="xl"
-        type="submit"
-        (click)="onSubmitForm()"
-      >
-        Сохранить
-      </button>
+    <button
+      tuiButton
+      size="xl"
+      class=""
+      type="submit"
+      (click)="onSubmitForm()"
+    >
+      Сохранить
+    </button>
   </form>
 </div>
 
