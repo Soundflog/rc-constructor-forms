@@ -6,6 +6,7 @@
       [hoverable]=false
       size="l"
       textAlign="left">
+
       <div *ngFor="let rfield of requestedFields; let i = index">
         <tui-textarea
           class="tui-space_bottom-5"
@@ -19,65 +20,84 @@
           ></textarea>
         </tui-textarea>
       </div>
+
+      <label>
+        <tui-combo-box
+          [formControl]="scaleControl"
+          [stringify]="stringify"
+          [tuiTextfieldLabelOutside]="true"
+        >
+          Шкала
+          <tui-data-list-wrapper
+            *tuiDataList
+            [itemContent]="stringify | tuiStringifyContent"
+            [items]="items | tuiFilterByInputWith: stringify"
+          ></tui-data-list-wrapper>
+        </tui-combo-box>
+      </label>
+
     </tui-island>
   </form>
   <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
+
   <form [formGroup]="questionFormGroup" (ngSubmit)="onSubmit()">
-    <div *ngFor="let field of fields; let i = index">
-      <tui-island
-        class="tui-space_bottom-5"
-        [hoverable]=false
-        size="l"
-        textAlign="left"
-      >
-        <tui-textarea
-          [tuiTextfieldCleaner]=true
-          [tuiTextfieldSize]="field.size"
-          formControlName="{{field.name}}"
-        >
-          {{ field.label }}
-          <textarea
-            maxlength="97"
-            placeholder="{{field.label}}"
-            tuiTextfield
-            #input
-          ></textarea>
-        </tui-textarea>
-        <!-- Меню справа от поля -->
-        <div *ngIf="input.host.focusable" style="position: relative;">
-          <div style="position: absolute; top: 100%; left: 0; font-size: 12px; color: #777;">
-            <button >Кнопка 1</button>
-            <button >Кнопка 2</button>
-          </div>
-        </div>
-        <!--        Нижняя панель управления вопросом - Компонент-->
-        <div tuiGroup class="group" [collapsed]="true">
-          <button
-            appearance="outline"
-            tuiButton
-            size="s"
-            (click)="addField()"
-          >
-            Добавить
-          </button>
-          <button
-            appearance="outline"
-            tuiButton
-            size="s"
-            (click)="removeField(i)"
-          >
-            Удалить
-          </button>
-        </div>
-      </tui-island>
-    </div>
-    <button
-      tuiButton
-      size="xl"
-      type="submit"
-      (click)="onSubmit()"
+    <tui-tiles
+      class="tiles"
+      [(order)]="order"
     >
-      Сохранить
-    </button>
+      <tui-tile
+        *ngFor="let field of fields; let index = index"
+        tuiTileHandle
+        [class.tile_tall]="field.name === 'field0'"
+        [style.order]="order.get(index)"
+      >
+        <div class="content">
+          <button tuiButton>Test</button>
+          <!--<tui-textarea
+            class="justify-center"
+            [tuiTextfieldCleaner]=true
+            [tuiTextfieldSize]="field.size"
+            formControlName="{{field.name}}"
+          >
+            {{ field.label }}
+            <textarea
+              maxlength="97"
+              placeholder="{{field.label}}"
+              tuiTextfield
+            ></textarea>
+          </tui-textarea>
+          <ng-template tuiAccordionItemContent>
+            &lt;!&ndash;        Нижняя панель управления вопросом - Компонент&ndash;&gt;
+            <div tuiGroup class="group" [collapsed]="true">
+              <button
+                appearance="outline"
+                tuiButton
+                size="s"
+                (click)="addField()"
+              >
+                Добавить
+              </button>
+              <button
+                appearance="outline"
+                tuiButton
+                size="s"
+                (click)="removeField(index)"
+              >
+                Удалить
+              </button>
+            </div>
+          </ng-template>-->
+        </div>
+      </tui-tile>
+    </tui-tiles>
+      <button
+        tuiButton
+        size="xl"
+        type="submit"
+        (click)="onSubmitForm()"
+      >
+        Сохранить
+      </button>
   </form>
 </div>
+

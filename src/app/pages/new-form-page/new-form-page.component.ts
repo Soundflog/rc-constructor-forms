@@ -2,7 +2,8 @@ import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core'
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Field} from "../../models/Field";
 import {TuiAlertService} from "@taiga-ui/core";
-import {tuiIsInput} from "@taiga-ui/cdk";
+import {scales} from "../../data/scales";
+import {IScale} from "../../models/IScale";
 
 @Component({
   selector: 'app-new-form-page',
@@ -17,8 +18,16 @@ export class NewFormPageComponent implements OnInit {
   requestedFields: Field[] = [
     { name: 'rfield0', type: 'text', label: 'Новая анкета', size: 'l'},
     { name: 'rfield1', type: 'text', label: 'Описание', size: 's'},
-    { name: 'rfield2', type: 'text', label: 'Шкала', size:'l'},
   ];
+  readonly scaleControl = new FormControl();
+
+  readonly items = scales;
+  // Tiles
+  order = new Map();
+
+  readonly stringify = (item: IScale): string =>
+    `${item.name}`;
+
   fields: Field[] = [
     { name: 'field0', type: 'text', label: 'Введите текст', size: 's'},
     { name: 'field1', type: 'email', label: 'Введите email', size: 's'},
@@ -65,10 +74,12 @@ export class NewFormPageComponent implements OnInit {
   }
 
   onSubmit() {
+
     console.log(this.questionFormGroup.controls);
   }
 
   onSubmitForm() {
+    this.formGroup.addControl(this.scaleControl.value, new FormControl(this.scaleControl.value, Validators.required));
     console.log(this.formGroup.value);
   }
 }

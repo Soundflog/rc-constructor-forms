@@ -26,16 +26,24 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HomeTableFormsComponent } from './pages/home-table-forms/home-table-forms.component';
 import {
+  TuiAccordionModule,
   TuiArrowModule,
   TuiBadgedContentModule,
-  TuiBadgeModule, TuiInputModule, TuiIslandModule,
+  TuiBadgeModule,
+  TuiComboBoxModule,
+  TuiDataListWrapperModule,
+  TuiFilterByInputPipeModule,
+  TuiInputModule,
+  TuiIslandModule,
   TuiMarkerIconModule,
-  TuiTabsModule, TuiTextareaModule,
+  TuiStringifyContentPipeModule,
+  TuiTabsModule,
+  TuiTextareaModule,
   TuiTilesModule
 } from "@taiga-ui/kit";
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import {TuiAppBarModule} from "@taiga-ui/addon-mobile";
-import { NavigationFullComponent } from './pages/navigation-full/navigation-full.component';
+// import { NavigationFullComponent } from './pages/navigation-full/navigation-full.component';
 import {TuiDocNavigationModule} from "@taiga-ui/addon-doc";
 import {TuiRepeatTimesModule} from "@taiga-ui/cdk";
 import { FormsHomeComponent } from './components/forms-home/forms-home.component';
@@ -48,7 +56,6 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     AppComponent,
     HomeTableFormsComponent,
     NavBarComponent,
-    NavigationFullComponent,
     FormsHomeComponent,
     DropdownMenuNavComponent,
     NewFormPageComponent
@@ -98,6 +105,11 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     TuiInputModule,
     TuiTextareaModule,
     TuiGroupModule,
+    TuiAccordionModule,
+    TuiComboBoxModule,
+    TuiDataListWrapperModule,
+    TuiStringifyContentPipeModule,
+    TuiFilterByInputPipeModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]
