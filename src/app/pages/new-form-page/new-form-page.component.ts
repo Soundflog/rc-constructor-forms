@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {Field} from "../../models/Field";
+import {ComboField, Field} from "../../models/Field";
 import {TuiAlertService} from "@taiga-ui/core";
 import {scales} from "../../data/scales";
 import {IScale} from "../../models/IScale";
@@ -13,35 +13,46 @@ import {IScale} from "../../models/IScale";
 })
 export class NewFormPageComponent implements OnInit {
 
-  questionsFG: FormGroup ;
-  mainFG: FormGroup ;
+  questionsFG: FormGroup;
+  mainFG: FormGroup;
   // Неизменяемые поля
   notEditableFields: Field[] = [
-    { name: 'rfield0', type: 'text', label: 'Новая анкета', size: 'l'},
-    { name: 'rfield1', type: 'text', label: 'Описание', size: 's'},
+    {name: 'rfield0', type: 'text', label: 'Новая анкета', size: 'l', relationBox: new FormControl()},
+    {name: 'rfield1', type: 'text', label: 'Описание', size: 'm', relationBox: new FormControl()},
   ];
   // Шкала
   readonly scaleControl = new FormControl();
 
-  readonly items = scales;
+  readonly scaleItems = scales;
   // Tiles
   order = new Map();
 
-  readonly stringify = (item: IScale): string =>
+  readonly scaleChooseStringify = (item: IScale): string =>
     `${item.name}`;
 
   // Изменяемые поля
   fields: Field[] = [
-    { name: 'field0', type: 'text', label: 'Введите текст', size: 's'},
-    { name: 'field1', type: 'email', label: 'Введите email', size: 's'},
-    { name: 'field2', type: 'number', label: 'Введите число', size: 's'},
+    {name: 'field0', type: 'text', label: 'Введите текст', size: 'l', relationBox: new FormControl()},
+    {name: 'field1', type: 'email', label: 'Введите email', size: 'l', relationBox: new FormControl()},
+    {name: 'field2', type: 'number', label: 'Введите число', size: 'l', relationBox: new FormControl()},
   ];
+
+  readonly comboBoxControl = new FormControl();
+  comboBoxFields: ComboField[] = [
+    {value: 'Один из списка', type: 'one-to-many'},
+    {value: 'Несколько из списка', type: 'many-to-many'},
+    {value: 'Шкала', type: 'scale'},
+  ]
+
+  readonly comboBoxStringify = (item: ComboField): string =>
+    `${item.value}`;
+
 
   constructor(
     @Inject(TuiAlertService)
     private readonly alerts: TuiAlertService,
     private fb: FormBuilder,
-  ){
+  ) {
     this.questionsFG = this.fb.group({});
     this.mainFG = this.fb.group({});
   }
@@ -60,9 +71,15 @@ export class NewFormPageComponent implements OnInit {
     console.log(this.questionsFG);
   }
 
-  addField() {
+  addField(index: number): void {
     this.alerts.open('Добавлено поле').subscribe();
-    this.fields.push({ name: 'field' + this.fields.length, type:  'text', label: 'Введите текст', size: 's'});
+    this.fields.splice(index + 1, 0, {
+      name: 'field' + this.fields.length,
+      type: 'text',
+      label: 'Введите текст',
+      size: 'l',
+      relationBox: new FormControl(this.comboBoxFields[0].value)
+    });
     this.questionsFG.addControl(this.fields[this.fields.length - 1].name, new FormControl(''));
   }
 
@@ -78,7 +95,7 @@ export class NewFormPageComponent implements OnInit {
 
   onSubmit() {
 
-    console.log(this.questionsFG.controls);
+    console.log(this.questionsFG);
   }
 
   onSubmitForm() {
