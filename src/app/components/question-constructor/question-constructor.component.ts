@@ -12,17 +12,25 @@ import {QuestionType} from "../../models/form/questionType.enum";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class QuestionConstructorComponent {
+  // Данные для отправки на сервер
   questionsFG: FormGroup; // questions form group
-  mainQuestionsFG: FormGroup; // questions form array
+  mainQuestionsFG: FormGroup; // questions form group
   variantsFG: FormGroup; // variants form group
   // Tiles
   order = new Map();
 
+  comboBoxFields: ComboTypeQuestion[] = [
+    {value: 'Один из списка', type: QuestionType.SINGLE_CHOICE},
+    {value: 'Несколько из списка', type: QuestionType.MULTI_CHOICE},
+    {value: 'Шкала', type: QuestionType.SCALE},
+  ]
+
+  // Данные для отображения вопросов
   fields: FieldInterface[] = [
     {
       name: 'questions_0',
       content: 'Введите текст',
-      type: new FormControl(),
+      type: new FormControl(this.comboBoxFields[0]),
       variants: [
         {
           content: 'Вариант 1',
@@ -31,12 +39,6 @@ export class QuestionConstructorComponent {
       ]
     }
   ];
-
-  comboBoxFields: ComboTypeQuestion[] = [
-    {value: 'Один из списка', type: QuestionType.SINGLE_CHOICE},
-    {value: 'Несколько из списка', type: QuestionType.MULTI_CHOICE},
-    {value: 'Шкала', type: QuestionType.SCALE},
-  ]
 
   readonly comboBoxStringify = (item: ComboTypeQuestion): string =>
     `${item.value}`;
@@ -71,7 +73,7 @@ export class QuestionConstructorComponent {
       {
         name: 'questions_' + this.fields.length,
         content: 'Введите текст',
-        type: new FormControl(),
+        type: new FormControl(this.comboBoxFields[0]),
         variants: [
           {
             content: 'Вариант 1',
@@ -129,8 +131,6 @@ export class QuestionConstructorComponent {
         const comboBoxField = this.comboBoxFields.find(item => item === field.type.value);
         if (comboBoxField) {
           questionFG.controls['type'].setValue(comboBoxField.type);
-        } else {
-          questionFG.controls['type'].setValue(this.comboBoxFields[0].type);
         }
       }
     })
@@ -139,14 +139,8 @@ export class QuestionConstructorComponent {
   onSubmit() {
     // Перед отправкой на сервер
     // Удалить поле name у fields[]
-    // Пример :
-    /*const index = this.fields.indexOf('name', 0);
-    if (index > -1) {
-      this.fields.splice(index, 1)
-    }*/
-
-    // console.log(this.fields[0].type.value);
     this.setValueTypeQuestionOnControl();
+
     console.log(this.mainQuestionsFG.value);
     console.log(this.fields);
     // console.log(this.fields)
