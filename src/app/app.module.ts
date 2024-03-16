@@ -35,7 +35,7 @@ import {
   TuiFilterByInputPipeModule,
   TuiInputModule,
   TuiIslandModule,
-  TuiMarkerIconModule,
+  TuiMarkerIconModule, TuiRadioBlockModule,
   TuiStringifyContentPipeModule,
   TuiTabsModule,
   TuiTextareaModule,
@@ -50,6 +50,7 @@ import { FormsHomeComponent } from './components/forms-home/forms-home.component
 import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdown-menu-nav.component';
 import { NewFormPageComponent } from './pages/new-form-page/new-form-page.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import { QuestionConstructorComponent } from './components/question-constructor/question-constructor.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     NavBarComponent,
     FormsHomeComponent,
     DropdownMenuNavComponent,
-    NewFormPageComponent
+    NewFormPageComponent,
+    QuestionConstructorComponent
   ],
   imports: [
     BrowserModule,
@@ -110,6 +112,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
     TuiDataListWrapperModule,
     TuiStringifyContentPipeModule,
     TuiFilterByInputPipeModule,
+    TuiRadioBlockModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]

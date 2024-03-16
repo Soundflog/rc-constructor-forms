@@ -1,5 +1,5 @@
 export interface IVariant {
-  id: number
+  id?: number
   content: string
-  answer: boolean
+  score: number
 }

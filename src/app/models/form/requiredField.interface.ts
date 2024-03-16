@@ -1,15 +1,10 @@
 import {TuiSizeL, TuiSizeS} from "@taiga-ui/core";
 import {FormControl} from "@angular/forms";
+import {IVariant} from "../IVariant";
 
-export interface Field {
+export interface RequiredFieldInterface {
   type: string;
   label: string;
   size: TuiSizeS | TuiSizeL;
   name: string;
-  relationBox: FormControl
-}
-
-export interface ComboField {
-  type: string;
-  value: string;
 }

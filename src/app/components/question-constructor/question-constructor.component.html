@@ -1,0 +1,99 @@
+<form [formGroup]="mainQuestionsFG">
+  <tui-island class="tui-island">
+    <tui-tiles
+      class="tiles"
+      [(order)]="order"
+    >
+      <tui-tile
+        class="content"
+        *ngFor="let field of fields; let index = index"
+        tuiTileHandle
+        [formGroupName]="'questions_'+index"
+        [class.tile_tall]="field.name === 'questions_'+index"
+        [style.order]="order.get(index)"
+      >
+        <tui-island class="justify-items-center">
+          <div class="tui-row tui-space_bottom-5">
+            <tui-textarea
+              class="tui-col_md-6"
+              [tuiTextfieldCleaner]=true
+              tuiTextfieldSize="l"
+              formControlName="content"
+            >
+              {{ field.content }}
+              <textarea
+                maxlength="97"
+                placeholder="{{field.content}}"
+                tuiTextfield
+              ></textarea>
+            </tui-textarea>
+            <tui-combo-box
+              class="tui-col_md-6"
+              [formControl]="field.type"
+              [stringify]="comboBoxStringify"
+              [tuiTextfieldLabelOutside]="true"
+            >
+              {{comboBoxFields[0].value}}
+              <tui-data-list-wrapper
+                *tuiDataList
+                [itemContent]="comboBoxStringify | tuiStringifyContent"
+                [items]="comboBoxFields | tuiFilterByInputWith: comboBoxStringify"
+              >
+              </tui-data-list-wrapper>
+            </tui-combo-box>
+          </div>
+          <!--          TODO: по combobox отриросывать по type: либо *ngIf=comboBox.type (внутри component) либо попробовать по # -->
+          <!--          One to Many-->
+          <ng-container *ngIf="field.type.value === QuestionType.SINGLE_CHOICE">
+            <div tuiGroup orientation="vertical" class="group"
+                 [collapsed]="true"
+                 formArrayName="variants"
+            >
+              <ng-container
+                *ngFor="let variant of field.variants; let index=index"
+                [formGroupName]="index"
+              >
+                <tui-radio-block contentAlign="right" size="l"
+                                 formControlName="content"
+                                 [item]="variant.content">
+                  {{variant.content}}
+                </tui-radio-block>
+              </ng-container>
+            </div>
+          </ng-container>
+
+          <ng-container tuiAccordionItemContent>
+            <!--        Нижняя панель управления вопросом - Компонент-->
+            <div tuiGroup class="group" [collapsed]="true">
+              <button
+                appearance="outline"
+                tuiButton
+                size="s"
+                (click)="addField(index)"
+              >
+                Добавить
+              </button>
+              <button
+                appearance="outline"
+                tuiButton
+                size="s"
+                (click)="removeField(index)"
+              >
+                Удалить
+              </button>
+            </div>
+          </ng-container>
+        </tui-island>
+      </tui-tile>
+    </tui-tiles>
+  </tui-island>
+</form>
+<button
+  tuiButton
+  size="xl"
+  class=""
+  type="submit"
+  (click)="onSubmit()"
+>
+  Сохранить
+</button>
