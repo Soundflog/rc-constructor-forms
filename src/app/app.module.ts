@@ -31,7 +31,7 @@ import {
   TuiBadgedContentModule,
   TuiBadgeModule,
   TuiComboBoxModule,
-  TuiDataListWrapperModule,
+  TuiDataListWrapperModule, TuiElasticContainerModule,
   TuiFilterByInputPipeModule,
   TuiInputModule,
   TuiIslandModule,
@@ -113,6 +113,7 @@ import { QuestionConstructorComponent } from './components/question-constructor/
     TuiStringifyContentPipeModule,
     TuiFilterByInputPipeModule,
     TuiRadioBlockModule,
+    TuiElasticContainerModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]

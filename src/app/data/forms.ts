@@ -18,7 +18,8 @@ export const forms: IForm[] = [
           {
             id: 1,
             content: "Variant 1",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
         ]
       },
@@ -29,12 +30,14 @@ export const forms: IForm[] = [
           {
             id: 2,
             content: "Variant 2",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
           {
             id: 3,
             content: "Variant 3",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
         ]
       },
@@ -45,17 +48,20 @@ export const forms: IForm[] = [
           {
             id: 4,
             content: "Variant 4",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
           {
             id: 5,
             content: "Variant 5",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
           {
             id: 6,
             content: "Variant 6",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           }
         ]
       },
@@ -66,22 +72,26 @@ export const forms: IForm[] = [
           {
             id: 7,
             content: "Variant 7",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
           {
             id: 8,
             content: "Variant 8",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
           {
             id: 9,
             content: "Variant 9",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           },
           {
             id: 10,
             content: "Variant 10",
-            score: 1.00
+            score: 1.00,
+            expanded: false
           }
         ]
       },

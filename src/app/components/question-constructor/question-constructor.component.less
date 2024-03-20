@@ -3,8 +3,12 @@
 .tiles {
   width: 100%;
   height: 100%;
-  gap: 12rem;
-  margin-bottom: 8rem;
+  //gap: 12rem;
+  // * var(Количество объектов внутри)
+  gap: 15rem 1rem;
+  //min-height: 16rem;
+  min-height: auto;
+  margin-bottom: 40dvmin;
   grid-auto-rows: minmax(var(--tui-height-s), auto);
 }
 
@@ -18,10 +22,46 @@
   .transition(box-shadow);
   display: flex;
   align-items: center;
-  padding: 5% 0;
-  cursor: ns-resize;
+  //height: 100%;
+  margin: 0 0;
+  //padding: 5% 0;
+  overflow: hidden;
+  //max-width: 1200px;  // делаем резиновым
+  //width: 100%;
+  //padding: 0 15px;
+  //margin: 0 auto;
 
   tui-tile._dragged & {
     box-shadow: var(--tui-shadow-hover);
   }
+}
+
+.handle {
+  .transition(opacity);
+  position: absolute;
+  justify-content: center;
+  background: var(--tui-base-01);
+  opacity: 0;
+  cursor: move;
+
+  tui-tiles:not(._dragged) tui-tile:hover &,
+  tui-tile._dragged & {
+    opacity: 0.7;
+  }
+}
+
+
+
+.wrapper:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.remove {
+  margin-left: auto;
+}
+
+.titleplace {
+  display: flex;
+  align-items: center;
+  margin: 0;
 }

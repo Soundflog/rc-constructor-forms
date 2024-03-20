@@ -1,9 +1,10 @@
-import {ChangeDetectionStrategy, Component, Inject} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {TuiAlertService} from "@taiga-ui/core";
 import {FieldInterface} from 'src/app/models/form/field.interface';
 import {ComboTypeQuestion} from "../../models/form/comboTypeQuestion.interface";
 import {QuestionType} from "../../models/form/questionType.enum";
+import {tuiArrayRemove} from "@taiga-ui/cdk";
 
 @Component({
   selector: 'app-question-constructor',
@@ -11,7 +12,7 @@ import {QuestionType} from "../../models/form/questionType.enum";
   styleUrls: ['./question-constructor.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class QuestionConstructorComponent {
+export class QuestionConstructorComponent implements OnInit {
   // Данные для отправки на сервер
   questionsFG: FormGroup; // questions form group
   mainQuestionsFG: FormGroup; // questions form group
@@ -35,13 +36,17 @@ export class QuestionConstructorComponent {
         {
           content: 'Вариант 1',
           score: 5.00,
-        },
+          expanded: false,
+        }
       ]
     }
   ];
 
   readonly comboBoxStringify = (item: ComboTypeQuestion): string =>
     `${item.value}`;
+
+  ngOnInit(): void {
+  }
 
   constructor(
     @Inject(TuiAlertService)
@@ -62,9 +67,7 @@ export class QuestionConstructorComponent {
     });
 
     this.mainQuestionsFG = this.fb.group({});
-
     this.mainQuestionsFG.addControl('questions_0', this.questionsFG);
-
   }
 
   addField(index: number): void {
@@ -78,9 +81,9 @@ export class QuestionConstructorComponent {
           {
             content: 'Вариант 1',
             score: 5.00,
+            expanded: false
           }],
       });
-    // this.questionsFG.addControl(this.fields[this.fields.length - 1].name, new FormControl(''));
 
     let newQuestion = this.fb.group({
       content: new FormControl("Введите текст", Validators.required),
@@ -95,7 +98,6 @@ export class QuestionConstructorComponent {
     catch (e) {
       console.log(e);
     }
-    // this.mainQuestionsFG.addControl('questions_' + index, newQuestion);
   }
 
   removeField(index: number) {
@@ -107,20 +109,6 @@ export class QuestionConstructorComponent {
       this.alerts.open('Поле не существует').subscribe();
     }
   }
-/*
-  addInField(index: number): void {
-    this.alerts.open('Добавлено поле').subscribe();
-    // this.fields.
-    this.questionsFG.addControl(this.fields[this.fields.length - 1].name, new FormControl(''));
-  }*/
-
-  /*removeProperties<T extends object>(obj: T, ...props: (keyof T)[]): Partial<T> {
-    const newObj = {...obj };
-    for (const prop of props) {
-      delete newObj[prop];
-    }
-    return newObj;
-  }*/
 
   // Записать конечное значение типа вопроса в массив
   setValueTypeQuestionOnControl() {
@@ -136,6 +124,32 @@ export class QuestionConstructorComponent {
     })
   }
 
+  // Функция удаления варианта из массива
+  removeVariant(questionIndex: number, variantIndex:number) {
+    const questions = (this.mainQuestionsFG.get('questions_' + questionIndex)as FormGroup);
+    const variants = questions.get('variants') as FormArray;
+    if (variants.length > 1) {
+      variants.removeAt(variantIndex);
+      // удалить из fields
+      this.fields[questionIndex].variants.splice(variantIndex, 1);
+      this.alerts.open('Удален вариант').subscribe();
+    }
+  }
+
+  // Функция добавления варианта в массив
+  addVariant(questionIndex: number) {
+    const questions = (this.mainQuestionsFG.get('questions_' + questionIndex)as FormGroup);
+    const variants = questions.get('variants') as FormArray;
+    variants.push(this.variantsFG);
+    // добавить в fields
+    this.fields[questionIndex].variants.push({
+      content: 'Вариант 1',
+      score: 5.00,
+      expanded: false
+    });
+    this.alerts.open('Вариант добавлен').subscribe();
+  }
+
   onSubmit() {
     // Перед отправкой на сервер
     // Удалить поле name у fields[]
@@ -143,6 +157,7 @@ export class QuestionConstructorComponent {
 
     console.log(this.mainQuestionsFG.value);
     console.log(this.fields);
+    console.log(this.order)
     // console.log(this.fields)
   }
 
