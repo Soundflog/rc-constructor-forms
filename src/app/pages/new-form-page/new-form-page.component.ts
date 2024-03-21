@@ -4,6 +4,7 @@ import {TuiAlertService} from "@taiga-ui/core";
 import {scales} from "../../data/scales";
 import {IScale} from "../../models/IScale";
 import {RequiredFieldInterface} from "../../models/form/requiredField.interface";
+import {forms} from "../../data/forms";
 
 @Component({
   selector: 'app-new-form-page',
@@ -26,6 +27,8 @@ export class NewFormPageComponent implements OnInit {
   // Шкала
   readonly scaleControl = new FormControl();
   readonly scaleItems = scales;
+
+  readonly forms = forms;
 
   readonly scaleChooseStringify = (item: IScale): string =>
     `${item.name}`;
