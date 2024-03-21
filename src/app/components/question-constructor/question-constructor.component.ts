@@ -44,7 +44,7 @@ export class QuestionConstructorComponent implements OnInit {
 
       this.questionsFG = this.fb.group({
         content: new FormControl("Введите текст", Validators.required),
-        type: "",
+        type: this.comboBoxFields[0],
         variants: this.fb.array([
           this.variantsFG,
         ]),
@@ -80,7 +80,7 @@ export class QuestionConstructorComponent implements OnInit {
         });
 
         this.fields.push({
-          name: `questions_${this.fields.length}`,
+          name: `questions_${index}`,
           content: question.content,
           type: new FormControl(
             this.comboBoxFields.find(item => {
@@ -111,27 +111,30 @@ export class QuestionConstructorComponent implements OnInit {
 
   addField(index: number): void {
     this.alerts.open('Добавлено поле').subscribe();
-    this.fields.splice(index + 1, 0,
-      {
-        name: 'questions_' + this.fields.length,
-        content: 'Введите текст',
-        type: new FormControl(this.comboBoxFields[0]),
-        variants: [
-          {
-            content: 'Вариант 1',
-            score: 5.00
-          }],
-      });
-
+    const newField = {
+      name: 'questions_' + this.fields.length,
+      content: 'Введите текст',
+      type: new FormControl(this.comboBoxFields[0]),
+      variants: [
+        {
+          content: 'Вариант 1',
+          score: 5.00
+        }],
+    }
+    this.fields.splice(index + 1, 0, newField);
+    let newVariant = this.fb.group({
+      content: new FormControl("Вариант 1", Validators.required),
+      score: new FormControl(5.00, Validators.required)
+    })
     let newQuestion = this.fb.group({
       content: new FormControl("Введите текст", Validators.required),
-      type: "",
+      type: this.comboBoxFields[0],
       variants: this.fb.array([
-        this.variantsFG,
+        newVariant
       ]),
     });
     try {
-      this.mainQuestionsFG.addControl(this.fields[this.fields.length - 1].name, newQuestion);
+      this.mainQuestionsFG.addControl(newField.name, newQuestion);
     } catch (e) {
       console.log(e);
     }
@@ -177,7 +180,12 @@ export class QuestionConstructorComponent implements OnInit {
   addVariant(questionIndex: number) {
     const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
     const variants = questions.get('variants') as FormArray;
-    variants.push(this.variantsFG);
+    let newVariant = this.fb.group({
+      content: new FormControl("Вариант 1", Validators.required),
+      score: new FormControl(5.00, Validators.required)
+    })
+    variants.push(newVariant);
+
     // добавить в fields
     this.fields[questionIndex].variants.push({
       content: 'Вариант 1',
@@ -205,8 +213,6 @@ export class QuestionConstructorComponent implements OnInit {
 
     console.log(this.mainQuestionsFG.value);
     console.log(this.fields);
-    console.log(this.order)
-    // console.log(this.fields)
   }
 
   protected readonly QuestionType = QuestionType;

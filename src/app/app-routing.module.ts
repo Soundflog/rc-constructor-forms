@@ -7,6 +7,8 @@ import {NewFormPageComponent} from "./pages/new-form-page/new-form-page.componen
 const routes: Routes = [
   {path: '', component: HomeTableFormsComponent},
   { path: 'new', component: NewFormPageComponent},
+  // form.id
+  {path: ':form_id', component: NewFormPageComponent}
   // {path: 'exp', component: NavigationFullComponent}
 ];
 
