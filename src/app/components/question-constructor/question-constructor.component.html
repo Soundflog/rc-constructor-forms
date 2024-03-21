@@ -1,20 +1,15 @@
 <tui-island class="tui-island">
   <form [formGroup]="mainQuestionsFG">
-    <tui-tiles
-      class="tiles"
-      [(order)]="order"
+    <!--    ACCORDION-->
+    <div
+      class="tui-space_bottom-5"
+      *ngFor="let field of fields; let questionIndex = index"
+      [formGroupName]="'questions_'+questionIndex"
     >
-      <tui-tile
-        class="content"
-        *ngFor="let field of fields; let index = index"
-        tuiTileHandle
-        [formGroupName]="'questions_'+index"
-        [class.tile_tall]="field.name === 'questions_'+index"
-        [style.order]="order.get(index)"
-        [height]="field.variants.length"
-      >
-        <tui-island class="tui-island">
-          <div class="tui-row tui-space_bottom-5">
+      <tui-accordion-item class="container">
+        {{field.content}}
+        <ng-template tuiAccordionItemContent>
+          <div class="tui-row tui-space_bottom-6">
             <tui-textarea
               class="tui-col_md-6"
               [tuiTextfieldCleaner]=true
@@ -42,53 +37,55 @@
               >
               </tui-data-list-wrapper>
             </tui-combo-box>
-            <tui-svg
-              src="tuiIconDragLarge"
-              tuiTileHandle
-              class="handle"
-            ></tui-svg>
           </div>
-          <!--          </div>-->
           <!--          TODO: по combobox отриросывать по type: либо *ngIf=comboBox.type (внутри component) либо попробовать по # -->
           <!--          One to Many-->
-
           <ng-container
             class="tui-row"
             *ngIf="field.type.value.type === QuestionType.SINGLE_CHOICE"
           >
-            <div class="group"
-                 formArrayName="variants"
-            >
+            <div class="group" formArrayName="variants">
               <button
                 appearance="outline"
                 tuiButton
+                class="tui-space_bottom-5"
                 size="s"
-                (click)="addVariant(index)"
+                (click)="addVariant(questionIndex)"
               >
                 Добавить Вариант
               </button>
-              <tui-elastic-container class="b-form">
-                <ng-container
-                  class="wrapper"
-                  *ngFor="let variant of field.variants; let variantIndex=index"
-                  [formGroupName]="variantIndex"
-                >
-                  <!--                <tui-radio-block contentAlign="right" size="l"
-                                                   [pseudoDisabled]="false"
-                                                   formControlName="content"
-                                                   [item]="variant.content">
-                                    {{variant.content}}
-                                  </tui-radio-block>-->
-                  <div class="">
-                    <tui-input
-                      [tuiTextfieldCleaner]="true"
-                      tuiTextfieldSize="l"
-                      formControlName="content">
-                      {{variant.content}}
-                      <input
-                        tuiTextfield
-                      />
-                    </tui-input>
+              <tui-elastic-container
+                *ngFor="let variant of field.variants; let variantIndex=index"
+                class="tui-space_bottom-5"
+              >
+                <!--<tui-radio-block contentAlign="right" size="l"
+                                 [pseudoDisabled]="false"
+                                 formControlName="content"
+                                 [item]="variant.content">
+                  {{variant.content}}
+                </tui-radio-block>-->
+                <div class="tui-row" [formGroupName]="variantIndex">
+                  <tui-input
+                    class="tui-col_md-10"
+                    [tuiTextfieldCleaner]="true"
+                    tuiTextfieldSize="l"
+                    formControlName="content"
+                  >
+                    {{variant.content}}
+                    <input
+                      tuiTextfield
+                    />
+                  </tui-input>
+                  <div class="group button_group_variants" tuiGroup orientation="horizontal">
+                    <button
+                      appearance="flat"
+                      icon="tuiIconCopy"
+                      shape="rounded"
+                      size="s"
+                      title="Copy"
+                      tuiIconButton
+                      (click)="copyVariant(questionIndex, variantIndex)"
+                    ></button>
                     <button
                       appearance="flat"
                       icon="tuiIconTrash"
@@ -96,11 +93,10 @@
                       size="s"
                       title="Remove"
                       tuiIconButton
-                      class="remove"
-                      (click)="removeVariant(index, variantIndex)"
+                      (click)="removeVariant(questionIndex, variantIndex)"
                     ></button>
                   </div>
-                </ng-container>
+                </div>
               </tui-elastic-container>
             </div>
           </ng-container>
@@ -112,7 +108,7 @@
                 appearance="outline"
                 tuiButton
                 size="s"
-                (click)="addField(index)"
+                (click)="addField(questionIndex)"
               >
                 Добавить
               </button>
@@ -120,24 +116,24 @@
                 appearance="outline"
                 tuiButton
                 size="s"
-                (click)="removeField(index)"
+                (click)="removeField(questionIndex)"
               >
                 Удалить
               </button>
             </div>
           </ng-container>
-
-        </tui-island>
-      </tui-tile>
-    </tui-tiles>
+        </ng-template>
+      </tui-accordion-item>
+    </div>
+    <button
+      tuiButton
+      size="xl"
+      class=""
+      type="submit"
+      (click)="onSubmit()"
+    >
+      Сохранить
+    </button>
   </form>
 </tui-island>
-<button
-  tuiButton
-  size="xl"
-  class=""
-  type="submit"
-  (click)="onSubmit()"
->
-  Сохранить
-</button>
+

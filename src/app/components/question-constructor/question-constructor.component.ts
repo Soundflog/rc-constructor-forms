@@ -150,6 +150,18 @@ export class QuestionConstructorComponent implements OnInit {
     this.alerts.open('Вариант добавлен').subscribe();
   }
 
+  // Функция копирование варианта из массива
+  copyVariant(questionIndex: number, variantIndex:number) {
+    const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
+    const variants = questions.get('variants') as FormArray;
+    const variant = variants.at(variantIndex) as FormGroup;
+    variants.push(variant);
+    // добавить в fields
+    this.fields[questionIndex].variants.push(variant.value);
+    console.log(variant.value);
+    this.alerts.open('Вариант добавлен').subscribe();
+  }
+
   onSubmit() {
     // Перед отправкой на сервер
     // Удалить поле name у fields[]

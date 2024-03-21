@@ -18,18 +18,28 @@
   }
 }
 
+.tile:before {
+  content: 'Drop here';
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  color: var(--tui-base-04);
+  border-radius: var(--tui-radius-l);
+  border: 2px dashed var(--tui-base-03);
+}
+
 .content {
   .transition(box-shadow);
   display: flex;
-  align-items: center;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  flex-direction: column;
   //height: 100%;
   margin: 0 0;
   //padding: 5% 0;
   overflow: hidden;
-  //max-width: 1200px;  // делаем резиновым
-  //width: 100%;
-  //padding: 0 15px;
-  //margin: 0 auto;
 
   tui-tile._dragged & {
     box-shadow: var(--tui-shadow-hover);
@@ -64,4 +74,7 @@
   display: flex;
   align-items: center;
   margin: 0;
+}
+.button_group_variants{
+  align-items: center;
 }
