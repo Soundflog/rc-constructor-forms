@@ -1,12 +1,12 @@
 <tui-island class="tui-island">
-  <form [formGroup]="mainQuestionsFG">
+  <form [formGroup]="mainQuestionsFG" (ngSubmit)="onSubmit()">
     <!--    ACCORDION-->
     <div
       class="tui-space_bottom-5"
       *ngFor="let field of fields; let questionIndex = index"
-      [formGroupName]="'questions_'+questionIndex"
+      [formGroupName]="questionIndex"
     >
-      <tui-accordion-item class="container">
+      <tui-accordion-item class="container" [open]="true">
         {{field.content}}
         <ng-template tuiAccordionItemContent>
           <div class="tui-row tui-space_bottom-6">
@@ -57,11 +57,12 @@
               >
                 <div class="tui-row" style="margin: auto" [formGroupName]="variantIndex">
                   <div *ngIf="field.type.value.type === QuestionType.SINGLE_CHOICE">
-                    <tui-radio class="tui-space_top-4" size="l"/>
+                    <tui-radio class="tui-space_top-4" size="l" [formControl]="radioControl"/>
                   </div>
                   <div *ngIf="field.type.value.type === QuestionType.MULTI_CHOICE">
                     <tui-checkbox
                       class="tui-space_top-4"
+                      [formControl]="checkboxControl"
                       size="l"
                       [readOnly]="true"
                     >
@@ -142,15 +143,6 @@
         </ng-template>
       </tui-accordion-item>
     </div>
-    <button
-      tuiButton
-      size="xl"
-      class=""
-      type="submit"
-      (click)="onSubmit()"
-    >
-      Сохранить
-    </button>
   </form>
 </tui-island>
 

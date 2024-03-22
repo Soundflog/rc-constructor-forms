@@ -1,10 +1,11 @@
-import {ChangeDetectionStrategy, Component, Inject, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {TuiAlertService} from "@taiga-ui/core";
 import {scales} from "../../data/scales";
 import {IScale} from "../../models/IScale";
 import {RequiredFieldInterface} from "../../models/form/requiredField.interface";
 import {forms} from "../../data/forms";
+import {QuestionConstructorComponent} from "../../components/question-constructor/question-constructor.component";
 
 @Component({
   selector: 'app-new-form-page',
@@ -13,19 +14,11 @@ import {forms} from "../../data/forms";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class NewFormPageComponent implements OnInit {
+  @ViewChild(QuestionConstructorComponent) questionConstructor: QuestionConstructorComponent;
 
   mainFG: FormGroup;
-  // Неизменяемые поля
-  notEditableFields: RequiredFieldInterface[] = [
-    {name: 'rfield0', type: 'text',
-      label: 'Новая анкета', size: 'l'
-    },
-    {name: 'rfield1', type: 'text',
-      label: 'Описание', size: 'm'
-    },
-  ];
   // Шкала
-  readonly scaleControl = new FormControl();
+  // readonly scaleControl = new FormControl();
   readonly scaleItems = scales;
 
   readonly forms = forms;
@@ -43,14 +36,23 @@ export class NewFormPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.mainFG = this.fb.group({
-      rfield0: new FormControl('', Validators.required),
-      rfield1: new FormControl('', Validators.required),
-      rfield2: new FormControl('', Validators.required),
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      scale: new FormControl(scales[0], Validators.required)
     })
   }
 
   onSubmitForm() {
-    this.mainFG.addControl(this.scaleControl.value, new FormControl(this.scaleControl.value, Validators.required));
-    console.log(this.mainFG.value);
+    let newQuestion = this.questionConstructor.mainQuestionsFG.controls
+    this.mainFG.addControl("questions", this.fb.array([]));
+    this.questionConstructor.fields.forEach((item, index) => {
+      (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
+    })
+    if (this.mainFG.valid) {
+      console.log(this.mainFG.value);
+      this.alerts.open(`Данные успешно сохранены`, {status:'success'});
+    }else{
+      this.alerts.open(`Не все поля заполнены`, {status:'error'});
+    }
   }
 }

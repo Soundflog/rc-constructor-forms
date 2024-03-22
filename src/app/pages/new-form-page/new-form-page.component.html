@@ -1,44 +1,62 @@
 <div class="container">
-  <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
-  <form [formGroup]="mainFG" (ngSubmit)="onSubmitForm()">
-    <tui-island
-      class="tui-space_bottom-5"
-      [hoverable]=false
-      size="l"
-      textAlign="left"
-    >
-      <div *ngFor="let rfield of notEditableFields; let i = index">
-        <tui-textarea
-          class="tui-space_bottom-5"
-          [tuiTextfieldSize]="rfield.size"
-          formControlName="{{rfield.name}}">
-          {{ rfield.label }}
-          <textarea
-            maxlength="97"
-            placeholder="{{rfield.label}}"
-            tuiTextfield
-          ></textarea>
-        </tui-textarea>
-      </div>
-
-      <label>
-        <tui-combo-box
-          [formControl]="scaleControl"
-          [stringify]="scaleChooseStringify"
-          [tuiTextfieldLabelOutside]="true"
+    <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
+    <form [formGroup]="mainFG" (ngSubmit)="onSubmitForm()">
+        <tui-island
+                class="tui-space_bottom-5"
+                [hoverable]=false
+                size="l"
+                textAlign="left"
         >
-          Шкала
-          <tui-data-list-wrapper
-            *tuiDataList
-            [itemContent]="scaleChooseStringify | tuiStringifyContent"
-            [items]="scaleItems | tuiFilterByInputWith: scaleChooseStringify"
-          ></tui-data-list-wrapper>
-        </tui-combo-box>
-      </label>
+            <tui-textarea
+                    class="tui-space_bottom-5"
+                    tuiTextfieldSize="l"
+                    formControlName="name"
+            >
+                Название анкеты
+                <textarea
+                        maxlength="97"
+                        placeholder="Название анкеты"
+                        tuiTextfield
+                ></textarea>
+            </tui-textarea>
+            <tui-textarea
+                    class="tui-space_bottom-5"
+                    tuiTextfieldSize="l"
+                    formControlName="description">
+                Описание анкеты
+                <textarea
+                        maxlength="97"
+                        placeholder="Описание анкеты"
+                        tuiTextfield
+                ></textarea>
+            </tui-textarea>
 
-    </tui-island>
-  </form>
-  <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
-  <app-question-constructor [anketa]="forms[0]"></app-question-constructor>
+            <label>
+                <tui-combo-box
+                        formControlName="scale"
+                        [stringify]="scaleChooseStringify"
+                        [tuiTextfieldLabelOutside]="true"
+                >
+                    Шкала
+                    <tui-data-list-wrapper
+                            *tuiDataList
+                            [itemContent]="scaleChooseStringify | tuiStringifyContent"
+                            [items]="scaleItems | tuiFilterByInputWith: scaleChooseStringify"
+                    ></tui-data-list-wrapper>
+                </tui-combo-box>
+            </label>
+        </tui-island>
+        <app-question-constructor [anketa]="forms[0]"></app-question-constructor>
+    </form>
+    <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
+    <button
+            tuiButton
+            size="xl"
+            class=""
+            type="submit"
+            (click)="onSubmitForm()"
+    >
+        Сохранить
+    </button>
 </div>
 

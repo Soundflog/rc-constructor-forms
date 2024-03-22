@@ -5,6 +5,5 @@ import {IVariant} from "../IVariant";
 export interface RequiredFieldInterface {
   type: string;
   label: string;
-  size: TuiSizeS | TuiSizeL;
   name: string;
 }
