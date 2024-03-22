@@ -39,7 +39,7 @@ import {
   TuiStringifyContentPipeModule,
   TuiTabsModule,
   TuiTextareaModule,
-  TuiTilesModule
+  TuiTilesModule, TuiToggleModule
 } from "@taiga-ui/kit";
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import {TuiAppBarModule} from "@taiga-ui/addon-mobile";
@@ -117,6 +117,7 @@ import { QuestionConstructorComponent } from './components/question-constructor/
     TuiSelectModule,
     TuiInputCountModule,
     TuiLabelModule,
+    TuiToggleModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]

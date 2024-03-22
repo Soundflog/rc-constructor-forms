@@ -55,7 +55,7 @@
               </button>
               <tui-elastic-container
                 *ngFor="let variant of field.variants; let variantIndex=index"
-                class="tui-space_bottom-5"
+                class="tui-space_bottom-5 m-auto"
               >
                 <!--<tui-radio-block contentAlign="right" size="l"
                                  [pseudoDisabled]="false"
@@ -63,7 +63,7 @@
                                  [item]="variant.content">
                   {{variant.content}}
                 </tui-radio-block>-->
-                <div class="tui-row" [formGroupName]="variantIndex">
+                <div class="tui-row" style="margin: auto" [formGroupName]="variantIndex">
                   <tui-input
                     class="tui-col_md-8"
                     [tuiTextfieldCleaner]="true"
@@ -110,21 +110,31 @@
             <hr class="tui-space_bottom-5 size-2">
             <div tuiGroup class="group" [collapsed]="true">
               <button
-                appearance="outline"
+                appearance="flat"
                 tuiButton
+                title="Добавить Вопрос"
+                icon="tuiIconPlusSquareLarge"
                 size="s"
                 (click)="addField(questionIndex)"
               >
-                Добавить
               </button>
               <button
-                appearance="outline"
+                appearance="flat"
                 tuiButton
+                title="Удалить Вопрос"
                 size="s"
+                icon="tuiIconTrash2Large"
                 (click)="removeField(questionIndex)"
               >
-                Удалить
               </button>
+              <label class="tui-space_right-2"> Обязательный вопрос
+                <tui-toggle
+                  formControlName="required"
+                  title="Обязательный вопрос"
+                  size="l"
+                  [showIcons]="true"
+                ></tui-toggle>
+              </label>
             </div>
           </ng-container>
         </ng-template>

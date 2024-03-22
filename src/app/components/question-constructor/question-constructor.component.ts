@@ -49,12 +49,13 @@ export class QuestionConstructorComponent implements OnInit {
     if (this.anketa.questions.length === 0) {
       this.variantsFG = this.fb.group({
         content: new FormControl("Вариант 1", Validators.required),
-        score: new FormControl(5.00, Validators.required)
+        score: new FormControl(1.00, Validators.required)
       })
 
       this.questionsFG = this.fb.group({
-        content: new FormControl("Введите текст", Validators.required),
+        content: new FormControl("Вопрос 1", Validators.required),
         type: this.comboBoxFields[0],
+        required: false,
         variants: this.fb.array([
           this.variantsFG,
         ]),
@@ -78,6 +79,7 @@ export class QuestionConstructorComponent implements OnInit {
         const questionGroup = this.fb.group({
           content: [question.content, Validators.required],
           type: [question.type, Validators.required],
+          required: [question.required, Validators.required],
           variants: this.fb.array([])
         });
         question.variants.forEach(variant => {
@@ -135,11 +137,12 @@ export class QuestionConstructorComponent implements OnInit {
     this.fields.splice(index + 1, 0, newField);
     let newVariant = this.fb.group({
       content: new FormControl("Вариант 1", Validators.required),
-      score: new FormControl(5.00, Validators.required)
+      score: new FormControl(1.00, Validators.required)
     })
     let newQuestion = this.fb.group({
       content: new FormControl("Вопрос "+newIndexQuestion, Validators.required),
       type: this.comboBoxFields[0],
+      required: false,
       variants: this.fb.array([
         newVariant
       ]),
@@ -206,6 +209,15 @@ export class QuestionConstructorComponent implements OnInit {
     this.fields[questionIndex].variants.push(variant.value);
     this.alerts.open('Вариант добавлен').subscribe();
   }
+
+  // Функция обязательности поля
+  /*requiredField(questionIndex: number) {
+    const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
+    const required = questions.get('required') as FormControl;
+    required.setValue(!required.value);
+    this.fields[questionIndex].required = !this.fields[questionIndex].required;
+    this.alerts.open('Поле обязательное').subscribe();
+  }*/
 
   // Записать конечное значение типа вопроса в массив
   setValueTypeQuestionOnControl() {
