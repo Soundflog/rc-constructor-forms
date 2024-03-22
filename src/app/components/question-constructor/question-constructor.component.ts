@@ -79,7 +79,7 @@ export class QuestionConstructorComponent implements OnInit {
         const questionGroup = this.fb.group({
           content: [question.content, Validators.required],
           type: [question.type, Validators.required],
-          required: [question.required, Validators.required],
+          required: [question.required || false, Validators.required],
           variants: this.fb.array([])
         });
         question.variants.forEach(variant => {
@@ -121,12 +121,13 @@ export class QuestionConstructorComponent implements OnInit {
     })
   }
 
+  // Функция добавления вопроса в форму
   addField(index: number): void {
     this.alerts.open('Добавлено поле').subscribe();
     let newIndexQuestion = this.fields.length + 1;
     const newField = {
       name: 'questions_' + this.fields.length,
-      content: 'Вопрос '+newIndexQuestion,
+      content: 'Вопрос ' + newIndexQuestion,
       type: new FormControl(this.comboBoxFields[0]),
       variants: [
         {
@@ -140,7 +141,7 @@ export class QuestionConstructorComponent implements OnInit {
       score: new FormControl(1.00, Validators.required)
     })
     let newQuestion = this.fb.group({
-      content: new FormControl("Вопрос "+newIndexQuestion, Validators.required),
+      content: new FormControl("Вопрос " + newIndexQuestion, Validators.required),
       type: this.comboBoxFields[0],
       required: false,
       variants: this.fb.array([
@@ -154,6 +155,7 @@ export class QuestionConstructorComponent implements OnInit {
     }
   }
 
+  // Функция удаления вопроса из массива
   removeField(index: number) {
     if (this.fields[index]) {
       this.fields.splice(index, 1);
@@ -182,14 +184,14 @@ export class QuestionConstructorComponent implements OnInit {
     const variants = questions.get('variants') as FormArray;
     let indexVariant = variants.length + 1;
     let newVariant = this.fb.group({
-      content: new FormControl("Вариант "+indexVariant, Validators.required),
+      content: new FormControl("Вариант " + indexVariant, Validators.required),
       score: new FormControl(5.00, Validators.required)
     })
     variants.push(newVariant);
 
     // добавить в fields
     this.fields[questionIndex].variants.push({
-      content: 'Вариант '+ indexVariant,
+      content: 'Вариант ' + indexVariant,
       score: 5.00,
     });
     this.alerts.open('Вариант добавлен').subscribe();
@@ -209,15 +211,6 @@ export class QuestionConstructorComponent implements OnInit {
     this.fields[questionIndex].variants.push(variant.value);
     this.alerts.open('Вариант добавлен').subscribe();
   }
-
-  // Функция обязательности поля
-  /*requiredField(questionIndex: number) {
-    const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
-    const required = questions.get('required') as FormControl;
-    required.setValue(!required.value);
-    this.fields[questionIndex].required = !this.fields[questionIndex].required;
-    this.alerts.open('Поле обязательное').subscribe();
-  }*/
 
   // Записать конечное значение типа вопроса в массив
   setValueTypeQuestionOnControl() {
