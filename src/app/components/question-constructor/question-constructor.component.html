@@ -38,17 +38,15 @@
               </tui-data-list-wrapper>
             </tui-select>
           </div>
-          <!--          One to Many-->
-          <ng-container
-            class="tui-row"
-            *ngIf="field.type.value.type === QuestionType.SINGLE_CHOICE"
-          >
+          <!--          VARIANTS -->
+          <ng-container class="tui-row">
             <div class="group" formArrayName="variants">
               <button
                 appearance="outline"
                 tuiButton
                 class="tui-space_bottom-5"
                 size="s"
+                [disabled]="field.type.value.type === QuestionType.SCALE"
                 (click)="addVariant(questionIndex)"
               >
                 Добавить Вариант
@@ -57,15 +55,20 @@
                 *ngFor="let variant of field.variants; let variantIndex=index"
                 class="tui-space_bottom-5 m-auto"
               >
-                <!--<tui-radio-block contentAlign="right" size="l"
-                                 [pseudoDisabled]="false"
-                                 formControlName="content"
-                                 [item]="variant.content">
-                  {{variant.content}}
-                </tui-radio-block>-->
                 <div class="tui-row" style="margin: auto" [formGroupName]="variantIndex">
+                  <div *ngIf="field.type.value.type === QuestionType.SINGLE_CHOICE">
+                    <tui-radio class="tui-space_top-4" size="l"/>
+                  </div>
+                  <div *ngIf="field.type.value.type === QuestionType.MULTI_CHOICE">
+                    <tui-checkbox
+                      class="tui-space_top-4"
+                      size="l"
+                      [readOnly]="true"
+                    >
+                    </tui-checkbox>
+                  </div>
                   <tui-input
-                    class="tui-col_md-8"
+                    class="tui-col_md-7"
                     [tuiTextfieldCleaner]="true"
                     tuiTextfieldSize="l"
                     formControlName="content"
@@ -104,9 +107,8 @@
               </tui-elastic-container>
             </div>
           </ng-container>
-
+          <!--        Нижняя панель управления вопросом - Компонент-->
           <ng-container class="tui-row" tuiAccordionItemContent>
-            <!--        Нижняя панель управления вопросом - Компонент-->
             <hr class="tui-space_bottom-5 size-2">
             <div tuiGroup class="group" [collapsed]="true">
               <button
