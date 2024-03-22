@@ -4,14 +4,26 @@ import {TuiAlertService} from "@taiga-ui/core";
 import {FieldInterface} from 'src/app/models/form/field.interface';
 import {ComboTypeQuestion} from "../../models/form/comboTypeQuestion.interface";
 import {QuestionType} from "../../models/form/questionType.enum";
-import {tuiArrayRemove} from "@taiga-ui/cdk";
 import {IForm} from "../../models/IForm";
+import {tuiInputCountOptionsProvider} from "@taiga-ui/kit";
 
 @Component({
   selector: 'app-question-constructor',
   templateUrl: './question-constructor.component.html',
   styleUrls: ['./question-constructor.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    tuiInputCountOptionsProvider({
+      icons: {
+        up: 'tuiIconChevronUp',
+        down: 'tuiIconChevronDown',
+      },
+      appearance: 'secondary',
+      step: 1,
+      min: 1,
+      max: 20,
+    }),
+  ],
 })
 export class QuestionConstructorComponent implements OnInit {
   @Input() anketa: IForm;
@@ -19,8 +31,6 @@ export class QuestionConstructorComponent implements OnInit {
   mainQuestionsFG: FormGroup; // questions form group
   variantsFG: FormGroup; // variants form group
   questionsFG: FormGroup; // variants form group
-  // Tiles
-  order = new Map();
 
   comboBoxFields: ComboTypeQuestion[] = [
     {value: 'Один из списка', type: QuestionType.SINGLE_CHOICE},
@@ -111,9 +121,10 @@ export class QuestionConstructorComponent implements OnInit {
 
   addField(index: number): void {
     this.alerts.open('Добавлено поле').subscribe();
+    let newIndexQuestion = this.fields.length + 1;
     const newField = {
       name: 'questions_' + this.fields.length,
-      content: 'Введите текст',
+      content: 'Вопрос '+newIndexQuestion,
       type: new FormControl(this.comboBoxFields[0]),
       variants: [
         {
@@ -127,7 +138,7 @@ export class QuestionConstructorComponent implements OnInit {
       score: new FormControl(5.00, Validators.required)
     })
     let newQuestion = this.fb.group({
-      content: new FormControl("Введите текст", Validators.required),
+      content: new FormControl("Вопрос "+newIndexQuestion, Validators.required),
       type: this.comboBoxFields[0],
       variants: this.fb.array([
         newVariant
@@ -150,20 +161,6 @@ export class QuestionConstructorComponent implements OnInit {
     }
   }
 
-  // Записать конечное значение типа вопроса в массив
-  setValueTypeQuestionOnControl() {
-    this.fields.forEach((field, i) => {
-      // Проверить совпадают ли name и изменившийся вопрос
-      if (field.name === 'questions_' + i) {
-        const questionFG = this.mainQuestionsFG.get(field.name) as FormGroup;
-        const comboBoxField = this.comboBoxFields.find(item => item === field.type.value);
-        if (comboBoxField) {
-          questionFG.controls['type'].setValue(comboBoxField.type);
-        }
-      }
-    })
-  }
-
   // Функция удаления варианта из массива
   removeVariant(questionIndex: number, variantIndex: number) {
     const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
@@ -180,15 +177,16 @@ export class QuestionConstructorComponent implements OnInit {
   addVariant(questionIndex: number) {
     const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
     const variants = questions.get('variants') as FormArray;
+    let indexVariant = variants.length + 1;
     let newVariant = this.fb.group({
-      content: new FormControl("Вариант 1", Validators.required),
+      content: new FormControl("Вариант "+indexVariant, Validators.required),
       score: new FormControl(5.00, Validators.required)
     })
     variants.push(newVariant);
 
     // добавить в fields
     this.fields[questionIndex].variants.push({
-      content: 'Вариант 1',
+      content: 'Вариант '+ indexVariant,
       score: 5.00,
     });
     this.alerts.open('Вариант добавлен').subscribe();
@@ -199,11 +197,28 @@ export class QuestionConstructorComponent implements OnInit {
     const questions = (this.mainQuestionsFG.get('questions_' + questionIndex) as FormGroup);
     const variants = questions.get('variants') as FormArray;
     const variant = variants.at(variantIndex) as FormGroup;
-    variants.push(variant);
+    let newVariant = this.fb.group({
+      content: new FormControl((variant.get('content') as FormControl).value, Validators.required),
+      score: new FormControl((variant.get('score') as FormControl).value, Validators.required)
+    })
+    variants.push(newVariant);
     // добавить в fields
     this.fields[questionIndex].variants.push(variant.value);
-    console.log(variant.value);
     this.alerts.open('Вариант добавлен').subscribe();
+  }
+
+  // Записать конечное значение типа вопроса в массив
+  setValueTypeQuestionOnControl() {
+    this.fields.forEach((field, i) => {
+      // Проверить совпадают ли name и изменившийся вопрос
+      if (field.name === 'questions_' + i) {
+        const questionFG = this.mainQuestionsFG.get(field.name) as FormGroup;
+        const comboBoxField = this.comboBoxFields.find(item => item === field.type.value);
+        if (comboBoxField) {
+          questionFG.controls['type'].setValue(comboBoxField.type);
+        }
+      }
+    })
   }
 
   onSubmit() {

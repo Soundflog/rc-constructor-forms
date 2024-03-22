@@ -23,7 +23,7 @@
                 tuiTextfield
               ></textarea>
             </tui-textarea>
-            <tui-combo-box
+            <tui-select
               class="tui-col_md-6"
               [formControl]="field.type"
               [stringify]="comboBoxStringify"
@@ -36,9 +36,8 @@
                 [items]="comboBoxFields | tuiFilterByInputWith: comboBoxStringify"
               >
               </tui-data-list-wrapper>
-            </tui-combo-box>
+            </tui-select>
           </div>
-          <!--          TODO: по combobox отриросывать по type: либо *ngIf=comboBox.type (внутри component) либо попробовать по # -->
           <!--          One to Many-->
           <ng-container
             class="tui-row"
@@ -66,7 +65,7 @@
                 </tui-radio-block>-->
                 <div class="tui-row" [formGroupName]="variantIndex">
                   <tui-input
-                    class="tui-col_md-10"
+                    class="tui-col_md-8"
                     [tuiTextfieldCleaner]="true"
                     tuiTextfieldSize="l"
                     formControlName="content"
@@ -76,6 +75,11 @@
                       tuiTextfield
                     />
                   </tui-input>
+                  <tui-input-count
+                    class="tui-col_md-3"
+                    formControlName="score"
+                    [tuiTextfieldLabelOutside]="true"
+                  ></tui-input-count>
                   <div class="group button_group_variants" tuiGroup orientation="horizontal">
                     <button
                       appearance="flat"

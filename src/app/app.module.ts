@@ -11,7 +11,7 @@ import {
   TuiExpandModule,
   TuiSvgDefsHostModule,
   TuiDropdownModule,
-  TuiTextfieldControllerModule, TuiGroupModule, TuiHintModule
+  TuiTextfieldControllerModule, TuiGroupModule, TuiHintModule, TuiLabelModule
 } from "@taiga-ui/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
@@ -32,10 +32,10 @@ import {
   TuiBadgeModule,
   TuiComboBoxModule,
   TuiDataListWrapperModule, TuiElasticContainerModule,
-  TuiFilterByInputPipeModule,
+  TuiFilterByInputPipeModule, TuiInputCountModule,
   TuiInputModule,
   TuiIslandModule,
-  TuiMarkerIconModule, TuiRadioBlockModule,
+  TuiMarkerIconModule, TuiRadioBlockModule, TuiSelectModule,
   TuiStringifyContentPipeModule,
   TuiTabsModule,
   TuiTextareaModule,
@@ -114,6 +114,9 @@ import { QuestionConstructorComponent } from './components/question-constructor/
     TuiFilterByInputPipeModule,
     TuiRadioBlockModule,
     TuiElasticContainerModule,
+    TuiSelectModule,
+    TuiInputCountModule,
+    TuiLabelModule,
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]
