@@ -43,6 +43,7 @@ import {
 } from "@taiga-ui/kit";
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import {TuiAppBarModule} from "@taiga-ui/addon-mobile";
+import { HttpClientModule } from '@angular/common/http'
 // import { NavigationFullComponent } from './pages/navigation-full/navigation-full.component';
 import {TuiDocNavigationModule} from "@taiga-ui/addon-doc";
 import {TuiRepeatTimesModule} from "@taiga-ui/cdk";
@@ -64,6 +65,7 @@ import { QuestionConstructorComponent } from './components/question-constructor/
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     FormsModule,

@@ -1,62 +1,64 @@
 <div class="container">
-    <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
-    <form [formGroup]="mainFG" (ngSubmit)="onSubmitForm()">
-        <tui-island
-                class="tui-space_bottom-5"
-                [hoverable]=false
-                size="l"
-                textAlign="left"
-        >
-            <tui-textarea
-                    class="tui-space_bottom-5"
-                    tuiTextfieldSize="l"
-                    formControlName="name"
-            >
-                Название анкеты
-                <textarea
-                        maxlength="97"
-                        placeholder="Название анкеты"
-                        tuiTextfield
-                ></textarea>
-            </tui-textarea>
-            <tui-textarea
-                    class="tui-space_bottom-5"
-                    tuiTextfieldSize="l"
-                    formControlName="description">
-                Описание анкеты
-                <textarea
-                        maxlength="97"
-                        placeholder="Описание анкеты"
-                        tuiTextfield
-                ></textarea>
-            </tui-textarea>
-
-            <label>
-                <tui-combo-box
-                        formControlName="scale"
-                        [stringify]="scaleChooseStringify"
-                        [tuiTextfieldLabelOutside]="true"
-                >
-                    Шкала
-                    <tui-data-list-wrapper
-                            *tuiDataList
-                            [itemContent]="scaleChooseStringify | tuiStringifyContent"
-                            [items]="scaleItems | tuiFilterByInputWith: scaleChooseStringify"
-                    ></tui-data-list-wrapper>
-                </tui-combo-box>
-            </label>
-        </tui-island>
-        <app-question-constructor [anketa]="forms[0]"></app-question-constructor>
-    </form>
-    <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
-    <button
-            tuiButton
-            size="xl"
-            class=""
-            type="submit"
-            (click)="onSubmitForm()"
+  <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
+  <form [formGroup]="mainFG" (ngSubmit)="onSubmitForm()">
+    <tui-island
+      class="tui-space_bottom-5"
+      [hoverable]=false
+      size="l"
+      textAlign="left"
     >
-        Сохранить
-    </button>
+      <tui-textarea
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        formControlName="name"
+      >
+        Название анкеты
+        <textarea
+          maxlength="97"
+          placeholder="Название анкеты"
+          tuiTextfield
+        ></textarea>
+      </tui-textarea>
+      <tui-textarea
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        formControlName="description">
+        Описание анкеты
+        <textarea
+          maxlength="97"
+          placeholder="Описание анкеты"
+          tuiTextfield
+        ></textarea>
+      </tui-textarea>
+
+      <label>
+        <tui-combo-box
+          formControlName="scale"
+          [stringify]="scaleChooseStringify"
+          [tuiTextfieldLabelOutside]="true"
+        >
+          Шкала
+          <tui-data-list-wrapper
+            *tuiDataList
+            [itemContent]="scaleChooseStringify | tuiStringifyContent"
+            [items]="scaleItems | tuiFilterByInputWith: scaleChooseStringify"
+          ></tui-data-list-wrapper>
+        </tui-combo-box>
+      </label>
+    </tui-island>
+    <ng-container *ngIf="formById">
+      <app-question-constructor [anketa]="formById"></app-question-constructor>
+    </ng-container>
+  </form>
+  <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
+  <button
+    tuiButton
+    size="xl"
+    class=""
+    type="submit"
+    (click)="onSubmitForm()"
+  >
+    Сохранить
+  </button>
 </div>
 

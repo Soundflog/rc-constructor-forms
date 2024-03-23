@@ -3,9 +3,10 @@ import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angul
 import {TuiAlertService} from "@taiga-ui/core";
 import {scales} from "../../data/scales";
 import {IScale} from "../../models/IScale";
-import {RequiredFieldInterface} from "../../models/form/requiredField.interface";
-import {forms} from "../../data/forms";
 import {QuestionConstructorComponent} from "../../components/question-constructor/question-constructor.component";
+import {FormService} from "../../services/FormService";
+import {IForm} from "../../models/IForm";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-new-form-page',
@@ -18,10 +19,9 @@ export class NewFormPageComponent implements OnInit {
 
   mainFG: FormGroup;
   // Шкала
-  // readonly scaleControl = new FormControl();
   readonly scaleItems = scales;
 
-  readonly forms = forms;
+  formById: IForm;
 
   readonly scaleChooseStringify = (item: IScale): string =>
     `${item.name}`;
@@ -30,11 +30,29 @@ export class NewFormPageComponent implements OnInit {
     @Inject(TuiAlertService)
     private readonly alerts: TuiAlertService,
     private fb: FormBuilder,
+    private formService: FormService,
+    private route: ActivatedRoute
   ) {
     this.mainFG = this.fb.group({});
   }
 
   ngOnInit(): void {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (id) {
+        this.formService.getById(id).subscribe(res => {
+          this.formById = res
+        });
+      } else {
+        this.formById = {
+          name: 'Название формы',
+          scale_id: scales[0],
+          description: 'Описание формы',
+          questions: []
+        }
+      }
+    })
+
     this.mainFG = this.fb.group({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
@@ -50,9 +68,16 @@ export class NewFormPageComponent implements OnInit {
     })
     if (this.mainFG.valid) {
       console.log(this.mainFG.value);
-      this.alerts.open(`Данные успешно сохранены`, {status:'success'});
-    }else{
-      this.alerts.open(`Не все поля заполнены`, {status:'error'});
+      const formData = this.mainFG.value;
+      this.formService.createForm(formData).subscribe(res => {
+        this.alerts.open(`Данные успешно сохранены`, {status: 'success'});
+        console.log(res);
+      }, error => {
+        console.log(error);
+        this.alerts.open(`Ошибка при сохранении данных`, {status: 'error'});
+      });
+    } else {
+      this.alerts.open(`Не все поля заполнены`, {status: 'error'});
     }
   }
 }

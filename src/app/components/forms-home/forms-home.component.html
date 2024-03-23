@@ -1,28 +1,30 @@
 <div class="tui-row">
-  <ng-container *ngFor="let f of forms">
-    <div class="tui-col_md-4 tui-space_top-4">
-      <a
-        routerLink="/:form_id"
-        rel="noreferrer"
-        size="l"
-        target="_blank"
-        tuiIsland
-        [hoverable]="true"
-      >
-        <div class="tui-island__content">
-          <div>
-            <h3 class="tui-island__title">{{ shortString(f.name) }}</h3>
-            <p class="tui-island__paragraph">
-              {{ shortString(f.description) }}
-            </p>
-            <tui-badge
-              class="flex-auto"
-              value="Success"
-              status="success"
-            ></tui-badge>
+<!--  <ng-container *ngIf="forms">-->
+    <ng-container *ngFor="let f of forms">
+      <div class="tui-col_md-4 tui-space_top-4">
+        <a
+          [routerLink]="['/', f.id]"
+          rel="noreferrer"
+          size="l"
+          target="_blank"
+          tuiIsland
+          [hoverable]="true"
+        >
+          <div class="tui-island__content">
+            <div>
+              <h3 class="tui-island__title">{{ shortString(f.name) }}</h3>
+              <p class="tui-island__paragraph">
+                {{ shortString(f.description) }}
+              </p>
+              <tui-badge
+                class="flex-auto"
+                value="Success"
+                status="success"
+              ></tui-badge>
+            </div>
           </div>
-        </div>
-      </a>
-    </div>
-  </ng-container>
+        </a>
+      </div>
+    </ng-container>
+<!--  </ng-container>-->
 </div>
