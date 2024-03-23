@@ -86,12 +86,12 @@ export class NewFormPageComponent implements OnInit {
   }
 
   onSubmitForm() {
-    let newQuestion = this.questionConstructor.mainQuestionsFG.controls
-    this.mainFG.addControl("questions", this.fb.array([]));
-    this.questionConstructor.fields.forEach((item, index) => {
-      (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
-    })
     if (this.mainFG.valid) {
+      let newQuestion = this.questionConstructor.mainQuestionsFG.controls
+      this.mainFG.addControl("questions", this.fb.array([]));
+      this.questionConstructor.fields.forEach((item, index) => {
+        (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
+      })
       console.log(this.mainFG.value);
       const formData = this.mainFG.value;
       this.formService.createForm(formData).subscribe(res => {
