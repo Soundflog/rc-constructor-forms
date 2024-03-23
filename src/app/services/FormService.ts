@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {IForm} from "../models/IForm";
-import {catchError, delay, Observable, retry, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, delay, Observable, retry, tap, throwError} from "rxjs";
 import {ErrorService} from "./ErrorService";
 
 @Injectable({
@@ -9,16 +9,32 @@ import {ErrorService} from "./ErrorService";
 })
 export class FormService {
   private _baseUrl = 'http://localhost:8080/form';
+  private formsSubject = new BehaviorSubject<IForm[]>([]);
+  forms$: Observable<IForm[]> = this.formsSubject.asObservable();
+
   constructor(private http: HttpClient,
               private errorService: ErrorService) {
+    this.getAllForms()
   }
 
-  forms: IForm[] = []
+  private getAllForms(): void {
+    this.getAll().subscribe(
+      forms => this.formsSubject.next(forms),
+      error => {
+        // Handle error if needed
+        console.error('Error occurred while fetching forms:', error);
+      }
+    );
+  }
 
   createForm(form: IForm): Observable<IForm> {
     return this.http.post<IForm>(`${this._baseUrl}/create`, form)
       .pipe(
-        tap(form => this.forms.push(form))
+        tap(form => {
+          const currentForms = this.formsSubject.value;
+          this.formsSubject.next([...currentForms, form]);
+        }),
+        catchError(this.errorHandler.bind(this))
       )
   }
 
@@ -28,9 +44,6 @@ export class FormService {
         fromObject: {limit: 5}
       })
     }).pipe(
-      delay(1000),
-      retry(2),
-      tap(forms => this.forms = forms),
       catchError(this.errorHandler.bind(this))
     )
   }
@@ -38,7 +51,6 @@ export class FormService {
   getById(id: number): Observable<IForm> {
     return this.http.get<IForm>(`${this._baseUrl}/${id}`)
       .pipe(
-        tap(form => this.forms.push(form)),
         catchError(this.errorHandler.bind(this))
       )
   }

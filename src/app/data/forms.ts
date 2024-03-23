@@ -6,7 +6,7 @@ export const forms: IForm[] = [
     id: 1,
     name: "Анкета 1",
     description: "Описание анкеты 1",
-    scale_id: {
+    scaleId: {
       id: 1,
       name: "scale name",
       description: "description scale name"
@@ -96,7 +96,7 @@ export const forms: IForm[] = [
     id: 2,
     name: "Анкета 2",
     description: "Описание анкеты 2",
-    scale_id: {
+    scaleId: {
       id: 1,
       name: "scale name",
       description: "description scale name"
@@ -107,7 +107,7 @@ export const forms: IForm[] = [
     id: 3,
     name: "Анкета 3",
     description: "Описание анкеты 3",
-    scale_id: {
+    scaleId: {
       id: 1,
       name: "scale name",
       description: "description scale name"
@@ -118,7 +118,7 @@ export const forms: IForm[] = [
     id: 4,
     name: "Анкета 2",
     description: "Описание анкеты 2",
-    scale_id: {
+    scaleId: {
       id: 1,
       name: "scale name",
       description: "description scale name"
@@ -129,7 +129,7 @@ export const forms: IForm[] = [
     id: 5,
     name: "Анкета 3",
     description: "Описание анкеты 3",
-    scale_id: {
+    scaleId: {
       id: 1,
       name: "scale name",
       description: "description scale name"
@@ -140,7 +140,7 @@ export const forms: IForm[] = [
     id: 6,
     name: "Анкета 3 Анкета 3 Анкета 3 Анкета 3 Анкета 3 Анкета 3",
     description: "Описание анкеты 3 Описание анкеты 3 Описание анкеты 3 Описание анкеты 3Описание анкеты 3 Описание анкеты 3 Описание анкеты 3 Описание анкеты 3Описание анкеты 3",
-    scale_id: {
+    scaleId: {
       id: 1,
       name: "scale name",
       description: "description scale name"

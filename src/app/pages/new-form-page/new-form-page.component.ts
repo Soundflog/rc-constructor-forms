@@ -7,6 +7,8 @@ import {QuestionConstructorComponent} from "../../components/question-constructo
 import {FormService} from "../../services/FormService";
 import {IForm} from "../../models/IForm";
 import {ActivatedRoute} from "@angular/router";
+import {ScaleService} from "../../services/ScaleService";
+import {map, Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-new-form-page',
@@ -19,9 +21,11 @@ export class NewFormPageComponent implements OnInit {
 
   mainFG: FormGroup;
   // Шкала
-  readonly scaleItems = scales;
+  scaleItems$: Observable<IScale[]>;
 
-  formById: IForm;
+  formById$: Observable<IForm | undefined>;
+  formDefault : IForm
+  isNew = false
 
   readonly scaleChooseStringify = (item: IScale): string =>
     `${item.name}`;
@@ -31,32 +35,53 @@ export class NewFormPageComponent implements OnInit {
     private readonly alerts: TuiAlertService,
     private fb: FormBuilder,
     private formService: FormService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private scaleService: ScaleService
   ) {
     this.mainFG = this.fb.group({});
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      if (id) {
-        this.formService.getById(id).subscribe(res => {
-          this.formById = res
-        });
-      } else {
-        this.formById = {
-          name: 'Название формы',
-          scale_id: scales[0],
-          description: 'Описание формы',
-          questions: []
+    this.scaleItems$ = this.scaleService.getScales().pipe(
+      tap(items => {
+        if (items.length === 0) {
+          this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'});
         }
+      })
+    )
+
+    this.route.params.subscribe(params => {
+      const id = +params['form_id'];
+      if (id) {
+        this.formById$ = this.formService.forms$.pipe(
+          map(forms => forms.find(form => form.id === id)),
+          tap(form => {
+            if (form) {
+              this.mainFG.patchValue({
+                name: form.name,
+                description: form.description,
+                scaleId: form.scaleId
+              })
+            }
+          })
+        )
+        console.log(this.formById$)
+        this.isNew = false
+      }else{
+        this.isNew = true
       }
     })
 
+    this.formDefault = {
+      name: 'Название формы',
+      scaleId: scales[0],
+      description: 'Описание формы',
+      questions: []
+    }
     this.mainFG = this.fb.group({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),
-      scale: new FormControl(scales[0], Validators.required)
+      scaleId: new FormControl(),
     })
   }
 

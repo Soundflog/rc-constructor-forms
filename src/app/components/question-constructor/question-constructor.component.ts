@@ -85,6 +85,7 @@ export class QuestionConstructorComponent implements OnInit {
         ]
       })
     } else {
+      console.log(this.anketa.questions);
       this.anketa.questions.forEach((question, index) => {
         const questionGroup = this.fb.group({
           content: [question.content, Validators.required],

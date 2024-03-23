@@ -1,13 +1,24 @@
 <tui-island class="tui-island">
   <form [formGroup]="mainQuestionsFG" (ngSubmit)="onSubmit()">
     <!--    ACCORDION-->
+    <div style="display: flex; justify-content: center" *ngIf="fields.length <= 0">
+      <button
+        appearance="primary"
+        tuiButton
+        title="Добавить Вопрос"
+        icon="tuiIconPlusSquareLarge"
+        size="l"
+        (click)="addField(0)"
+      >
+      </button>
+    </div>
     <div
       class="tui-space_bottom-5"
       *ngFor="let field of fields; let questionIndex = index"
       [formGroupName]="questionIndex"
     >
       <tui-accordion-item class="container" [open]="true">
-        {{field.content}}
+        Вопрос {{questionIndex+1}}
         <ng-template tuiAccordionItemContent>
           <div class="tui-row tui-space_bottom-6">
             <tui-textarea
@@ -16,10 +27,10 @@
               tuiTextfieldSize="l"
               formControlName="content"
             >
-              {{ field.content }}
+              Вопрос
               <textarea
                 maxlength="97"
-                placeholder="{{field.content}}"
+                placeholder="Вопрос"
                 tuiTextfield
               ></textarea>
             </tui-textarea>
@@ -74,7 +85,7 @@
                     tuiTextfieldSize="l"
                     formControlName="content"
                   >
-                    {{variant.content}}
+                    Вариант
                     <input
                       tuiTextfield
                     />

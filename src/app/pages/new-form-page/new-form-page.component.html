@@ -33,7 +33,7 @@
 
       <label>
         <tui-combo-box
-          formControlName="scale"
+          formControlName="scaleId"
           [stringify]="scaleChooseStringify"
           [tuiTextfieldLabelOutside]="true"
         >
@@ -41,13 +41,19 @@
           <tui-data-list-wrapper
             *tuiDataList
             [itemContent]="scaleChooseStringify | tuiStringifyContent"
-            [items]="scaleItems | tuiFilterByInputWith: scaleChooseStringify"
+            [items]="scaleItems$ | async | tuiFilterByInputWith: scaleChooseStringify"
           ></tui-data-list-wrapper>
         </tui-combo-box>
       </label>
     </tui-island>
-    <ng-container *ngIf="formById">
-      <app-question-constructor [anketa]="formById"></app-question-constructor>
+    <ng-container *ngIf="formById$ | async as form; else loading">
+      <app-question-constructor [anketa]="form"></app-question-constructor>
+    </ng-container>
+    <ng-template #loading>
+      <div class="loading-spinner"></div>
+    </ng-template>
+    <ng-container *ngIf="isNew">
+      <app-question-constructor [anketa]="formDefault"></app-question-constructor>
     </ng-container>
   </form>
   <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
