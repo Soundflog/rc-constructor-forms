@@ -23,7 +23,7 @@ export class NewFormPageComponent implements OnInit {
   // Шкала
   scaleItems$: Observable<IScale[]>;
 
-  formById$: Observable<IForm | undefined>;
+  formById$: Observable<IForm>;
   formDefault : IForm
   isNew = false
 
@@ -54,8 +54,7 @@ export class NewFormPageComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       const id = +params['form_id'];
       if (id) {
-        this.formById$ = this.formService.forms$.pipe(
-          map(forms => forms.find(form => form.id === id)),
+        this.formById$ = this.formService.getById(id).pipe(
           tap(form => {
             if (form) {
               this.mainFG.patchValue({
@@ -97,10 +96,12 @@ export class NewFormPageComponent implements OnInit {
         (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
       })
       const formData = this.mainFG.value;
+      console.log(formData, "From FormGroup");
       this.formService.createForm(formData).subscribe(form => {
         this.alerts.open('Данные сохранены', {status:'success'}).subscribe();
         this.mainFG.patchValue({id: form.id})
         this.router.navigate([`/${form.id}`]);
+        console.log(form, "From SERVER");
       })
     } else {
       this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();

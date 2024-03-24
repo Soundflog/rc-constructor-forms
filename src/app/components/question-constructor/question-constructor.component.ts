@@ -146,42 +146,65 @@ export class QuestionConstructorComponent implements OnInit {
   // Функция добавления вопроса в форму
   addField(index: number): void {
     this.alerts.open('Добавлено поле').subscribe();
-    let newIndexQuestion = this.fields.length + 1;
+    const newIndexQuestion = this.fields.length+ 1;
     const newField = {
       name: `${this.fields.length}`,
-      content: 'Вопрос ' + newIndexQuestion,
+      content: 'Вопрос ' + (newIndexQuestion),
       type: new FormControl(this.comboBoxFields[0]),
       variants: [
         {
           content: 'Вариант 1',
           score: 5.00
-        }],
+        },
+        {
+          content: 'Вариант 2',
+          score: 10.00
+        }
+      ],
     }
     this.fields.splice(index + 1, 0, newField);
-    let newVariant = this.fb.group({
+    const newVariant = this.fb.group({
       content: new FormControl("Вариант 1", Validators.required),
       score: new FormControl(1.00, Validators.required)
     })
-    let newQuestion = this.fb.group({
-      content: new FormControl("Вопрос " + newIndexQuestion, Validators.required),
+    const newQuestion = this.fb.group({
+      content: new FormControl("Вопрос " + (newIndexQuestion + 1), Validators.required),
       type: this.comboBoxFields[0],
       required: false,
       variants: this.fb.array([
-        newVariant
+        newVariant,
+        this.fb.group({
+          content: new FormControl("Вариант 2", Validators.required),
+          score: new FormControl(10.00, Validators.required)
+        })
       ]),
     });
     try {
       this.mainQuestionsFG.addControl(newField.name, newQuestion);
+      this.updateControlsInMainQuestionsFG(); // переименовать вопросы в массиве
     } catch (e) {
       this.alerts.open('Ошибка добавления вопроса', {status:  'error'}).subscribe();
     }
   }
 
+  private updateControlsInMainQuestionsFG() {
+    const newControls: { [key: string]: FormGroup } = {};
+    this.fields.forEach((field, index) => {
+      const control = this.mainQuestionsFG.get(field.name) as FormGroup;
+      newControls[`${index}`] = control;
+    });
+    this.mainQuestionsFG = this.fb.group(newControls);
+  }
+
   // Функция удаления вопроса из массива
   removeField(index: number) {
     if (this.fields[index]) {
+      console.log(this.mainQuestionsFG.value, 'До удаления field')
       this.fields.splice(index, 1);
+      // удалить из mainQuestionsFG
+      this.mainQuestionsFG.removeControl(`${index}`);
       this.alerts.open('Удалено поле').subscribe();
+      console.log(this.mainQuestionsFG.value, 'После удаления field')
     } else {
       this.alerts.open('Поле не существует').subscribe();
     }
