@@ -68,6 +68,10 @@ export class QuestionConstructorComponent implements OnInit {
         required: false,
         variants: this.fb.array([
           this.variantsFG,
+          this.fb.group({
+            content: new FormControl("Вариант 2", Validators.required),
+            score: new FormControl(10.00, Validators.required)
+          })
         ]),
       });
 
@@ -81,13 +85,17 @@ export class QuestionConstructorComponent implements OnInit {
           {
             content: 'Вариант 1',
             score: 5.00
+          },
+          {
+            content: 'Вариант 2',
+            score: 10.00
           }
         ]
       })
     } else {
-      console.log(this.anketa.questions);
       this.anketa.questions.forEach((question, index) => {
         const questionGroup = this.fb.group({
+          id: [question.id],
           content: [question.content, Validators.required],
           type: [question.type, Validators.required],
           required: [question.required || false, Validators.required],
@@ -96,6 +104,7 @@ export class QuestionConstructorComponent implements OnInit {
         question.variants.forEach(variant => {
           (questionGroup.get('variants') as FormArray).push(
             this.fb.group({
+              id: [variant.id],
               content: [variant.content, Validators.required],
               score: [variant.score, Validators.required],
             })
@@ -103,6 +112,7 @@ export class QuestionConstructorComponent implements OnInit {
         });
 
         this.fields.push({
+          id: question.id,
           name: `${index}`,
           content: question.content,
           type: new FormControl(
@@ -111,6 +121,7 @@ export class QuestionConstructorComponent implements OnInit {
             })
           ),
           variants: question.variants.map(v => ({
+            id: v.id,
             content: v.content,
             score: v.score
           }))
@@ -162,7 +173,7 @@ export class QuestionConstructorComponent implements OnInit {
     try {
       this.mainQuestionsFG.addControl(newField.name, newQuestion);
     } catch (e) {
-      console.log(e);
+      this.alerts.open('Ошибка добавления вопроса', {status:  'error'}).subscribe();
     }
   }
 
@@ -172,7 +183,6 @@ export class QuestionConstructorComponent implements OnInit {
       this.fields.splice(index, 1);
       this.alerts.open('Удалено поле').subscribe();
     } else {
-      console.error('Поле не существует');
       this.alerts.open('Поле не существует').subscribe();
     }
   }
@@ -239,15 +249,7 @@ export class QuestionConstructorComponent implements OnInit {
 
   onSubmit() {
     // Перед отправкой на сервер
-    // Удалить поле name у fields[]
     this.setValueTypeQuestionOnControl();
-    if (this.mainQuestionsFG.valid) {
-      console.log(this.mainQuestionsFG.value);
-      this.alerts.open('Сохранено', {status: 'success'}).subscribe();
-    } else {
-      this.alerts.open('Заполните все поля', {status: 'error'}).subscribe();
-    }
-    console.log(this.fields);
   }
 
   protected readonly QuestionType = QuestionType;
