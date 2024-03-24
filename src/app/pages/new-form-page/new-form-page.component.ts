@@ -6,7 +6,7 @@ import {IScale} from "../../models/IScale";
 import {QuestionConstructorComponent} from "../../components/question-constructor/question-constructor.component";
 import {FormService} from "../../services/FormService";
 import {IForm} from "../../models/IForm";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ScaleService} from "../../services/ScaleService";
 import {map, Observable, tap} from "rxjs";
 
@@ -35,8 +35,9 @@ export class NewFormPageComponent implements OnInit {
     private readonly alerts: TuiAlertService,
     private fb: FormBuilder,
     private formService: FormService,
-    private route: ActivatedRoute,
-    private scaleService: ScaleService
+    private activatedRoute: ActivatedRoute,
+    private scaleService: ScaleService,
+    private router: Router
   ) {
     this.mainFG = this.fb.group({});
   }
@@ -45,12 +46,12 @@ export class NewFormPageComponent implements OnInit {
     this.scaleItems$ = this.scaleService.getScales().pipe(
       tap(items => {
         if (items.length === 0) {
-          this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'});
+          this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'}).subscribe();
         }
       })
     )
 
-    this.route.params.subscribe(params => {
+    this.activatedRoute.params.subscribe(params => {
       const id = +params['form_id'];
       if (id) {
         this.formById$ = this.formService.forms$.pipe(
@@ -62,10 +63,10 @@ export class NewFormPageComponent implements OnInit {
                 description: form.description,
                 scaleId: form.scaleId
               })
+              this.mainFG.addControl("id", new FormControl(form.id));
             }
           })
         )
-        console.log(this.formById$)
         this.isNew = false
       }else{
         this.isNew = true
@@ -87,22 +88,22 @@ export class NewFormPageComponent implements OnInit {
 
   onSubmitForm() {
     if (this.mainFG.valid) {
+      this.questionConstructor.setValueTypeQuestionOnControl();
       let newQuestion = this.questionConstructor.mainQuestionsFG.controls
       this.mainFG.addControl("questions", this.fb.array([]));
+      // Очищаем форму, избежать дублирования
+      (this.mainFG.get("questions") as FormArray).clear()
       this.questionConstructor.fields.forEach((item, index) => {
         (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
       })
-      console.log(this.mainFG.value);
       const formData = this.mainFG.value;
-      this.formService.createForm(formData).subscribe(res => {
-        this.alerts.open(`Данные успешно сохранены`, {status: 'success'});
-        console.log(res);
-      }, error => {
-        console.log(error);
-        this.alerts.open(`Ошибка при сохранении данных`, {status: 'error'});
-      });
+      this.formService.createForm(formData).subscribe(form => {
+        this.alerts.open('Данные сохранены', {status:'success'}).subscribe();
+        this.mainFG.patchValue({id: form.id})
+        this.router.navigate([`/${form.id}`]);
+      })
     } else {
-      this.alerts.open(`Не все поля заполнены`, {status: 'error'});
+      this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();
     }
   }
 }
