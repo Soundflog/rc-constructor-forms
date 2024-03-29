@@ -55,6 +55,13 @@ export class FormService {
       )
   }
 
+  deleteForm(id: number) {
+    return this.http.delete(`${this._baseUrl}/${id}`, {responseType: "text"})
+      .pipe(
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
   private errorHandler(error: HttpErrorResponse) {
     this.errorService.handle(error.message)
     return throwError(() => error.message)
