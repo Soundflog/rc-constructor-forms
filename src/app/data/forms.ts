@@ -44,7 +44,7 @@ export const forms: IForm[] = [
       {
         id: 3,
         content: "QUESTION3",
-        type: QuestionType.MULTI_CHOICE,
+        type: QuestionType.MULTIPLE_CHOICE,
         variants: [
           {
             id: 4,
@@ -66,7 +66,7 @@ export const forms: IForm[] = [
       {
         id: 4,
         content: "QUESTION4",
-        type: QuestionType.MULTI_CHOICE,
+        type: QuestionType.MULTIPLE_CHOICE,
         variants: [
           {
             id: 7,
