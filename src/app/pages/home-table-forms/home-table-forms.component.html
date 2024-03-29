@@ -1,5 +1,18 @@
 <div class="container">
   <tui-island>
-    <app-forms-home/>
+    <div *ngIf="forms$ | async as forms">
+      <div *ngIf="forms.length > 0; else addButton">
+        <app-forms-home [formsInput]="forms"/>
+      </div>
+    </div>
+    <ng-template #addButton>
+      <div tuiGroup class="group">
+        <button
+          appearance="primary"
+          tuiIconButton
+          icon="tuiIconPlus"
+        ></button>
+      </div>
+    </ng-template>
   </tui-island>
 </div>

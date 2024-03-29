@@ -1,34 +1,28 @@
-<div class="tui-row" *ngIf="forms$ | async as forms; else loading">
-<!--  <ng-container *ngIf="forms">-->
-    <ng-container *ngFor="let f of forms">
-      <div class="tui-col_md-4 tui-space_top-4">
-        <a
-          [routerLink]="['/', f.id]"
-          rel="noreferrer"
-          size="l"
-          target="_blank"
-          tuiIsland
-          [hoverable]="true"
-        >
-          <div class="tui-island__content">
-            <div>
-              <h3 class="tui-island__title">{{ shortString(f.name) }}</h3>
-              <p class="tui-island__paragraph">
-                {{ shortString(f.description) }}
-              </p>
-              <tui-badge
-                class="flex-auto"
-                value="Success"
-                status="success"
-              ></tui-badge>
-            </div>
+<div class="tui-row">
+  <!--  <ng-container *ngIf="forms">-->
+  <ng-container *ngFor="let f of formsInput">
+    <div class="tui-col_md-4 tui-space_top-4">
+      <a
+        [routerLink]="['/form/', f.id]"
+        size="l"
+        tuiIsland
+        [hoverable]="true"
+      >
+        <div class="tui-island__content">
+          <div>
+            <h3 class="tui-island__title">{{ shortString(f.name) }}</h3>
+            <p class="tui-island__paragraph">
+              {{ shortString(f.description) }}
+            </p>
+            <tui-badge
+              class="flex-auto"
+              value="Success"
+              status="success"
+            ></tui-badge>
           </div>
-        </a>
-      </div>
-    </ng-container>
-<!--  </ng-container>-->
+        </div>
+      </a>
+    </div>
+  </ng-container>
+  <!--  </ng-container>-->
 </div>
-
-<ng-template #loading>
-  <div class="loading-spinner"></div>
-</ng-template>

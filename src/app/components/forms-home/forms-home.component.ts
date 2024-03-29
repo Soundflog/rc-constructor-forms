@@ -1,8 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {forms} from "../../data/forms";
-import {FormService} from "../../services/FormService";
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IForm} from "../../models/IForm";
-import {Observable} from "rxjs";
+import {FormService} from "../../services/FormService";
 
 @Component({
   selector: 'app-forms-home',
@@ -11,7 +9,7 @@ import {Observable} from "rxjs";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormsHomeComponent implements OnInit{
-  forms$ :Observable<IForm[]>;
+  @Input() formsInput :IForm[];
   maxLength: number = 20;
   // Фукнция, которая будет обрезаннаю возвращать строку, с максимальной длинной
   shortString(str: string): string {
@@ -21,9 +19,8 @@ export class FormsHomeComponent implements OnInit{
     return str;
   }
 
-  constructor(private formService: FormService) {
+  constructor() {
   }
   ngOnInit(): void {
-    this.forms$ = this.formService.forms$;
   }
 }
