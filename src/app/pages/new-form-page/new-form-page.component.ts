@@ -8,7 +8,7 @@ import {FormService} from "../../services/FormService";
 import {IForm} from "../../models/IForm";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ScaleService} from "../../services/ScaleService";
-import {map, Observable, tap} from "rxjs";
+import {Observable, tap} from "rxjs";
 
 @Component({
   selector: 'app-new-form-page',
@@ -25,7 +25,8 @@ export class NewFormPageComponent implements OnInit {
 
   formById$: Observable<IForm>;
   formDefault : IForm
-  isNew = false
+  isLoading = false;
+  idFromRoute : number
 
   readonly scaleChooseStringify = (item: IScale): string =>
     `${item.name}`;
@@ -52,9 +53,9 @@ export class NewFormPageComponent implements OnInit {
     )
 
     this.activatedRoute.params.subscribe(params => {
-      const id = +params['form_id'];
-      if (id) {
-        this.formById$ = this.formService.getById(id).pipe(
+      this.idFromRoute = params['form_id'];
+      if (this.idFromRoute) {
+        this.formById$ = this.formService.getById(this.idFromRoute).pipe(
           tap(form => {
             if (form) {
               this.mainFG.patchValue({
@@ -66,11 +67,8 @@ export class NewFormPageComponent implements OnInit {
             }
           })
         )
-        this.isNew = false
-      }else{
-        this.isNew = true
       }
-    })
+    }).unsubscribe()
 
     this.formDefault = {
       name: 'Название формы',
@@ -85,24 +83,37 @@ export class NewFormPageComponent implements OnInit {
     })
   }
 
+  deleteForm(index: number) {
+    this.formService.deleteForm(index).subscribe(d => {
+      this.alerts.open('Форма удалена', {status: 'success'}).subscribe();
+      this.router.navigate([`/form`]).then(() => {
+        window.location.reload()
+      });
+    })
+  }
+
+  collectFormData(){
+    this.questionConstructor.setValueTypeQuestionOnControl();
+    let newQuestion = this.questionConstructor.mainQuestionsFG.controls
+    this.mainFG.addControl("questions", this.fb.array([]));
+    // Очищаем форму, избежать дублирования
+    (this.mainFG.get("questions") as FormArray).clear()
+    this.questionConstructor.fields.forEach((item, index) => {
+      (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
+    })
+  }
+
   onSubmitForm() {
     if (this.mainFG.valid) {
-      this.questionConstructor.setValueTypeQuestionOnControl();
-      let newQuestion = this.questionConstructor.mainQuestionsFG.controls
-      this.mainFG.addControl("questions", this.fb.array([]));
-      // Очищаем форму, избежать дублирования
-      (this.mainFG.get("questions") as FormArray).clear()
-      this.questionConstructor.fields.forEach((item, index) => {
-        (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
-      })
+      this.collectFormData()
       const formData = this.mainFG.value;
-      console.log(formData, "From FormGroup");
       this.formService.createForm(formData).subscribe(form => {
         this.alerts.open('Данные сохранены', {status:'success'}).subscribe();
         this.mainFG.patchValue({id: form.id})
-        this.router.navigate([`/${form.id}`]);
-        console.log(form, "From SERVER");
-      })
+        this.router.navigate([`/form`]).then(() => {
+          window.location.reload()
+        });
+      }).unsubscribe()
     } else {
       this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();
     }

@@ -1,6 +1,6 @@
 <div class="container">
   <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
-  <form [formGroup]="mainFG" (ngSubmit)="onSubmitForm()">
+  <form [formGroup]="mainFG">
     <tui-island
       class="tui-space_bottom-5"
       [hoverable]=false
@@ -46,24 +46,43 @@
         </tui-combo-box>
       </label>
     </tui-island>
-    <ng-container *ngIf="formById$ | async as form; else loading">
-      <app-question-constructor [anketa]="form"></app-question-constructor>
-    </ng-container>
+    <div *ngIf="this.idFromRoute != null; else defaultForm">
+      <ng-container *ngIf="formById$ | async as form; else loading">
+        <app-question-constructor [anketa]="form"></app-question-constructor>
+        <div class="group" tuiGroup>
+          <button
+            class=""
+            appearance="secondary-destructive"
+            tuiButton
+            title="Удалить Форму"
+            size="xl"
+            (click)="deleteForm(form.id != null ?  form.id: 0)"
+          >
+            Удалить
+          </button>
+        </div>
+      </ng-container>
+      <ng-template #loading>
+        <div class="loading-spinner"></div>
+      </ng-template>
+    </div>
 
-    <ng-template #loading>
-      <div class="loading-spinner"></div>
+    <ng-template #defaultForm>
       <app-question-constructor [anketa]="formDefault"></app-question-constructor>
     </ng-template>
+    <div class="group" tuiGroup>
+      <button
+        tuiButton
+        size="xl"
+        class=""
+        type="submit"
+        (click)="onSubmitForm()"
+      >
+        Сохранить
+      </button>
+    </div>
   </form>
   <!--    ВОПРОС-КОНСТРУКТОР НЕОБЯЗАТЕЛЬНЫЕ ИЗМЕНЯЕМЫЕ ПОЛЯ -->
-  <button
-    tuiButton
-    size="xl"
-    class=""
-    type="submit"
-    (click)="onSubmitForm()"
-  >
-    Сохранить
-  </button>
+
 </div>
 
