@@ -5,11 +5,10 @@ import {HomeTableFormsComponent} from "./pages/home-table-forms/home-table-forms
 import {NewFormPageComponent} from "./pages/new-form-page/new-form-page.component";
 
 const routes: Routes = [
-  {path: '', component: HomeTableFormsComponent},
-  { path: 'new', component: NewFormPageComponent},
-  // form.id
-  {path: ':form_id', component: NewFormPageComponent}
-  // {path: 'exp', component: NavigationFullComponent}
+  {path: 'form', component: HomeTableFormsComponent,
+  },
+  {path: 'form/new', component: NewFormPageComponent},
+  {path: 'form/:form_id', component: NewFormPageComponent}
 ];
 
 @NgModule({
