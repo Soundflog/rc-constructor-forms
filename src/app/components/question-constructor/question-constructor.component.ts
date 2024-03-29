@@ -44,7 +44,7 @@ export class QuestionConstructorComponent implements OnInit {
 
   comboBoxFields: ComboTypeQuestion[] = [
     {value: 'Один из списка', type: QuestionType.SINGLE_CHOICE},
-    {value: 'Несколько из списка', type: QuestionType.MULTI_CHOICE},
+    {value: 'Несколько из списка', type: QuestionType.MULTIPLE_CHOICE},
     {value: 'Шкала', type: QuestionType.SCALE},
   ]
 

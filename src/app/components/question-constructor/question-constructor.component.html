@@ -70,7 +70,7 @@
                   <div *ngIf="field.type.value.type === QuestionType.SINGLE_CHOICE">
                     <tui-radio class="tui-space_top-4" size="l" [formControl]="radioControl"/>
                   </div>
-                  <div *ngIf="field.type.value.type === QuestionType.MULTI_CHOICE">
+                  <div *ngIf="field.type.value.type === QuestionType.MULTIPLE_CHOICE">
                     <tui-checkbox
                       class="tui-space_top-4"
                       [formControl]="checkboxControl"
