@@ -52,6 +52,8 @@ import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdow
 import { NewFormPageComponent } from './pages/new-form-page/new-form-page.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { QuestionConstructorComponent } from './components/question-constructor/question-constructor.component';
+import { AuthPageComponent } from './pages/auth-page/auth-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { QuestionConstructorComponent } from './components/question-constructor/
     FormsHomeComponent,
     DropdownMenuNavComponent,
     NewFormPageComponent,
-    QuestionConstructorComponent
+    QuestionConstructorComponent,
+    AuthPageComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,

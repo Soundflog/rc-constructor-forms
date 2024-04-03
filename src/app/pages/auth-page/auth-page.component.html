@@ -1,0 +1,62 @@
+<div class="body">
+  <div class="top-container">
+    <div class="organization-container">
+      <div class="organization-label">НАЗВАНИЕ ОРГАНИЗАЦИИ</div>
+      <img class="logo" [src]="logo_im" alt="Organization Logo">
+    </div>
+    <form
+      class="login-container"
+      [formGroup]="authForm"
+      (ngSubmit)="onSubmit()"
+    >
+      <tui-input class="w-full p-3" formControlName="username" required>
+        Логин
+        <input
+          tuiTextfield
+          type="text"
+        />
+      </tui-input>
+      <div
+        *ngIf="authForm.controls['username'].invalid &&
+        (authForm.controls['username'].dirty || authForm.controls['username'].touched)"
+        class="text-red-500 text-xs mt-2"
+      >
+        <div *ngIf="authForm.controls['username'].hasError('required')">
+          Username is required
+        </div>
+        <!--<div *ngIf="authForm.controls['username'].hasError('username')">
+          Please enter a valid username
+        </div>-->
+      </div>
+      <tui-input class="w-full p-3" formControlName="password" required>
+        Пароль
+        <input
+          tuiTextfield
+          type="password"
+        />
+      </tui-input>
+      <div
+        *ngIf="authForm.controls['password'].invalid &&
+        (authForm.controls['password'].dirty || authForm.controls['password'].touched)"
+        class="text-red-500 text-xs mt-2"
+      >
+        <div *ngIf="authForm.controls['password'].hasError('required')">
+          Password is required
+        </div>
+        <div *ngIf="authForm.controls['password'].hasError('minlength')">
+          Password must be more than 3 symbols
+        </div>
+      </div>
+      <button
+        class="w-56"
+        appearance="custom"
+        tuiButton
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="!authForm.valid"
+      >
+        Войти
+      </button>
+    </form>
+  </div>
+</div>
