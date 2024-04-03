@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {IForm} from "../models/IForm";
 import {BehaviorSubject, catchError, delay, Observable, retry, tap, throwError} from "rxjs";
 import {ErrorService} from "./ErrorService";
@@ -28,7 +28,10 @@ export class FormService {
   }
 
   createForm(form: IForm): Observable<IForm> {
-    return this.http.post<IForm>(`${this._baseUrl}/create`, form)
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this.http.post<IForm>(`${this._baseUrl}/create`, form,
+      {headers: headers})
       .pipe(
         tap(form => {
           const currentForms = this.formsSubject.value;
@@ -39,24 +42,32 @@ export class FormService {
   }
 
   getAll(): Observable<IForm[]> {
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
     return this.http.get<IForm[]>(`${this._baseUrl}/all`, {
       params: new HttpParams({
         fromObject: {limit: 5}
-      })
+      }),
+      headers: headers
     }).pipe(
       catchError(this.errorHandler.bind(this))
     )
   }
 
   getById(id: number): Observable<IForm> {
-    return this.http.get<IForm>(`${this._baseUrl}/${id}`)
+    const headers = { 'Authorization': 'Bearer '+ localStorage.getItem("token") };
+
+    return this.http.get<IForm>(`${this._baseUrl}/${id}`,
+      {headers: headers})
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
   }
 
   deleteForm(id: number) {
-    return this.http.delete(`${this._baseUrl}/${id}`, {responseType: "text"})
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this.http.delete(`${this._baseUrl}/${id}`,
+      {responseType: "text", headers: headers})
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
