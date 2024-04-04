@@ -54,6 +54,8 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { QuestionConstructorComponent } from './components/question-constructor/question-constructor.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
+import { ScaleListPageComponent } from './pages/scale-list-page/scale-list-page.component';
+import { ScalePageComponent } from './pages/scale-page/scale-page.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +67,9 @@ import { HomePageComponent } from './pages/home-page/home-page.component';
     NewFormPageComponent,
     QuestionConstructorComponent,
     AuthPageComponent,
-    HomePageComponent
+    HomePageComponent,
+    ScaleListPageComponent,
+    ScalePageComponent
   ],
   imports: [
     BrowserModule,

@@ -10,7 +10,7 @@ import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
 export class ScaleService {
   private _baseUrl = 'http://localhost:8080/scale';
   private scalesSubject = new BehaviorSubject<IScale[]>([]);
-  private scales$ = this.scalesSubject.asObservable();
+  scales$ = this.scalesSubject.asObservable();
 
   constructor(private _http: HttpClient,
               private errorService: ErrorService) {
@@ -18,7 +18,9 @@ export class ScaleService {
   }
 
   getScales() {
-    return this._http.get<IScale[]>(`${this._baseUrl}/all`)
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this._http.get<IScale[]>(`${this._baseUrl}/all`, {headers: headers})
       .pipe(
         tap(scales => this.scalesSubject.next(scales)),
         catchError(this.errorHandler.bind(this))

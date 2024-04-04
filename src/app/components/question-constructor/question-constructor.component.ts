@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Inject,
-  Input,
-  OnInit
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {TuiAlertService} from "@taiga-ui/core";
 import {FieldInterface} from 'src/app/models/form/field.interface';
@@ -190,8 +184,7 @@ export class QuestionConstructorComponent implements OnInit {
   private updateControlsInMainQuestionsFG() {
     const newControls: { [key: string]: FormGroup } = {};
     this.fields.forEach((field, index) => {
-      const control = this.mainQuestionsFG.get(field.name) as FormGroup;
-      newControls[`${index}`] = control;
+      newControls[`${index}`] = this.mainQuestionsFG.get(field.name) as FormGroup;
     });
     this.mainQuestionsFG = this.fb.group(newControls);
   }

@@ -25,7 +25,6 @@ export class NewFormPageComponent implements OnInit {
 
   formById$: Observable<IForm>;
   formDefault : IForm
-  isLoading = false;
   idFromRoute : number
 
   readonly scaleChooseStringify = (item: IScale): string =>
