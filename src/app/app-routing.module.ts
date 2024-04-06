@@ -13,7 +13,6 @@ const routes: Routes = [
   {path: 'form', component: HomePageComponent,
     canActivate: [authGuard()],
     children: [
-      {path: '**', redirectTo: 'list'},
       {path: 'list', component: HomeTableFormsComponent},
       {path: 'new', component: NewFormPageComponent},
       {path: ':form_id', component: NewFormPageComponent}

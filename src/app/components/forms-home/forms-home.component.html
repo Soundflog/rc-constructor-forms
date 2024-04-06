@@ -1,6 +1,10 @@
+<tui-input [(ngModel)]="search" [formControl]="control">
+  Фильтр
+</tui-input>
+
 <div class="tui-row">
   <!--  <ng-container *ngIf="forms">-->
-  <ng-container *ngFor="let f of formsInput">
+  <ng-container *ngFor="let f of formsInput | filter:search">
     <div class="tui-col_md-4 tui-space_top-4">
       <a
         [routerLink]="['/form/', f.id]"

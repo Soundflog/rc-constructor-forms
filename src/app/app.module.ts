@@ -34,7 +34,7 @@ import {
   TuiDataListWrapperModule, TuiElasticContainerModule,
   TuiFilterByInputPipeModule, TuiInputCountModule,
   TuiInputModule,
-  TuiIslandModule,
+  TuiIslandModule, TuiLazyLoadingModule,
   TuiMarkerIconModule, TuiRadioBlockModule, TuiRadioModule, TuiSelectModule,
   TuiStringifyContentPipeModule,
   TuiTabsModule,
@@ -56,6 +56,7 @@ import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ScaleListPageComponent } from './pages/scale-list-page/scale-list-page.component';
 import { ScalePageComponent } from './pages/scale-page/scale-page.component';
+import {FilterPipe} from "./components/forms-home/pipe/FilterPipe.component";
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { ScalePageComponent } from './pages/scale-page/scale-page.component';
     AuthPageComponent,
     HomePageComponent,
     ScaleListPageComponent,
-    ScalePageComponent
+    ScalePageComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
@@ -130,6 +132,8 @@ import { ScalePageComponent } from './pages/scale-page/scale-page.component';
     TuiToggleModule,
     TuiRadioModule,
     TuiCheckboxModule,
+    TuiButtonModule,
+    TuiLazyLoadingModule
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]
