@@ -30,12 +30,11 @@ export class FormsHomeComponent implements OnInit{
   }
   ngOnInit(): void {
     this.searchForm = new FormGroup({
-      'search': new FormControl()
+      'search': new FormControl('test')
     });
   }
 
   readonly stringify = (item: IForm): string =>
     `${this.shortString(item.name)}`;
 
-  protected readonly filter = filter;
 }

@@ -1,46 +1,12 @@
-<button
-  size="s"
-  tuiButton
-  (click)="add()"
->
-  Add item
-</button>
-<tui-elastic-container class="b-form tui-space_top-4">
-  <div
-    *ngFor="let item of items; let index = index"
-    class="wrapper"
-  >
-    <h3 class="title">
-      <button
-        appearance="secondary"
-        icon="tuiIconChevronDown"
-        shape="rounded"
-        size="s"
-        title="Expand"
-        tuiIconButton
-        class="expand"
-        [class.expand_open]="item.expanded"
-        (click)="item.expanded = !item.expanded"
-      ></button>
-      {{item.name}}
-      <button
-        appearance="flat"
-        icon="tuiIconTrash"
-        shape="rounded"
-        size="s"
-        title="Remove"
-        tuiIconButton
-        class="remove"
-        (click)="remove(index)"
-      ></button>
-    </h3>
-    <tui-expand [expanded]="item.expanded">
-      <tui-input
-        class="tui-space_top-4"
-        [(ngModel)]="item.description"
-      >
-        {{ item.description }}
-      </tui-input>
-    </tui-expand>
-  </div>
-</tui-elastic-container>
+<tui-input [(ngModel)]="search" [formControl]="control">
+  Фильтр
+</tui-input>
+<div *ngIf="interpretations$ | async as inters; else loading">
+  <app-scale-list [interpretations]="inters" search="search"></app-scale-list>
+</div>
+<ng-template #loading>
+  <button
+    tuiButton
+  >Добавить шкалу
+  </button>
+</ng-template>

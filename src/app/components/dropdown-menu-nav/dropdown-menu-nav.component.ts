@@ -8,11 +8,11 @@ import {TUI_ARROW} from '@taiga-ui/kit'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownMenuNavComponent {
-  readonly arrow = TUI_ARROW;
+  arrow = TUI_ARROW;
 
   readonly groups = [
     {
-      label: 'НАЗВАНИЕ ОРГАНИЗАЦИИ',
+      label: 'RehabSurvey',
       items: [
         {
           label: 'Новая анкета',
@@ -21,6 +21,10 @@ export class DropdownMenuNavComponent {
         {
           label: 'Список анкет',
           routerLink: '/form/list',
+        },
+        {
+          label: 'Создать шкалу',
+          routerLink: '/scale/new',
         },
         {
           label: 'Список шкал',

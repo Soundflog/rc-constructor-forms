@@ -1,0 +1,28 @@
+<div class="tui-row">
+  <!--  <ng-container *ngIf="forms">-->
+  <ng-container *ngFor="let f of interpretations | interFilter:search">
+    <div class="tui-col_md-4 tui-space_top-4">
+      <a
+        [routerLink]="['/scale/', f.id]"
+        size="l"
+        tuiIsland
+        [hoverable]="true"
+      >
+        <div class="tui-island__content">
+          <div>
+            <h3 class="tui-island__title">{{ shortString(f.scale.name) }}</h3>
+            <p class="tui-island__paragraph">
+              {{ shortString(f.description) }}
+            </p>
+            <tui-badge
+              class="flex-auto"
+              value="Success"
+              status="success"
+            ></tui-badge>
+          </div>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+  <!--  </ng-container>-->
+</div>

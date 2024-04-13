@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-auth-page',
@@ -15,7 +16,9 @@ export class AuthPageComponent implements OnInit {
     Login: new FormControl('Логин'),
     Password: new FormControl('Пароль')
   });*/
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder,
+              private authService: AuthService,
+              private router: Router,) {
     this.authForm = fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(3)]],
@@ -27,6 +30,9 @@ export class AuthPageComponent implements OnInit {
   onSubmit(): void{
     if (this.authForm.valid){
       this.authService.login(this.authForm.value)
+        .subscribe((success) =>{
+          this.router.navigate(['/form/list'])
+      });
     } else {
       console.log('not valid')
     }

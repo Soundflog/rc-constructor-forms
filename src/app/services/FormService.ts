@@ -3,33 +3,31 @@ import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/c
 import {IForm} from "../models/IForm";
 import {BehaviorSubject, catchError, delay, Observable, retry, tap, throwError} from "rxjs";
 import {ErrorService} from "./ErrorService";
+import {API_URL} from "../const/constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormService {
-  private _baseUrl = 'http://localhost:8080/form';
+  private _baseUrl = `${API_URL}/form`;
   private formsSubject = new BehaviorSubject<IForm[]>([]);
   forms$: Observable<IForm[]> = this.formsSubject.asObservable();
 
   constructor(private http: HttpClient,
               private errorService: ErrorService) {
     this.getAllForms()
+    console.log(this.forms$)
   }
 
   private getAllForms(): void {
-    this.getAll().subscribe(
-      forms => this.formsSubject.next(forms),
-      error => {
-        // Handle error if needed
-        console.error('Error occurred while fetching forms:', error);
-      }
+    this.getAll().pipe(
+      tap(forms => this.formsSubject.next(forms)),
+      catchError(this.errorHandler.bind(this))
     );
   }
 
   createForm(form: IForm): Observable<IForm> {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-
     return this.http.post<IForm>(`${this._baseUrl}/create`, form,
       {headers: headers})
       .pipe(
@@ -41,14 +39,30 @@ export class FormService {
       )
   }
 
+  updateForm(form: IForm): Observable<IForm> {
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this.http.put<IForm>(`${this._baseUrl}/${form.id}`, form,
+      {headers: headers})
+      .pipe(
+        tap(form => {
+          const currentForms = this.formsSubject.value;
+          this.formsSubject.next(currentForms.map(f => f.id === form.id ? form : f));
+        }),
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
   getAll(): Observable<IForm[]> {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+    console.log(headers)
     return this.http.get<IForm[]>(`${this._baseUrl}/all`, {
-      params: new HttpParams({
-        fromObject: {limit: 5}
-      }),
+
       headers: headers
     }).pipe(
+      tap(forms => {
+        console.log(forms)
+      }),
       catchError(this.errorHandler.bind(this))
     )
   }

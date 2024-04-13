@@ -58,6 +58,7 @@ import { ScaleListPageComponent } from './pages/scale-list-page/scale-list-page.
 import { ScalePageComponent } from './pages/scale-page/scale-page.component';
 import {FilterPipe} from "./components/forms-home/pipe/FilterPipe.component";
 import {InterFilterPipe} from "./pages/scale-page/pipe/FilterPipe";
+import { ScaleListComponent } from './components/scale-list/scale-list.component';
 
 @NgModule({
   declarations: [
@@ -73,7 +74,8 @@ import {InterFilterPipe} from "./pages/scale-page/pipe/FilterPipe";
     ScaleListPageComponent,
     ScalePageComponent,
     FilterPipe,
-    InterFilterPipe
+    InterFilterPipe,
+    ScaleListComponent
   ],
   imports: [
     BrowserModule,
@@ -134,8 +136,7 @@ import {InterFilterPipe} from "./pages/scale-page/pipe/FilterPipe";
     TuiToggleModule,
     TuiRadioModule,
     TuiCheckboxModule,
-    TuiButtonModule,
-    TuiLazyLoadingModule
+    TuiButtonModule
   ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]

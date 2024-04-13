@@ -53,10 +53,6 @@ export class AuthService {
           throw new Error(error.message);
         })
       )
-      .subscribe(
-        ()=> {
-          this.router.navigate(['/form'])
-        });
   }
 
   logout(): void {
@@ -72,7 +68,7 @@ export class AuthService {
   }
 
   redirectToLogin(): Promise<Observable<never>> {
-    return this.router.navigate(['auth']).then(() => of());
+    return this.router.navigate(['']).then(() => of());
   }
 
   private handeError(err: HttpErrorResponse) {

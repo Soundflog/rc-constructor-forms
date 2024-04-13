@@ -6,5 +6,5 @@ export interface IQuestion {
   content: string
   type: QuestionType
   variants: IVariant[]
-  required?: boolean | false
+  required?: boolean
 }

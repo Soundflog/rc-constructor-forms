@@ -32,7 +32,10 @@ export class InterpretationService {
       {params: new HttpParams({fromObject: {limit: 5}}),
         headers: headers})
       .pipe(
-        tap(interpre => this.interpretationSubject.next(interpre)),
+        tap(interpre => {
+          this.interpretationSubject.next(interpre);
+          console.log(interpre);
+        }),
         catchError(this.errorHandler.bind(this))
       )
   }

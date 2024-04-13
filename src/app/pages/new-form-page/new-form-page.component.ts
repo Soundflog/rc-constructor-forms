@@ -106,13 +106,23 @@ export class NewFormPageComponent implements OnInit {
     if (this.mainFG.valid) {
       this.collectFormData()
       const formData = this.mainFG.value;
-      this.formService.createForm(formData).subscribe(form => {
-        this.alerts.open('Данные сохранены', {status:'success'}).subscribe();
-        this.mainFG.patchValue({id: form.id})
-        this.router.navigate([`/form`]).then(() => {
-          window.location.reload()
-        });
-      }).unsubscribe()
+      if (formData.id) {
+        this.formService.updateForm(formData).subscribe(form => {
+          this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
+          this.mainFG.patchValue({id: form.id})
+          this.router.navigate([`/form`]).then(() => {
+            window.location.reload()
+          });
+        }).unsubscribe()
+      } else {
+        this.formService.createForm(formData).subscribe(form => {
+          this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
+          this.mainFG.patchValue({id: form.id})
+          this.router.navigate([`/form`]).then(() => {
+            window.location.reload()
+          });
+        }).unsubscribe()
+      }
     } else {
       this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();
     }
