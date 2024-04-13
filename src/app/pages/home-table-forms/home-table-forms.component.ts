@@ -14,6 +14,6 @@ export class HomeTableFormsComponent implements OnInit{
   constructor(private formService: FormService) {
   }
   ngOnInit(): void {
-    this.forms$ = this.formService.forms$;
+    this.forms$ = this.formService.getAll();
   }
 }

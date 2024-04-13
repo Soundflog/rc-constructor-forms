@@ -12,7 +12,6 @@ import {tuiArrayRemove} from "@taiga-ui/cdk";
 })
 export class ScaleListComponent implements OnInit {
   @Input() interpretations: IInterpretation[];
-  @Input() search: string;
 
   maxLength = 20;
 

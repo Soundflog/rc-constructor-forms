@@ -1,6 +1,6 @@
 <div class="tui-row">
   <!--  <ng-container *ngIf="forms">-->
-  <ng-container *ngFor="let f of interpretations | interFilter:search">
+  <ng-container *ngFor="let f of interpretations" >
     <div class="tui-col_md-4 tui-space_top-4">
       <a
         [routerLink]="['/scale/', f.id]"

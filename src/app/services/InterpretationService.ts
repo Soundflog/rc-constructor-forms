@@ -29,6 +29,21 @@ export class InterpretationService {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
 
     return this._http.get<IInterpretation[]>(`${this._baseUrl}/all`,
+      {params: new HttpParams({fromObject: {limit: 20}}),
+        headers: headers})
+      .pipe(
+        tap(interpre => {
+          this.interpretationSubject.next(interpre);
+          console.log(interpre);
+        }),
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
+  getInterpretationsByName(search: string):Observable<IInterpretation[]> {
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this._http.get<IInterpretation[]>(`${this._baseUrl}/search`,
       {params: new HttpParams({fromObject: {limit: 5}}),
         headers: headers})
       .pipe(

@@ -1,12 +1,14 @@
 <tui-input [(ngModel)]="search" [formControl]="control">
   Фильтр
 </tui-input>
+<button
+  tuiButton
+>Добавить шкалу
+</button>
+
 <div *ngIf="interpretations$ | async as inters; else loading">
-  <app-scale-list [interpretations]="inters" search="search"></app-scale-list>
+  <app-scale-list [interpretations]="inters | interFilter:search"></app-scale-list>
 </div>
 <ng-template #loading>
-  <button
-    tuiButton
-  >Добавить шкалу
-  </button>
+<!--  Loading-->
 </ng-template>

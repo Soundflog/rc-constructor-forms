@@ -14,9 +14,6 @@ export class FormsHomeComponent implements OnInit{
   maxLength: number = 20;
 
   readonly control = new FormControl();
-  filteredEmployees:IForm[] = [];
-
-  searchForm: FormGroup;
   search : string;
   // Фукнция, которая будет обрезаннаю возвращать строку, с максимальной длинной
   shortString(str: string): string {
@@ -26,12 +23,8 @@ export class FormsHomeComponent implements OnInit{
     return str;
   }
   constructor() {
-    this.filteredEmployees = this.formsInput;
   }
   ngOnInit(): void {
-    this.searchForm = new FormGroup({
-      'search': new FormControl('test')
-    });
   }
 
   readonly stringify = (item: IForm): string =>
