@@ -59,6 +59,7 @@ import { ScalePageComponent } from './pages/scale-page/scale-page.component';
 import {FilterPipe} from "./components/forms-home/pipe/FilterPipe.component";
 import {InterFilterPipe} from "./components/scale-list/pipe/FilterPipe";
 import { ScaleListComponent } from './components/scale-list/scale-list.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ScaleListComponent } from './components/scale-list/scale-list.component
     ScalePageComponent,
     FilterPipe,
     InterFilterPipe,
-    ScaleListComponent
+    ScaleListComponent,
+    LoadingComponent
   ],
   imports: [
     BrowserModule,
