@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {ErrorService} from "./ErrorService";
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
-import {IInterpretation} from "../models/form/IInterpretation";
+import {IInterpretation} from "../models/IInterpretation";
 
 @Injectable({
   providedIn: 'root'

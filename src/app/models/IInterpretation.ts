@@ -1,4 +1,4 @@
-import {IScale} from "../IScale";
+import {IScale} from "./IScale";
 
 export interface IInterpretation {
   id: number

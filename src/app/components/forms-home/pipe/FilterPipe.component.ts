@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import {IForm} from "../../../models/IForm";
-import {IInterpretation} from "../../../models/form/IInterpretation";
+import {IInterpretation} from "../../../models/IInterpretation";
 
 @Pipe({
   name: 'filter'

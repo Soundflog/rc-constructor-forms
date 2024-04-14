@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {IInterpretation} from "../../models/form/IInterpretation";
+import {IInterpretation} from "../../models/IInterpretation";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {InterpretationService} from "../../services/InterpretationService";
 import {tuiArrayRemove} from "@taiga-ui/cdk";
