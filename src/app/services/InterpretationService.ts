@@ -40,6 +40,30 @@ export class InterpretationService {
       )
   }
 
+  create(interpretation: IInterpretation) {
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this._http.post<IInterpretation>(`${this._baseUrl}/create`, interpretation, {headers: headers})
+      .pipe(
+        tap(form => {
+          const currentForms = this.interpretationSubject.value;
+          this.interpretationSubject.next([...currentForms, form]);
+        }),
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
+  getById(id: number):Observable<IInterpretation> {
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this._http.get<IInterpretation>(`${this._baseUrl}/${id}`,
+      {headers: headers})
+      .pipe(
+
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
   getInterpretationsByName(search: string):Observable<IInterpretation[]> {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
 
