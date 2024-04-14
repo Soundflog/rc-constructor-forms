@@ -7,6 +7,7 @@ import {HomePageComponent} from "./pages/home-page/home-page.component";
 import {authGuard} from "./services/auth.guard";
 import {ScaleListPageComponent} from "./pages/scale-list-page/scale-list-page.component";
 import {ScalePageComponent} from "./pages/scale-page/scale-page.component";
+import {ScaleConstructorPageComponent} from "./pages/scale-constructor-page/scale-constructor-page.component";
 
 const routes: Routes = [
   {path: '', component: AuthPageComponent},
@@ -20,7 +21,9 @@ const routes: Routes = [
   {path: 'scale', component: ScaleListPageComponent,
     canActivate: [authGuard()],
     children: [
-      {path: 'list', component: ScalePageComponent}
+      {path: 'list', component: ScalePageComponent},
+      {path: 'new', component: ScaleConstructorPageComponent},
+      {path: ':scale_id', component: ScaleConstructorPageComponent}
     ]
   }
 ];

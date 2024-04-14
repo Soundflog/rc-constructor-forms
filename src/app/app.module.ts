@@ -60,6 +60,7 @@ import {FilterPipe} from "./components/forms-home/pipe/FilterPipe.component";
 import {InterFilterPipe} from "./components/scale-list/pipe/FilterPipe";
 import { ScaleListComponent } from './components/scale-list/scale-list.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { ScaleConstructorPageComponent } from './pages/scale-constructor-page/scale-constructor-page.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { LoadingComponent } from './components/loading/loading.component';
     FilterPipe,
     InterFilterPipe,
     ScaleListComponent,
-    LoadingComponent
+    LoadingComponent,
+    ScaleConstructorPageComponent
   ],
   imports: [
     BrowserModule,
