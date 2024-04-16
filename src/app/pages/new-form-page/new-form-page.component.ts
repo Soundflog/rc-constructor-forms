@@ -82,9 +82,9 @@ export class NewFormPageComponent implements OnInit {
   }
 
   deleteForm(index: number) {
-    this.formService.deleteForm(index).subscribe(d => {
+    this.formService.deleteForm(index).subscribe(() => {
       this.alerts.open('Форма удалена', {status: 'success'}).subscribe();
-      this.router.navigate([`/form`]).then(() => {
+      this.router.navigate([`/form/list`]).then(() => {
         window.location.reload()
       });
     })
@@ -108,7 +108,6 @@ export class NewFormPageComponent implements OnInit {
       if (formData.id > 0) {
         this.formService.updateForm(formData).subscribe(form => {
           this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
-          // this.mainFG.patchValue({id: form.id})
           this.router.navigate([`/form/list`]).then(() => {
             window.location.reload()
           });
