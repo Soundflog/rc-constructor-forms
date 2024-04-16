@@ -18,14 +18,14 @@ export class InterpretationService {
   }
 
   private getAll() {
-    this.getInterpretations().pipe(
+    this.getAllInterpretations().pipe(
       tap(interpretation =>
         this.interpretationSubject.next(interpretation)),
       catchError(this.errorHandler.bind(this))
     );
   }
 
-  getInterpretations():Observable<IInterpretation[]> {
+  getAllInterpretations():Observable<IInterpretation[]> {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
 
     return this._http.get<IInterpretation[]>(`${this._baseUrl}/all`,
@@ -48,6 +48,21 @@ export class InterpretationService {
         tap(form => {
           const currentForms = this.interpretationSubject.value;
           this.interpretationSubject.next([...currentForms, form]);
+        }),
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
+  update(interpretation: IInterpretation) {
+    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+
+    return this._http.put<IInterpretation>(`${this._baseUrl}/${interpretation.id}`, interpretation, {headers: headers})
+      .pipe(
+        tap(inter => {
+          const currentInter = this.interpretationSubject.value;
+          this.interpretationSubject.next(currentInter.map(intepr =>
+            intepr.id == inter.id? inter : intepr
+          ));
         }),
         catchError(this.errorHandler.bind(this))
       )
