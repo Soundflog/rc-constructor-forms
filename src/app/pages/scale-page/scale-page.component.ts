@@ -19,6 +19,6 @@ export class ScalePageComponent implements OnInit{
   interpretations$: Observable<IInterpretation[]>;
   constructor(private interpretationService: InterpretationService) {}
   ngOnInit() {
-    this.interpretations$ = this.interpretationService.getInterpretations();
+    this.interpretations$ = this.interpretationService.getAllInterpretations();
   }
 }

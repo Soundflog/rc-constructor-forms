@@ -22,7 +22,6 @@ export class NewFormPageComponent implements OnInit {
   mainFG: FormGroup;
   // Шкала
   scaleItems$: Observable<IScale[]>;
-
   formById$: Observable<IForm>;
   formDefault : IForm
   idFromRoute : number
@@ -43,7 +42,7 @@ export class NewFormPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.scaleItems$ = this.scaleService.getScales().pipe(
+    this.scaleItems$ = this.scaleService.getScales(null).pipe(
       tap(items => {
         if (items.length === 0) {
           this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'}).subscribe();
@@ -106,22 +105,22 @@ export class NewFormPageComponent implements OnInit {
     if (this.mainFG.valid) {
       this.collectFormData()
       const formData = this.mainFG.value;
-      if (formData.id) {
+      if (formData.id > 0) {
         this.formService.updateForm(formData).subscribe(form => {
           this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
-          this.mainFG.patchValue({id: form.id})
-          this.router.navigate([`/form`]).then(() => {
+          // this.mainFG.patchValue({id: form.id})
+          this.router.navigate([`/form/list`]).then(() => {
             window.location.reload()
           });
-        }).unsubscribe()
+        })
       } else {
         this.formService.createForm(formData).subscribe(form => {
           this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
           this.mainFG.patchValue({id: form.id})
-          this.router.navigate([`/form`]).then(() => {
+          this.router.navigate([`/form/list`]).then(() => {
             window.location.reload()
           });
-        }).unsubscribe()
+        })
       }
     } else {
       this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();

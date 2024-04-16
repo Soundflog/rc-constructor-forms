@@ -14,10 +14,10 @@ export class ScaleService {
 
   constructor(private _http: HttpClient,
               private errorService: ErrorService) {
-    this.getScales();
+    this.getScales(null);
   }
 
-  getScales() {
+  getScales(name:string | null) {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
 
     return this._http.get<IScale[]>(`${this._baseUrl}/all`, {headers: headers})
