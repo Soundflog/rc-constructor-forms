@@ -1,5 +1,5 @@
 export interface IScale {
-  id: number
+  id?: number
   name: string
   description: string
 }

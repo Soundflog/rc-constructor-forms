@@ -1,0 +1,98 @@
+<tui-island
+  class="tui-space_bottom-5"
+  [hoverable]=false
+  size="l"
+  textAlign="left"
+>
+  <form [formGroup]="interpretationFormGroup">
+    <tui-textarea
+      class="tui-space_bottom-5"
+      tuiTextfieldSize="l"
+      formControlName="description"
+    >
+      Интерпретация шкалы
+      <textarea
+        maxlength="97"
+        placeholder="Пояснение"
+        tuiTextfield
+      ></textarea>
+    </tui-textarea>
+    <tui-input-number
+      class="b-form"
+      formControlName="minValue"
+    >
+      Минимальное
+    </tui-input-number>
+    <tui-input-number
+      class="b-form tui-space_bottom-5"
+      formControlName="maxValue"
+    >
+      Максимальное
+    </tui-input-number>
+    <form
+      *tuiLet="scaleItems$ | async as items"
+      class="b-form"
+      [tuiTextfieldCleaner]="true"
+    >
+      <tui-combo-box
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        [formControl]="scaleFromGroup"
+        [stringify]="scaleChooseStringify"
+        [valueContent]=""
+        (tuiValueChanges)="changeScaleCombobox()"
+        (searchChange)="onSearchChange($event)"
+      >
+        Найти шкалу по названию
+        <input
+          placeholder="Type a name"
+          tuiTextfield
+          (input)="onSearchChange(extractValueFromEvent($event))"
+        />
+        <tui-data-list-wrapper
+          *tuiDataList
+          [itemContent]="scaleChooseStringify | tuiStringifyContent"
+          [items]="items"
+        ></tui-data-list-wrapper>
+      </tui-combo-box>
+    </form>
+    <div formGroupName="scale" class="tui-space_bottom-5">
+      <tui-textarea
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        formControlName="name"
+      >
+        Название
+        <textarea
+          maxlength="97"
+          placeholder="Название"
+          tuiTextfield
+        ></textarea>
+      </tui-textarea>
+      <tui-textarea
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        formControlName="description"
+      >
+        Описание
+        <textarea
+          maxlength="97"
+          placeholder="Описание"
+          tuiTextfield
+        ></textarea>
+      </tui-textarea>
+    </div>
+  </form>
+</tui-island>
+<div class="group" tuiGroup>
+  <button
+    tuiButton
+    size="xl"
+    class=""
+    type="submit"
+    (click)="onSubmit()"
+  >
+    Сохранить
+  </button>
+</div>
+
