@@ -1,7 +1,6 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {IForm} from "../../models/IForm";
-import {FormControl, FormGroup} from '@angular/forms';
-import {filter} from "rxjs";
+import {FormControl} from '@angular/forms';
 
 @Component({
   selector: 'app-forms-home',

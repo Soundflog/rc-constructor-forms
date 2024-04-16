@@ -16,12 +16,12 @@ export class ScaleListComponent implements OnInit {
   maxLength = 20;
 
   scaleFormGroup = this.fb.group({});
-  items = [
+  items:IInterpretation[] = [
     {
-      expanded: false,
       id: 0,
-      name: 'Test 1',
       description: 'Test description 1',
+      minValue: 0,
+      maxValue: 1,
       scale: {
         id: 0,
         name: 'Test scale 1',
@@ -49,9 +49,9 @@ export class ScaleListComponent implements OnInit {
       });
 
       this.items.push({
-        expanded: false,
         id: scale.id,
-        name: `${index}`,
+        minValue: scale.minValue,
+        maxValue: scale.maxValue,
         description: scale.description,
         scale: scale.scale
       })
@@ -65,25 +65,5 @@ export class ScaleListComponent implements OnInit {
       return str.slice(0, this.maxLength) + '...';
     }
     return str;
-  }
-
-  add(): void {
-    this.items = this.items.concat(
-      {
-        expanded: false,
-        id: 0,
-        name: 'Test',
-        description: 'New value',
-        scale: {
-          id: 0,
-          name: 'Test scale',
-          description: 'Test scale description',
-        }
-      }
-    );
-  }
-
-  remove(index: number): void {
-    this.items = tuiArrayRemove(this.items, index);
   }
 }

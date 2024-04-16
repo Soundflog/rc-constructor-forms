@@ -34,7 +34,7 @@ import {
     TuiDataListWrapperModule, TuiElasticContainerModule,
     TuiFilterByInputPipeModule, TuiInputCountModule,
     TuiInputModule, TuiInputNumberModule,
-    TuiIslandModule, TuiLazyLoadingModule,
+    TuiIslandModule, TuiLineClampModule,
     TuiMarkerIconModule, TuiRadioBlockModule, TuiRadioModule, TuiSelectModule,
     TuiStringifyContentPipeModule,
     TuiTabsModule,
@@ -44,7 +44,6 @@ import {
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import {TuiAppBarModule} from "@taiga-ui/addon-mobile";
 import { HttpClientModule } from '@angular/common/http'
-// import { NavigationFullComponent } from './pages/navigation-full/navigation-full.component';
 import {TuiDocNavigationModule} from "@taiga-ui/addon-doc";
 import {TuiRepeatTimesModule} from "@taiga-ui/cdk";
 import { FormsHomeComponent } from './components/forms-home/forms-home.component';
@@ -141,7 +140,8 @@ import { ScaleConstructorPageComponent } from './pages/scale-constructor-page/sc
         TuiRadioModule,
         TuiCheckboxModule,
         TuiButtonModule,
-        TuiInputNumberModule
+        TuiInputNumberModule,
+        TuiLineClampModule
     ],
   providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]

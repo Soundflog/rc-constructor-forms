@@ -14,10 +14,21 @@
       >
         <div class="tui-island__content">
           <div>
-            <h3 class="tui-island__title">{{ shortString(f.name) }}</h3>
-            <p class="tui-island__paragraph">
-              {{ shortString(f.description) }}
-            </p>
+            <tui-line-clamp
+              [content]="daenerys"
+              [lineHeight]="20"
+              [linesLimit]="2"
+            ></tui-line-clamp>
+
+            <ng-template #daenerys>
+              <div class="hint">
+                <h3 class="tui-island__title">{{ f.name }}</h3>
+                <p class="tui-island__paragraph">
+                  {{f.description}}
+                </p>
+              </div>
+            </ng-template>
+
             <tui-badge
               class="flex-auto"
               value="Success"
