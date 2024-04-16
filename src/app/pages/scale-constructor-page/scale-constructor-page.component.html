@@ -13,7 +13,7 @@
           tuiTextfieldSize="l"
           formControlName="description"
         >
-          Пояснение
+          Интерпретация шкалы
           <textarea
             maxlength="97"
             placeholder="Пояснение"
@@ -27,59 +27,87 @@
           Минимальное
         </tui-input-number>
         <tui-input-number
-          class="b-form"
+          class="b-form tui-space_bottom-5"
           formControlName="maxValue"
         >
           Максимальное
         </tui-input-number>
 
-        <label class="tui-space_bottom-5">
-          <tui-toggle
-            size="l"
-            class="tui-space_right-2"
-            [(ngModel)]="selectedScale"
-            [ngModelOptions]="{standalone: true}"
-          ></tui-toggle>
-          <tui-combo-box
-            formControlName="scaleId"
-            [stringify]="scaleChooseStringify"
-            [tuiTextfieldLabelOutside]="true"
+        <div formGroupName="scale" class="tui-space_bottom-5">
+          <button
+            size="m"
+            tuiButton
+            class="tui-space_bottom-5"
+            type="button"
+            (click)="showDialog(template)"
           >
-            Шкала
-            <tui-data-list-wrapper
-              *tuiDataList
-              [itemContent]="scaleChooseStringify | tuiStringifyContent"
-              [items]="scaleItems$ | async| tuiFilterByInputWith: scaleChooseStringify"
-            ></tui-data-list-wrapper>
-          </tui-combo-box>
-        </label>
-        <div formGroupName="scaleId">
-          <ng-template *ngIf="selectedScale">
-            <tui-textarea
-              class="tui-space_bottom-5"
-              tuiTextfieldSize="l"
-              formControlName="name"
+            Show
+          </button>
+          <ng-template
+            #template
+            let-observer
+          >
+            <form
+              [formGroup]="interpretationFormGroup"
+              *tuiLet="scaleItems$ | async as items"
+              class="b-form"
+              [tuiTextfieldCleaner]="true"
             >
-              Название
-              <textarea
-                maxlength="97"
-                placeholder="Название"
-                tuiTextfield
-              ></textarea>
-            </tui-textarea>
-            <tui-textarea
-              class="tui-space_bottom-5"
-              tuiTextfieldSize="l"
-              formControlName="description"
+              <tui-combo-box
+                class="tui-space_bottom-5"
+                tuiTextfieldSize="l"
+                formControlName="scale"
+                [stringify]="scaleChooseStringify"
+                [valueContent]=""
+                (searchChange)="onSearchChange($event)"
+              >
+                Найти шкалу по названию
+                <input
+                  placeholder="Type a name"
+                  tuiTextfield
+                  (input)="onSearchChange(extractValueFromEvent($event))"
+                />
+                <tui-data-list-wrapper
+                  *tuiDataList
+                  [itemContent]="scaleChooseStringify | tuiStringifyContent"
+                  [items]="items"
+                ></tui-data-list-wrapper>
+              </tui-combo-box>
+            </form>
+            <button
+              size="m"
+              tuiButton
+              type="button"
+              (click)="observer.complete()"
             >
-              Описание
-              <textarea
-                maxlength="97"
-                placeholder="Описание"
-                tuiTextfield
-              ></textarea>
-            </tui-textarea>
+              Готово
+            </button>
           </ng-template>
+
+          <tui-textarea
+            class="tui-space_bottom-5"
+            tuiTextfieldSize="l"
+            formControlName="name"
+          >
+            Название
+            <textarea
+              maxlength="97"
+              placeholder="Название"
+              tuiTextfield
+            ></textarea>
+          </tui-textarea>
+          <tui-textarea
+            class="tui-space_bottom-5"
+            tuiTextfieldSize="l"
+            formControlName="description"
+          >
+            Описание
+            <textarea
+              maxlength="97"
+              placeholder="Описание"
+              tuiTextfield
+            ></textarea>
+          </tui-textarea>
         </div>
       </tui-island>
 
