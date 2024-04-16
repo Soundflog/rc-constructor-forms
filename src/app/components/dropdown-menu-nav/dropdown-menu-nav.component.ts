@@ -23,7 +23,7 @@ export class DropdownMenuNavComponent {
           routerLink: '/form/list',
         },
         {
-          label: 'Создать шкалу',
+          label: 'Новая шкала',
           routerLink: '/scale/new',
         },
         {
