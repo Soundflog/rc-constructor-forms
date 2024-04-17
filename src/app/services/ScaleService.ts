@@ -3,12 +3,13 @@ import {ErrorService} from "./ErrorService";
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {IScale} from "../models/IScale";
 import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
+import {API_URL} from "../const/constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ScaleService {
-  private _baseUrl = 'http://localhost:8080/scale';
+  private _baseUrl = `${API_URL}/scale`;
   private scalesSubject = new BehaviorSubject<IScale[]>([]);
   scales$ = this.scalesSubject.asObservable();
 

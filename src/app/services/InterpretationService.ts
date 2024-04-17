@@ -3,12 +3,13 @@ import {ErrorService} from "./ErrorService";
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {IInterpretation} from "../models/IInterpretation";
+import {API_URL} from "../const/constants";
 
 @Injectable({
   providedIn: 'root'
 })
 export class InterpretationService {
-  private _baseUrl = 'http://localhost:8080/interpretation';
+  private _baseUrl = `${API_URL}/interpretation`;
   private interpretationSubject = new BehaviorSubject<IInterpretation[]>([]);
   interpretation$ = this.interpretationSubject.asObservable();
 
