@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   login(userData: IAuthUser) {
-    return this.http.post<IUserJwtResponse>(`${API_URL}/auth`, userData)
+    return this.http.post<IUserJwtResponse>(`${API_URL}/auth/auth`, userData)
       .pipe(
         tap((res: IUserJwtResponse)=> {
           localStorage.setItem('token', res.token)
