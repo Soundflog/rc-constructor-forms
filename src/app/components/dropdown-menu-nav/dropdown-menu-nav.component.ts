@@ -15,16 +15,8 @@ export class DropdownMenuNavComponent {
       label: 'RehabSurvey',
       items: [
         {
-          label: 'Новая анкета',
-          routerLink: '/form/new',
-        },
-        {
           label: 'Список анкет',
           routerLink: '/form/list',
-        },
-        {
-          label: 'Новая шкала',
-          routerLink: '/scale/new',
         },
         {
           label: 'Список шкал',
