@@ -10,28 +10,8 @@ tui-app-bar {
   color: var(--tui-link);
 }
 
-.gray {
-  box-shadow: none;
-  background: var(--tui-base-02);
+.mobileDisplayNone{
+  @media @tui-mobile {
+    display: none;
+  }
 }
-
-.black {
-  background: var(--tui-text-01);
-  color: var(--tui-warning-fill-night);
-}
-
-.white {
-  color: var(--tui-base-01);
-}
-
-.reversed {
-  flex-direction: column-reverse;
-}
-
-.bar {
-  width: 8.75rem;
-}
-.button_background{
-  background-color: var(--tui-base-02);
-}
-
