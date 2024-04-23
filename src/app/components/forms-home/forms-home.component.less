@@ -2,7 +2,12 @@
 
 .tui-col_md-4{
   @media @tui-mobile{
-    margin-left: 0.75rem;
-    margin-right: 0.75rem;
+    width: -webkit-fill-available;
+  }
+}
+.mobileDescription{
+  display: none;
+  @media @tui-mobile{
+    display: flex;
   }
 }

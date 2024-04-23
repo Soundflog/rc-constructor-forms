@@ -1,5 +1,4 @@
 <div class="tui-row">
-  <!--  <ng-container *ngIf="forms">-->
   <ng-container *ngFor="let f of interpretations" >
     <div class="tui-col_md-4 tui-space_top-4">
       <a
@@ -23,9 +22,14 @@
                 </p>
               </div>
             </ng-template>
+            <div class="mobileDescription">
+              <p class="tui-island__paragraph">
+                {{ f.description }}
+              </p>
+            </div>
             <tui-badge
               class="flex-auto"
-              value="Success"
+              value="Успешно"
               status="success"
             ></tui-badge>
           </div>
@@ -33,5 +37,4 @@
       </a>
     </div>
   </ng-container>
-  <!--  </ng-container>-->
 </div>
