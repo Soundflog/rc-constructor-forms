@@ -25,9 +25,9 @@ import {tuiInputNumberOptionsProvider} from "@taiga-ui/kit";
 export class ScaleConstructorComponent implements OnInit {
   @Input() interpretation: IInterpretation | null;
 
-  interpretationFormGroup : FormGroup; // группа интерпретации
+  interpretationFormGroup: FormGroup; // группа интерпретации
   scaleFromGroup: FormControl; // выбор шкалы
-  scaleDefaultCombobox : IScale = {
+  scaleDefaultCombobox: IScale = {
     id: 0,
     name: 'Добавить шкалу',
     description: ''
@@ -59,6 +59,10 @@ export class ScaleConstructorComponent implements OnInit {
     return (event.target as HTMLInputElement)?.value || null;
   }
 
+  routeToList() {
+    this.router.navigate(['/scale/list']);
+  }
+
   ngOnInit() {
     this.scaleItems$ = this.search$.pipe(
       startWith(null), // Запускаем запрос при инициализации компонента
@@ -75,7 +79,7 @@ export class ScaleConstructorComponent implements OnInit {
         items.unshift(this.scaleDefaultCombobox);
         if (items.length === 0) {
           this.alerts
-            .open('Нет шкал. Добавьте шкалы в настройках', { status: 'warning' })
+            .open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'})
             .subscribe();
         }
       })
@@ -97,8 +101,18 @@ export class ScaleConstructorComponent implements OnInit {
 
   changeScaleCombobox() {
     this.interpretationFormGroup.get("scale")?.setValue(this.scaleFromGroup.value);
-    if (this.scaleFromGroup.value == null){
+    if (this.scaleFromGroup.value == null) {
       this.scaleFromGroup = new FormControl(this.scaleDefaultCombobox);
+    }
+  }
+
+  deleteInterpretation() {
+    const id = this.interpretation?.id;
+    if (id != null && id >= 0) {
+      this.interpretationService.delete(id)
+        .subscribe(() => this.routeToList())
+    } else {
+      this.alerts.open('Произошла ошибка', {status: 'warning'});
     }
   }
 
@@ -107,17 +121,11 @@ export class ScaleConstructorComponent implements OnInit {
     console.log("Scale FG after", this.scaleFromGroup.value);
     if (this.interpretationFormGroup.valid && this.scaleFromGroup.valid) {
       if (this.interpretation?.id != null && this.interpretation?.id >= 0) {
-        this.interpretationService.update(this.interpretationFormGroup.value).subscribe(
-          () => {
-            this.router.navigate(['/scale/list']);
-          }
-        )
+        this.interpretationService.update(this.interpretationFormGroup.value)
+          .subscribe(() => this.routeToList())
       } else {
-        this.interpretationService.create(this.interpretationFormGroup.value).subscribe(
-          () => {
-            this.router.navigate(['/scale/list']);
-          }
-        )
+        this.interpretationService.create(this.interpretationFormGroup.value)
+          .subscribe(() => this.routeToList())
       }
     }
   }

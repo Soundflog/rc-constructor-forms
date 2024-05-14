@@ -86,6 +86,16 @@
 </tui-island>
 <div class="group" tuiGroup>
   <button
+    appearance="secondary-destructive"
+    tuiButton
+    title="Удалить Вопрос"
+    size="xl"
+    icon="tuiIconTrash2Large"
+    (click)="deleteInterpretation()"
+  >
+    Удалить
+  </button>
+  <button
     tuiButton
     size="xl"
     class=""
