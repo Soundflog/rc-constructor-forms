@@ -26,12 +26,14 @@ export class InterpretationService {
     );
   }
 
-  getAllInterpretations():Observable<IInterpretation[]> {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+  getAllInterpretations(): Observable<IInterpretation[]> {
+    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
     return this._http.get<IInterpretation[]>(`${this._baseUrl}/all`,
-      {params: new HttpParams({fromObject: {limit: 20}}),
-        headers: headers})
+      {
+        params: new HttpParams({fromObject: {limit: 20}}),
+        headers: headers
+      })
       .pipe(
         tap(interpre => {
           this.interpretationSubject.next(interpre);
@@ -42,7 +44,7 @@ export class InterpretationService {
   }
 
   create(interpretation: IInterpretation) {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
     return this._http.post<IInterpretation>(`${this._baseUrl}/create`, interpretation, {headers: headers})
       .pipe(
@@ -55,37 +57,52 @@ export class InterpretationService {
   }
 
   update(interpretation: IInterpretation) {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
     return this._http.put<IInterpretation>(`${this._baseUrl}/${interpretation.id}`, interpretation, {headers: headers})
       .pipe(
         tap(inter => {
           const currentInter = this.interpretationSubject.value;
           this.interpretationSubject.next(currentInter.map(intepr =>
-            intepr.id == inter.id? inter : intepr
+            intepr.id == inter.id ? inter : intepr
           ));
         }),
         catchError(this.errorHandler.bind(this))
       )
   }
 
-  getById(id: number):Observable<IInterpretation> {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+  getById(id: number): Observable<IInterpretation> {
+    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
     return this._http.get<IInterpretation>(`${this._baseUrl}/${id}`,
       {headers: headers})
       .pipe(
-
         catchError(this.errorHandler.bind(this))
       )
   }
 
-  getInterpretationsByName(search: string):Observable<IInterpretation[]> {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
+  delete(id: number) {
+    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
+
+    return this._http.delete<IInterpretation>(`${this._baseUrl}/${id}`,
+      {headers: headers})
+      .pipe(
+        tap(inter => {
+          const currentInter = this.interpretationSubject.value;
+          this.interpretationSubject.next(currentInter.filter(intepr => intepr.id != inter.id));
+        }),
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
+  getInterpretationsByName(search: string): Observable<IInterpretation[]> {
+    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
     return this._http.get<IInterpretation[]>(`${this._baseUrl}/search`,
-      {params: new HttpParams({fromObject: {limit: 5}}),
-        headers: headers})
+      {
+        params: new HttpParams({fromObject: {limit: 5}}),
+        headers: headers
+      })
       .pipe(
         tap(interpre => {
           this.interpretationSubject.next(interpre);
