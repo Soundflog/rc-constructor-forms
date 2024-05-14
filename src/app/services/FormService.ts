@@ -16,7 +16,6 @@ export class FormService {
   constructor(private http: HttpClient,
               private errorService: ErrorService) {
     this.getAllForms()
-    console.log(this.forms$)
   }
 
   private getAllForms(): void {
@@ -55,9 +54,7 @@ export class FormService {
 
   getAll(): Observable<IForm[]> {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-    console.log(headers)
     return this.http.get<IForm[]>(`${this._baseUrl}/all`, {
-
       headers: headers
     }).pipe(
       tap(forms => {
@@ -69,7 +66,6 @@ export class FormService {
 
   getById(id: number): Observable<IForm> {
     const headers = { 'Authorization': 'Bearer '+ localStorage.getItem("token") };
-
     return this.http.get<IForm>(`${this._baseUrl}/${id}`,
       {headers: headers})
       .pipe(
