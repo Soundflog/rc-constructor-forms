@@ -83,7 +83,7 @@ export class NewFormPageComponent implements OnInit {
 
   deleteForm(index: number) {
     this.formService.deleteForm(index).subscribe(() => {
-      this.alerts.open('Форма удалена', {status: 'success'}).subscribe();
+      this.alerts.open('Анкета удалена', {status: 'success'}).subscribe();
       this.router.navigate([`/form/list`]).then(() => {
         window.location.reload()
       });

@@ -61,6 +61,7 @@ import { ScaleListComponent } from './components/scale-list/scale-list.component
 import { LoadingComponent } from './components/loading/loading.component';
 import { ScaleConstructorPageComponent } from './pages/scale-constructor-page/scale-constructor-page.component';
 import { ScaleConstructorComponent } from './components/scale-constructor/scale-constructor.component';
+import {httpInterceptorProviders} from "./services/auth-interceptor";
 
 @NgModule({
   declarations: [
@@ -147,7 +148,8 @@ import { ScaleConstructorComponent } from './components/scale-constructor/scale-
     TuiValueChangesModule,
     TuiLetModule
   ],
-  providers: [{provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
+  providers: [httpInterceptorProviders,
+    {provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
