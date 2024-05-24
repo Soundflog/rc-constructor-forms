@@ -1,34 +1,25 @@
-<!--<tui-app-bar size="l">
-  <label tuiTitle>
-    Taiga UI
-    <span tuiSubtitle>Components library</span>
-  </label>
-  <button
-    tuiButton
-    tuiSlot="right"
-  >
-    Action
-  </button>
-</tui-app-bar>-->
-<tui-app-bar size="l" class="color">
-  <label tuiTitle routerLink="/form/list">
-    Taiga UI
-    <span tuiSubtitle>Components library</span>
-  </label>
-  <button
-    iconRight="tuiIconBell"
-    tuiIconButton
-    tuiSlot="right"
-  >
-    Notifications
-  </button>
-  <app-dropdown-menu-nav tuiSlot="right"/>
-  <a
-    title="User"
-    tuiIconButton
-    icon="tuiIconUserLarge"
-    tuiSlot="right"
-    (click)="logout()"
-  ></a>
-</tui-app-bar>
-
+<div class="align-middle justify-items-center flex-auto">
+  <tui-app-bar class="color">
+    <button
+      iconRight="tuiIconBell"
+      tuiIconButton
+      tuiSlot="right"
+    >
+      Notifications
+    </button>
+    <app-dropdown-menu-nav tuiSlot="right"/>
+    <a
+      title="User"
+      tuiIconButton
+      icon="tuiIconUserLarge"
+      tuiSlot="right"
+      (click)="logout()"
+    ></a>
+    <a
+      tuiSlot="left"
+      routerLink="/form/list"
+    >
+      RehabSurvey
+    </a>
+  </tui-app-bar>
+</div>
