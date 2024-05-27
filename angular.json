@@ -17,7 +17,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["lodash"],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "@taiga-ui/kit",
+              "@tinkoff/ng-dompurify"
+            ],
             "outputPath": "dist/rc-constructor-forms",
             "index": "src/index.html",
             "main": "src/main.ts",

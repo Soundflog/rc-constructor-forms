@@ -40,7 +40,7 @@ export class FormService {
 
   updateForm(form: IForm): Observable<IForm> {
     const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-
+    console.log(form)
     return this.http.put<IForm>(`${this._baseUrl}/${form.id}`, form,
       {headers: headers})
       .pipe(

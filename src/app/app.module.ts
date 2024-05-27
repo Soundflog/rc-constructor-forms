@@ -62,6 +62,8 @@ import { LoadingComponent } from './components/loading/loading.component';
 import { ScaleConstructorPageComponent } from './pages/scale-constructor-page/scale-constructor-page.component';
 import { ScaleConstructorComponent } from './components/scale-constructor/scale-constructor.component';
 import {httpInterceptorProviders} from "./services/auth-interceptor";
+import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
+import {TuiBlockStatusModule} from "@taiga-ui/layout";
 
 @NgModule({
   declarations: [
@@ -81,7 +83,8 @@ import {httpInterceptorProviders} from "./services/auth-interceptor";
     ScaleListComponent,
     LoadingComponent,
     ScaleConstructorPageComponent,
-    ScaleConstructorComponent
+    ScaleConstructorComponent,
+    NotFoundPageComponent
   ],
   imports: [
     BrowserModule,
@@ -146,7 +149,8 @@ import {httpInterceptorProviders} from "./services/auth-interceptor";
     TuiInputNumberModule,
     TuiLineClampModule,
     TuiValueChangesModule,
-    TuiLetModule
+    TuiLetModule,
+    TuiBlockStatusModule
   ],
   providers: [httpInterceptorProviders,
     {provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],
