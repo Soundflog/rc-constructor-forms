@@ -124,6 +124,9 @@ export class ScaleConstructorComponent implements OnInit {
         this.interpretationService.update(this.interpretationFormGroup.value)
           .subscribe(() => this.routeToList())
       } else {
+        if (this.scaleFromGroup.value.id == 0)  {
+          this.scaleFromGroup.value.id = null;
+        }
         this.interpretationService.create(this.interpretationFormGroup.value)
           .subscribe(() => this.routeToList())
       }

@@ -1,24 +1,25 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Inject, OnInit, ViewEncapsulation} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AuthService} from "../../services/auth.service";
 import {Router} from "@angular/router";
+import {TuiAlertService} from "@taiga-ui/core";
 
 @Component({
   selector: 'app-auth-page',
   templateUrl: './auth-page.component.html',
-  styleUrls: ['./auth-page.component.less']
+  styleUrls: ['./auth-page.component.less'],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthPageComponent implements OnInit {
 
   logo_im = 'https://angular.io/assets/images/logos/angular/angular.png'
   authForm : FormGroup;
-  /*readonly authForm = new FormGroup({
-    Login: new FormControl('Логин'),
-    Password: new FormControl('Пароль')
-  });*/
   constructor(private fb: FormBuilder,
               private authService: AuthService,
-              private router: Router,) {
+              @Inject(TuiAlertService)
+              private readonly alerts: TuiAlertService,
+              private router: Router) {
     this.authForm = fb.group({
       username: ['', Validators.required],
       password: ['', [Validators.required, Validators.minLength(3)]],
@@ -29,21 +30,14 @@ export class AuthPageComponent implements OnInit {
 
   onSubmit(): void{
     if (this.authForm.valid){
-      this.authService.login(this.authForm.value)
-        .subscribe((success) =>{
-          this.router.navigate(['/form/list'])
-      });
+      this.authService.login(this.authForm.value).subscribe(
+        ()=> {
+          this.router.navigate(['/rehabilitation/data']).then(() => {
+          })
+          this.alerts.open('Вы успешно вошли в систему', {status: 'success'}).subscribe()
+        });
     } else {
-      console.log('not valid')
+      this.alerts.open('Заполните все поля', {status: 'warning'}).subscribe()
     }
-    /*const credentials = this.authForm.value;
-    this.authService.login(credentials).subscribe((success) =>{
-      if (success){
-        // Перенаправление на защищенную страницу или обновление текущей страницы
-      } else {
-        // Обработка ошибки входа
-      }
-    })*/
   }
-
 }

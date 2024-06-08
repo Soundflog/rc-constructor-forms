@@ -1,14 +1,18 @@
 <div class="body">
-  <div class="top-container">
+  <tui-island class="login-island">
     <div class="organization-container">
-      <div class="organization-label">НАЗВАНИЕ ОРГАНИЗАЦИИ</div>
-      <img class="logo" [src]="logo_im" alt="Organization Logo">
+      <div class="organization-label">RehabSurvey</div>
+      <div class="organization-label">Patient</div>
     </div>
     <form
       class="login-container"
       [formGroup]="authForm"
       (ngSubmit)="onSubmit()"
     >
+      <h2 style="color: var(--tui-primary);">👉 Вход в <span appearance="primary">RehabSurvey</span></h2>
+      <p class="tui-island__paragraph">
+        Введите свои данные ниже, чтобы войти в аккаунт.
+      </p>
       <tui-input class="w-full p-3" formControlName="username" required>
         Логин
         <input
@@ -48,8 +52,8 @@
         </div>
       </div>
       <button
-        class="w-56"
-        appearance="custom"
+        class="w-56 tui-space_top-4"
+        appearance="primary"
         tuiButton
         type="submit"
         (click)="onSubmit()"
@@ -58,5 +62,5 @@
         Войти
       </button>
     </form>
-  </div>
+  </tui-island>
 </div>
