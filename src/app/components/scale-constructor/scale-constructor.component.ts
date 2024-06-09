@@ -120,7 +120,7 @@ export class ScaleConstructorComponent implements OnInit {
     console.log("Inter FG after", this.interpretationFormGroup.value);
     console.log("Scale FG after", this.scaleFromGroup.value);
     if (this.interpretationFormGroup.valid && this.scaleFromGroup.valid) {
-      if (this.interpretation?.id != null && this.interpretation?.id >= 0) {
+      if (this.interpretation?.id != null && this.interpretation?.id > 0) {
         this.interpretationService.update(this.interpretationFormGroup.value)
           .subscribe(() => this.routeToList())
       } else {

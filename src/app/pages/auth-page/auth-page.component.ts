@@ -32,7 +32,7 @@ export class AuthPageComponent implements OnInit {
     if (this.authForm.valid){
       this.authService.login(this.authForm.value).subscribe(
         ()=> {
-          this.router.navigate(['/rehabilitation/data']).then(() => {
+          this.router.navigate(['/form/list']).then(() => {
           })
           this.alerts.open('Вы успешно вошли в систему', {status: 'success'}).subscribe()
         });
