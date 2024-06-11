@@ -4,13 +4,14 @@ import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
 import {IInterpretation} from "../models/IInterpretation";
 import {API_URL} from "../const/constants";
+import {IScaleInterpretationResponse} from "../models/ScaleInterpretationResponse";
 
 @Injectable({
   providedIn: 'root'
 })
 export class InterpretationService {
   private _baseUrl = `${API_URL}/interpretation`;
-  private interpretationSubject = new BehaviorSubject<IInterpretation[]>([]);
+  private interpretationSubject = new BehaviorSubject<IScaleInterpretationResponse[]>([]);
   interpretation$ = this.interpretationSubject.asObservable();
 
   constructor(private _http: HttpClient,
@@ -26,10 +27,10 @@ export class InterpretationService {
     );
   }
 
-  getAllInterpretations(): Observable<IInterpretation[]> {
+  getAllInterpretations(): Observable<IScaleInterpretationResponse[]> {
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
-    return this._http.get<IInterpretation[]>(`${this._baseUrl}/all`,
+    return this._http.get<IScaleInterpretationResponse[]>(`${this._baseUrl}/all`,
       {
         params: new HttpParams({fromObject: {limit: 20}}),
         headers: headers
@@ -43,10 +44,10 @@ export class InterpretationService {
       )
   }
 
-  create(interpretation: IInterpretation) {
+  create(interpretation: IScaleInterpretationResponse) {
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
-    return this._http.post<IInterpretation>(`${this._baseUrl}/create`, interpretation, {headers: headers})
+    return this._http.post<IScaleInterpretationResponse>(`${this._baseUrl}/create`, interpretation, {headers: headers})
       .pipe(
         tap(form => {
           const currentForms = this.interpretationSubject.value;
@@ -56,10 +57,10 @@ export class InterpretationService {
       )
   }
 
-  update(interpretation: IInterpretation) {
+  update(interpretation: IScaleInterpretationResponse) {
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
-    return this._http.put<IInterpretation>(`${this._baseUrl}/${interpretation.id}`, interpretation, {headers: headers})
+    return this._http.put<IScaleInterpretationResponse>(`${this._baseUrl}/${interpretation.id}`, interpretation, {headers: headers})
       .pipe(
         tap(inter => {
           const currentInter = this.interpretationSubject.value;
@@ -71,10 +72,10 @@ export class InterpretationService {
       )
   }
 
-  getById(id: number): Observable<IInterpretation> {
+  getById(id: number): Observable<IScaleInterpretationResponse> {
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
-    return this._http.get<IInterpretation>(`${this._baseUrl}/${id}`,
+    return this._http.get<IScaleInterpretationResponse>(`${this._baseUrl}/${id}`,
       {headers: headers})
       .pipe(
         catchError(this.errorHandler.bind(this))
@@ -84,7 +85,7 @@ export class InterpretationService {
   delete(id: number) {
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
-    return this._http.delete<IInterpretation>(`${this._baseUrl}/${id}`,
+    return this._http.delete<IScaleInterpretationResponse>(`${this._baseUrl}/${id}`,
       {headers: headers})
       .pipe(
         tap(inter => {
@@ -95,10 +96,10 @@ export class InterpretationService {
       )
   }
 
-  getInterpretationsByName(search: string): Observable<IInterpretation[]> {
+  getInterpretationsByName(search: string): Observable<IScaleInterpretationResponse[]> {
     const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
 
-    return this._http.get<IInterpretation[]>(`${this._baseUrl}/search`,
+    return this._http.get<IScaleInterpretationResponse[]>(`${this._baseUrl}/search`,
       {
         params: new HttpParams({fromObject: {limit: 5}}),
         headers: headers

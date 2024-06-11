@@ -4,6 +4,7 @@ import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {IInterpretation} from "../../models/IInterpretation";
 import {InterpretationService} from "../../services/InterpretationService";
 import {Observable} from "rxjs";
+import {IScaleInterpretationResponse} from "../../models/ScaleInterpretationResponse";
 
 @Component({
   selector: 'app-scale-page',
@@ -16,7 +17,7 @@ export class ScalePageComponent implements OnInit{
   search :string;
   control = new FormControl();
 
-  interpretations$: Observable<IInterpretation[]>;
+  interpretations$: Observable<IScaleInterpretationResponse[]>;
   constructor(private interpretationService: InterpretationService) {}
   ngOnInit() {
     this.interpretations$ = this.interpretationService.getAllInterpretations();

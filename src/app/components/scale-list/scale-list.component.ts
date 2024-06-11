@@ -3,6 +3,7 @@ import {IInterpretation} from "../../models/IInterpretation";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
 import {InterpretationService} from "../../services/InterpretationService";
 import {tuiArrayRemove} from "@taiga-ui/cdk";
+import {IScaleInterpretationResponse} from "../../models/ScaleInterpretationResponse";
 
 @Component({
   selector: 'app-scale-list',
@@ -11,23 +12,23 @@ import {tuiArrayRemove} from "@taiga-ui/cdk";
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScaleListComponent implements OnInit {
-  @Input() interpretations: IInterpretation[];
+  @Input() interpretations: IScaleInterpretationResponse[];
 
   maxLength = 20;
 
   scaleFormGroup = this.fb.group({});
-  items:IInterpretation[] = [
-    {
-      id: 0,
-      description: 'Test description 1',
-      minValue: 0,
-      maxValue: 1,
-      scale: {
-        id: 0,
-        name: 'Test scale 1',
-        description: 'Test scale description 1',
-      }
-    },
+  items:IScaleInterpretationResponse[] = [
+    // {
+    //   id: 0,
+    //   description: 'Test description 1',
+    //   minValue: 0,
+    //   maxValue: 1,
+    //   scale: {
+    //     id: 0,
+    //     name: 'Test scale 1',
+    //     description: 'Test scale description 1',
+    //   }
+    // },
   ];
 
   constructor(private fb: FormBuilder) {
@@ -39,21 +40,24 @@ export class ScaleListComponent implements OnInit {
       const scaleGroup = this.fb.group({
         id: [scale.id],
         description: [scale.description, Validators.required],
-        minValue: [scale.minValue, Validators.required],
-        maxValue: [scale.maxValue, Validators.required],
-        scale: this.fb.group({
-          id: [scale.scale.id],
-          name: [scale.scale.name, Validators.required],
-          description: [scale.scale.description],
-        })
+        name: [scale.name, Validators.required],
+        interpretations: this.fb.array([
+          scale?.interpretations.map((item) =>{
+            this.fb.group({
+              description: [item.description, Validators.required],
+              minValue: [item.minValue, Validators.required],
+              maxValue: [item.maxValue, Validators.required],
+              scale: [item.scale, Validators.required],
+            })
+          })
+        ]),
       });
 
       this.items.push({
         id: scale.id,
-        minValue: scale.minValue,
-        maxValue: scale.maxValue,
+        name: scale.name,
         description: scale.description,
-        scale: scale.scale
+        interpretations: scale.interpretations,
       })
       this.scaleFormGroup.addControl(`${index}`, scaleGroup);
     });

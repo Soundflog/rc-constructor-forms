@@ -8,6 +8,7 @@ import {Router} from "@angular/router";
 import {InterpretationService} from "../../services/InterpretationService";
 import {ScaleService} from "../../services/ScaleService";
 import {tuiInputNumberOptionsProvider} from "@taiga-ui/kit";
+import {IScaleInterpretationResponse} from "../../models/ScaleInterpretationResponse";
 
 @Component({
   selector: 'app-scale-constructor',
@@ -18,12 +19,14 @@ import {tuiInputNumberOptionsProvider} from "@taiga-ui/kit";
       decimal: 'always',
       step: 1,
       min: 1,
-      max: 20,
+      max: 100,
     }),
   ],
 })
 export class ScaleConstructorComponent implements OnInit {
-  @Input() interpretation: IInterpretation | null;
+  @Input() interpretation: IScaleInterpretationResponse | null;
+
+  fields: IInterpretation[] = []
 
   interpretationFormGroup: FormGroup; // группа интерпретации
   scaleFromGroup: FormControl; // выбор шкалы
@@ -85,18 +88,62 @@ export class ScaleConstructorComponent implements OnInit {
       })
     );
 
-    this.scaleFromGroup = new FormControl(this.interpretation?.scale);
+    this.scaleFromGroup = new FormControl(this.interpretation);
     this.interpretationFormGroup = this.fb.group({
       id: [this.interpretation?.id],
       description: [this.interpretation?.description, Validators.required],
-      minValue: [this.interpretation?.minValue, Validators.required],
-      maxValue: [this.interpretation?.maxValue, Validators.required],
-      scale: this.fb.group({
-        id: [this.scaleFromGroup.value.id],
-        name: [this.scaleFromGroup.value.name],
-        description: [this.scaleFromGroup.value.description],
-      })
+      name: [this.interpretation?.name, Validators.required],
+      interpretations: this.fb.array([
+        this.interpretation?.interpretations.map((item) =>{
+          this.fb.group({
+              description: [item.description, Validators.required],
+              minValue: [item.minValue, Validators.required],
+              maxValue: [item.maxValue, Validators.required],
+              scale: [item.scale, Validators.required],
+            })
+          })
+      ]),
     })
+  }
+
+  // Функция добавления вопроса в форму
+  addField(index: number): void {
+    this.alerts.open('Добавлено поле').subscribe();
+    const newIndexQuestion = this.fields.length+ 1;
+    const newField:IInterpretation = {
+      minValue: 1,
+      maxValue: 20,
+      description: "",
+    }
+    this.fields.splice(index + 1, 0, newField);
+    const newControl = this.fb.group({
+      description: new FormControl("", Validators.required),
+      minValue: new FormControl(1, Validators.required),
+      maxValue: new FormControl(20, Validators.required),
+      scale: new FormControl(this.scaleFromGroup.value, Validators.required),
+    })
+    console.log(this.fields)
+    // const newVariant = this.fb.group({
+    //   content: new FormControl("Вариант 1", Validators.required),
+    //   score: new FormControl(1.00, Validators.required)
+    // })
+    // const newQuestion = this.fb.group({
+    //   content: new FormControl("Вопрос " + (newIndexQuestion + 1), Validators.required),
+    //   type: this.comboBoxFields[0],
+    //   required: false,
+    //   variants: this.fb.array([
+    //     newVariant,
+    //     this.fb.group({
+    //       content: new FormControl("Вариант 2", Validators.required),
+    //       score: new FormControl(10.00, Validators.required)
+    //     })
+    //   ]),
+    // });
+    try {
+      // this.interpretationFormGroup.addControl(this.fields.length, newControl);
+    } catch (e) {
+      this.alerts.open('Ошибка добавления вопроса', {status:  'error'}).subscribe();
+    }
   }
 
   changeScaleCombobox() {

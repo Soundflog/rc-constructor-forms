@@ -9,6 +9,7 @@ import {catchError, Observable, of, startWith, Subject, switchMap, tap} from "rx
 import {ScaleService} from "../../services/ScaleService";
 import {IInterpretation} from "../../models/IInterpretation";
 import {tuiInputNumberOptionsProvider} from "@taiga-ui/kit";
+import {IScaleInterpretationResponse} from "../../models/ScaleInterpretationResponse";
 
 @Component({
   selector: 'app-scale-constructor-page',
@@ -19,14 +20,14 @@ import {tuiInputNumberOptionsProvider} from "@taiga-ui/kit";
       decimal: 'always',
       step: 1,
       min: 1,
-      max: 20,
+      max: 100,
     }),
   ],
 })
 export class ScaleConstructorPageComponent implements OnInit {
   idFromRoute : number;
-  interpretation$: Observable<IInterpretation>;
-  defaultInterpretation: IInterpretation;
+  interpretation$: Observable<IScaleInterpretationResponse>;
+  defaultInterpretation: IScaleInterpretationResponse;
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -45,13 +46,13 @@ export class ScaleConstructorPageComponent implements OnInit {
         this.defaultInterpretation = {
           id: 0,
           description: '',
-          minValue: 0,
-          maxValue: 20,
-          scale: {
+          name: 'Добавить шкалу',
+          interpretations:[{
             id: 0,
-            name: 'Добавить шкалу',
-            description: ''
-          }
+            description: '',
+            minValue: 0,
+            maxValue: 100
+          }]
         }
       }
     })
