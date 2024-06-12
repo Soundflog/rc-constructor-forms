@@ -11,7 +11,12 @@ import {
   TuiExpandModule,
   TuiSvgDefsHostModule,
   TuiDropdownModule,
-  TuiTextfieldControllerModule, TuiGroupModule, TuiHintModule, TuiLabelModule
+  TuiTextfieldControllerModule,
+  TuiGroupModule,
+  TuiHintModule,
+  TuiLabelModule,
+  TuiPrimitiveTextfieldModule,
+  TuiWrapperModule
 } from "@taiga-ui/core";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { NgModule } from '@angular/core';
@@ -150,7 +155,9 @@ import {TuiBlockStatusModule} from "@taiga-ui/layout";
     TuiLineClampModule,
     TuiValueChangesModule,
     TuiLetModule,
-    TuiBlockStatusModule
+    TuiBlockStatusModule,
+    TuiPrimitiveTextfieldModule,
+    TuiWrapperModule
   ],
   providers: [httpInterceptorProviders,
     {provide: TUI_SANITIZER, useClass: NgDompurifySanitizer}],

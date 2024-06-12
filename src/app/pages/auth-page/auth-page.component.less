@@ -1,20 +1,15 @@
 @import "@taiga-ui/core/styles/taiga-ui-local.less";
+.text {
+  background: var(--tui-primary-hover);
+  color: var(--tui-text-01-night);
+}
+:host {
+  display: block;
+}
 
-[tuiWrapper][data-appearance='custom'] {
-  background: #35d52f;
-  color: #fff;
-
-  .wrapper-hover({
-    background: #7cf17c;
-  });
-
-  .wrapper-active({
-    background: #ade89a;
-  });
-
-  .wrapper-disabled({
-    background: #eaecee;
-  });
+.icon {
+  cursor: pointer;
+  pointer-events: auto;
 }
 
 .login-island {

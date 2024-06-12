@@ -1,8 +1,12 @@
 <div class="body">
   <tui-island class="login-island">
     <div class="organization-container">
+      <tui-avatar
+        src="RS"
+        class="text"
+      ></tui-avatar>
       <div class="organization-label">RehabSurvey</div>
-      <div class="tui-text_body-m">Questionnaire</div>
+      <div class="tui-island__paragraph">Questionnaire</div>
     </div>
     <form
       class="login-container"
@@ -23,22 +27,42 @@
       <div
         *ngIf="authForm.controls['username'].invalid &&
         (authForm.controls['username'].dirty || authForm.controls['username'].touched)"
-        class="text-red-500 text-xs mt-2"
+        class="text-red-500 text-xs"
       >
         <div *ngIf="authForm.controls['username'].hasError('required')">
           Username is required
         </div>
-        <!--<div *ngIf="authForm.controls['username'].hasError('username')">
-          Please enter a valid username
-        </div>-->
       </div>
-      <tui-input class="w-full p-3" formControlName="password" required>
+      <tui-primitive-textfield
+        [disabled]="disabled"
+        [focusable]="focusable"
+        [invalid]="computedInvalid"
+        [readOnly]="readOnly"
+        [tuiTextfieldIcon]="iconContent"
+        [(value)]="value"
+        (focusedChange)="onFocused($event)"
+      >
+        <ng-content></ng-content>
         Пароль
         <input
+          formControlName="password"
           tuiTextfield
-          type="password"
+          [type]="inputType"
         />
-      </tui-input>
+      </tui-primitive-textfield>
+
+      <ng-template #iconContent>
+        <tui-svg
+          appearance="icon"
+          tuiWrapper
+          class="icon"
+          [src]="icon"
+          [tuiHint]="hintContent"
+          (click)="togglePasswordVisibility()"
+        ></tui-svg>
+      </ng-template>
+      <ng-template #hintContent>{{ hint }}</ng-template>
+
       <div
         *ngIf="authForm.controls['password'].invalid &&
         (authForm.controls['password'].dirty || authForm.controls['password'].touched)"
