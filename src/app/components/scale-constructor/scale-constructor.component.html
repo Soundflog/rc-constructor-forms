@@ -120,7 +120,7 @@
     size="xl"
     class=""
     type="submit"
-    (click)="onSubmit()"
+    (click)="showDialog(template)"
   >
     Сохранить
   </button>
@@ -131,9 +131,43 @@
     size="xl"
     icon="tuiIconTrash2Large"
     [style.display]="urlId == null ? 'none' : 'flex'"
-    (click)="deleteScale()"
+    (click)="showDialog(template)"
   >
     Удалить
   </button>
+  <ng-template
+    #template
+    let-observer
+  >
+    <h1 class="tui-space_bottom-3">Подверждение</h1>
+    <button
+      size="m"
+      tuiButton
+      type="button"
+      class="tui-space_right-3"
+      (click)="onSubmit(); observer.complete()"
+    >
+      Сохранить
+    </button>
+    <button
+      appearance="secondary-destructive"
+      size="m"
+      tuiButton
+      type="button"
+      class="tui-space_right-3"
+      (click)="deleteScale()"
+    >
+      Удалить
+    </button>
+    <button
+      size="m"
+      tuiButton
+      appearance="accent"
+      type="button"
+      (click)="observer.cancel()"
+    >
+      Отменить
+    </button>
+  </ng-template>
 </div>
 
