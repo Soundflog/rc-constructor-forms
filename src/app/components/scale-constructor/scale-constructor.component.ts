@@ -4,7 +4,7 @@ import {IInterpretation} from "../../models/IInterpretation";
 import {catchError, Observable, of, startWith, Subject, switchMap, tap} from "rxjs";
 import {IScale} from "../../models/IScale";
 import {TuiAlertService} from "@taiga-ui/core";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {InterpretationService} from "../../services/InterpretationService";
 import {ScaleService} from "../../services/ScaleService";
 import {tuiInputNumberOptionsProvider} from "@taiga-ui/kit";
@@ -27,18 +27,23 @@ export class ScaleConstructorComponent implements OnInit {
   @Input() interpretation: IScaleInterpretationResponse | null;
 
   fields: IInterpretation[] = []
-
+  urlId : string | null  =  '';
+  maxLengthTextArea =  220;
   interpretationFormGroup: FormGroup; // группа интерпретации
 
   constructor(
     @Inject(TuiAlertService)
     private readonly alerts: TuiAlertService,
     private fb: FormBuilder,
-    private router: Router,
+    protected router: Router,
+    private route: ActivatedRoute,
     private interpretationService: InterpretationService,
     private scaleService: ScaleService,
   ) {
     this.interpretationFormGroup = this.fb.group({});
+    this.route.paramMap.subscribe(params => {
+      this.urlId = params.get('scale_id');
+    });
   }
 
 
@@ -59,7 +64,7 @@ export class ScaleConstructorComponent implements OnInit {
         description: [interpretation.description, Validators.required],
         minValue: [interpretation.minValue, Validators.required],
         maxValue: [interpretation.maxValue, Validators.required],
-        scale:  [interpretation.scale, Validators.required],
+        scale:  [interpretation.scale],
       });
       const newField: IInterpretation = {
         id: interpretation.id,
@@ -89,7 +94,7 @@ export class ScaleConstructorComponent implements OnInit {
       description: ["Интерпритация", Validators.required],
       minValue: [1, Validators.required],
       maxValue: [20, Validators.required],
-      scale: [this.interpretation, Validators.required],
+      scale: [this.interpretation],
     });
     console.log("Add fields: ", this.fields)
     try {
@@ -100,14 +105,28 @@ export class ScaleConstructorComponent implements OnInit {
     }
   }
 
-
-  deleteInterpretation() {
-    const id = this.interpretation?.id;
-    if (id != null && id >= 0) {
-      this.interpretationService.delete(id)
-        .subscribe(() => this.routeToList())
+  deleteInterpretation(index: number){
+    // const id = this.interpretation?.id;
+    const interpretation  = this.fields[index];
+    if (interpretation.id != null && interpretation.id >= 0) {
+      this.interpretationService.delete(interpretation.id).pipe(
+        tap(()=>{
+          this.fields.splice(index, 1);
+          this.alerts.open('Интерпретация удалена',  {status:'success'}).subscribe();
+        })).subscribe(() => this.routeToList())
     } else {
+      this.fields.splice(index, 1);
       this.alerts.open('Произошла ошибка', {status: 'warning'});
+    }
+  }
+
+  deleteScale(){
+    if (this.interpretation?.id!= null && this.interpretation?.id >= 0)  {
+      const id = this.interpretation.id;
+      this.scaleService.deleteScale(id).pipe(
+        tap(()=>{
+          this.alerts.open('Шкала удалена',  {status:'success'}).subscribe();
+        })).subscribe(() => this.routeToList())
     }
   }
 

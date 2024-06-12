@@ -33,7 +33,7 @@
   >
     Название
     <textarea
-      maxlength="97"
+      [maxLength]="maxLengthTextArea"
       placeholder="Название"
       tuiTextfield
     ></textarea>
@@ -45,7 +45,7 @@
   >
     Описание
     <textarea
-      maxlength="97"
+      [maxLength]="maxLengthTextArea"
       placeholder="Описание"
       tuiTextfield
     ></textarea>
@@ -54,10 +54,11 @@
     <ng-container
       class="tui-space_bottom-5"
       *ngFor="let field of fields; let i = index;"
-      [formGroupName]="i">
-      <tui-accordion-item>
+      [formGroupName]="i"
+    >
+      <tui-accordion-item [open]="true">
         {{ i }}
-        <ng-template tuiAccordionItemContent>
+        <ng-template tuiAccordionItemContent class="accodion">
           <div class="interpretationLabelInputs">
             <tui-textarea
               class="tui-space_bottom-5"
@@ -67,34 +68,34 @@
             >
               {{ field.description }}
               <textarea
-                maxlength="97"
+                [maxLength]="maxLengthTextArea"
                 placeholder="Пояснение"
                 tuiTextfield
               ></textarea>
             </tui-textarea>
             <div class="inputs">
               <tui-input-number
-                class="b-form"
+                class="b-form tui-space_bottom-2"
                 formControlName="minValue"
               >
-                Минимальное
+                Мин.
               </tui-input-number>
               <tui-input-number
                 class="b-form tui-space_bottom-5"
                 formControlName="maxValue"
               >
-                Максимальное
+                Макс.
               </tui-input-number>
             </div>
           </div>
           <!--          Удалить интерпретацию-->
-          <hr class="tui-space_bottom-5 size-2">
           <button
             appearance="flat"
             tuiButton
             title="Удалить Вопрос"
             size="s"
             icon="tuiIconTrash2Large"
+            (click)="deleteInterpretation(i)"
           >
           </button>
         </ng-template>
@@ -129,7 +130,8 @@
     title="Удалить Вопрос"
     size="xl"
     icon="tuiIconTrash2Large"
-    (click)="deleteInterpretation()"
+    [style.display]="urlId == null ? 'none' : 'flex'"
+    (click)="deleteScale()"
   >
     Удалить
   </button>

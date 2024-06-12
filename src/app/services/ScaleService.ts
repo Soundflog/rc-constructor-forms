@@ -19,11 +19,16 @@ export class ScaleService {
   }
 
   getScales(name:string | null) {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-
-    return this._http.get<IScale[]>(`${this._baseUrl}/all`, {headers: headers})
+    return this._http.get<IScale[]>(`${this._baseUrl}/all`)
       .pipe(
         tap(scales => this.scalesSubject.next(scales)),
+        catchError(this.errorHandler.bind(this))
+      )
+  }
+
+  deleteScale(id: number)  {
+    return this._http.delete<IScale>(`${this._baseUrl}/${id}`)
+      .pipe(
         catchError(this.errorHandler.bind(this))
       )
   }
