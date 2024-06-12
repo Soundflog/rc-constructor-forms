@@ -28,12 +28,9 @@ export class InterpretationService {
   }
 
   getAllInterpretations(): Observable<IScaleInterpretationResponse[]> {
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
-
     return this._http.get<IScaleInterpretationResponse[]>(`${this._baseUrl}/all`,
       {
-        params: new HttpParams({fromObject: {limit: 20}}),
-        headers: headers
+        params: new HttpParams({fromObject: {limit: 20}})
       })
       .pipe(
         tap(interpre => {
@@ -45,9 +42,7 @@ export class InterpretationService {
   }
 
   create(interpretation: IScaleInterpretationResponse) {
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
-
-    return this._http.post<IScaleInterpretationResponse>(`${this._baseUrl}/create`, interpretation, {headers: headers})
+    return this._http.post<IScaleInterpretationResponse>(`${this._baseUrl}/create`, interpretation)
       .pipe(
         tap(form => {
           const currentForms = this.interpretationSubject.value;
@@ -58,9 +53,7 @@ export class InterpretationService {
   }
 
   update(interpretation: IScaleInterpretationResponse) {
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
-
-    return this._http.put<IScaleInterpretationResponse>(`${this._baseUrl}/${interpretation.id}`, interpretation, {headers: headers})
+    return this._http.put<IScaleInterpretationResponse>(`${this._baseUrl}/${interpretation.id}`, interpretation)
       .pipe(
         tap(inter => {
           const currentInter = this.interpretationSubject.value;
@@ -73,20 +66,14 @@ export class InterpretationService {
   }
 
   getById(id: number): Observable<IScaleInterpretationResponse> {
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
-
-    return this._http.get<IScaleInterpretationResponse>(`${this._baseUrl}/${id}`,
-      {headers: headers})
+    return this._http.get<IScaleInterpretationResponse>(`${this._baseUrl}/${id}`)
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
   }
 
   delete(id: number) {
-    const headers = {'Authorization': 'Bearer ' + localStorage.getItem("token")}
-
-    return this._http.delete<IScaleInterpretationResponse>(`${this._baseUrl}/${id}`,
-      {headers: headers})
+    return this._http.delete<IScaleInterpretationResponse>(`${this._baseUrl}/${id}`)
       .pipe(
         tap(inter => {
           const currentInter = this.interpretationSubject.value;

@@ -26,9 +26,7 @@ export class FormService {
   }
 
   createForm(form: IForm): Observable<IForm> {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-    return this.http.post<IForm>(`${this._baseUrl}/create`, form,
-      {headers: headers})
+    return this.http.post<IForm>(`${this._baseUrl}/create`, form)
       .pipe(
         tap(form => {
           const currentForms = this.formsSubject.value;
@@ -39,10 +37,8 @@ export class FormService {
   }
 
   updateForm(form: IForm): Observable<IForm> {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
     console.log(form)
-    return this.http.put<IForm>(`${this._baseUrl}/${form.id}`, form,
-      {headers: headers})
+    return this.http.put<IForm>(`${this._baseUrl}/${form.id}`, form)
       .pipe(
         tap(form => {
           const currentForms = this.formsSubject.value;
@@ -53,10 +49,7 @@ export class FormService {
   }
 
   getAll(): Observable<IForm[]> {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-    return this.http.get<IForm[]>(`${this._baseUrl}/all`, {
-      headers: headers
-    }).pipe(
+    return this.http.get<IForm[]>(`${this._baseUrl}/all`).pipe(
       tap(forms => {
         console.log(forms)
       }),
@@ -65,19 +58,15 @@ export class FormService {
   }
 
   getById(id: number): Observable<IForm> {
-    const headers = { 'Authorization': 'Bearer '+ localStorage.getItem("token") };
-    return this.http.get<IForm>(`${this._baseUrl}/${id}`,
-      {headers: headers})
+    return this.http.get<IForm>(`${this._baseUrl}/${id}`)
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
   }
 
   deleteForm(id: number) {
-    const headers = { 'Authorization': 'Bearer ' + localStorage.getItem("token") }
-
     return this.http.delete(`${this._baseUrl}/${id}`,
-      {responseType: "text", headers: headers})
+      {responseType: "text"})
       .pipe(
         catchError(this.errorHandler.bind(this))
       )
