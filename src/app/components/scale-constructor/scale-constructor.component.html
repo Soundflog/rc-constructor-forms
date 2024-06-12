@@ -1,5 +1,5 @@
 <form [formGroup]="interpretationFormGroup">
-  <form
+  <!--<form
     *tuiLet="scaleItems$ | async as items"
     class="b-form"
     [tuiTextfieldCleaner]="true"
@@ -25,37 +25,38 @@
         [items]="items"
       ></tui-data-list-wrapper>
     </tui-combo-box>
-  </form>
-  <div formGroupName="scale" class="tui-space_bottom-5">
-    <tui-textarea
+  </form>-->
+  <tui-textarea
+    class="tui-space_bottom-5"
+    tuiTextfieldSize="l"
+    formControlName="name"
+  >
+    Название
+    <textarea
+      maxlength="97"
+      placeholder="Название"
+      tuiTextfield
+    ></textarea>
+  </tui-textarea>
+  <tui-textarea
+    class="tui-space_bottom-5"
+    tuiTextfieldSize="l"
+    formControlName="description"
+  >
+    Описание
+    <textarea
+      maxlength="97"
+      placeholder="Описание"
+      tuiTextfield
+    ></textarea>
+  </tui-textarea>
+  <div formArrayName="interpretations" class="tui-space_bottom-5 accodion">
+    <ng-container
       class="tui-space_bottom-5"
-      tuiTextfieldSize="l"
-      formControlName="name"
-    >
-      Название
-      <textarea
-        maxlength="97"
-        placeholder="Название"
-        tuiTextfield
-      ></textarea>
-    </tui-textarea>
-    <tui-textarea
-      class="tui-space_bottom-5"
-      tuiTextfieldSize="l"
-      formControlName="description"
-    >
-      Описание
-      <textarea
-        maxlength="97"
-        placeholder="Описание"
-        tuiTextfield
-      ></textarea>
-    </tui-textarea>
-  </div>
-  <tui-accordion>
-    <ng-container *ngFor="let field of fields; let i = index;">
+      *ngFor="let field of fields; let i = index;"
+      [formGroupName]="i">
       <tui-accordion-item>
-        1
+        {{ i }}
         <ng-template tuiAccordionItemContent>
           <div class="interpretationLabelInputs">
             <tui-textarea
@@ -64,7 +65,7 @@
               tuiTextfieldSize="l"
               formControlName="description"
             >
-              Интерпретация шкалы
+              {{ field.description }}
               <textarea
                 maxlength="97"
                 placeholder="Пояснение"
@@ -86,43 +87,42 @@
               </tui-input-number>
             </div>
           </div>
-          <!--        Нижняя панель управления вопросом - Компонент-->
-          <ng-container class="tui-row" tuiAccordionItemContent>
-            <hr class="tui-space_bottom-5 size-2">
-            <div tuiGroup class="group" [collapsed]="true">
-              <button
-                appearance="flat"
-                tuiButton
-                title="Добавить Вопрос"
-                icon="tuiIconPlusSquareLarge"
-                size="s"
-                (click)="addField(i)"
-              >
-              </button>
-              <button
-                appearance="flat"
-                tuiButton
-                title="Удалить Вопрос"
-                size="s"
-                icon="tuiIconTrash2Large"
-              >
-              </button>
-              <label class="tui-space_right-2"> Обязательный вопрос
-                <tui-toggle
-                  formControlName="required"
-                  title="Обязательный вопрос"
-                  size="l"
-                  [showIcons]="true"
-                ></tui-toggle>
-              </label>
-            </div>
-          </ng-container>
+          <!--          Удалить интерпретацию-->
+          <hr class="tui-space_bottom-5 size-2">
+          <button
+            appearance="flat"
+            tuiButton
+            title="Удалить Вопрос"
+            size="s"
+            icon="tuiIconTrash2Large"
+          >
+          </button>
         </ng-template>
       </tui-accordion-item>
     </ng-container>
-  </tui-accordion>
+    <!--        Нижняя панель управления вопросом - Компонент-->
+    <button
+      class="w-fit"
+      appearance="flat"
+      tuiButton
+      title="Добавить"
+      icon="tuiIconPlusLarge"
+      size="l"
+      (click)="addField(fields.length)"
+    >
+    </button>
+  </div>
 </form>
 <div class="group" tuiGroup>
+  <button
+    tuiButton
+    size="xl"
+    class=""
+    type="submit"
+    (click)="onSubmit()"
+  >
+    Сохранить
+  </button>
   <button
     appearance="secondary-destructive"
     tuiButton
@@ -132,15 +132,6 @@
     (click)="deleteInterpretation()"
   >
     Удалить
-  </button>
-  <button
-    tuiButton
-    size="xl"
-    class=""
-    type="submit"
-    (click)="onSubmit()"
-  >
-    Сохранить
   </button>
 </div>
 

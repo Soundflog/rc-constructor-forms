@@ -40,8 +40,11 @@ export class ScaleConstructorPageComponent implements OnInit {
       this.idFromRoute = params['scale_id'];
       console.log(this.idFromRoute);
       if (this.idFromRoute){
-        this.interpretation$ = this.interpretationService.getById(this.idFromRoute)
-          .pipe();
+        this.interpretation$ = this.interpretationService.getById(this.idFromRoute).pipe(
+            tap(interpretation => {
+              console.log(interpretation);
+            })
+          );
       } else{
         this.defaultInterpretation = {
           id: 0,
