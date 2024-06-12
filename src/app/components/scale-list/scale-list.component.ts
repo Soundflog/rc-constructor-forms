@@ -17,19 +17,7 @@ export class ScaleListComponent implements OnInit {
   maxLength = 20;
 
   scaleFormGroup = this.fb.group({});
-  items:IScaleInterpretationResponse[] = [
-    // {
-    //   id: 0,
-    //   description: 'Test description 1',
-    //   minValue: 0,
-    //   maxValue: 1,
-    //   scale: {
-    //     id: 0,
-    //     name: 'Test scale 1',
-    //     description: 'Test scale description 1',
-    //   }
-    // },
-  ];
+  items:IScaleInterpretationResponse[] = [];
 
   constructor(private fb: FormBuilder) {
   }
@@ -41,16 +29,6 @@ export class ScaleListComponent implements OnInit {
         id: [scale.id],
         description: [scale.description, Validators.required],
         name: [scale.name, Validators.required],
-        interpretations: this.fb.array([
-          scale?.interpretations.map((item) =>{
-            this.fb.group({
-              description: [item.description, Validators.required],
-              minValue: [item.minValue, Validators.required],
-              maxValue: [item.maxValue, Validators.required],
-              scale: [item.scale, Validators.required],
-            })
-          })
-        ]),
       });
 
       this.items.push({
