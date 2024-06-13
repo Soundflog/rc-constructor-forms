@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, Inject, OnInit, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {TuiAlertService} from "@taiga-ui/core";
+import {TuiAlertService, TuiDialogContext, TuiDialogService} from "@taiga-ui/core";
 import {scales} from "../../data/scales";
 import {IScale} from "../../models/IScale";
 import {QuestionConstructorComponent} from "../../components/question-constructor/question-constructor.component";
@@ -9,6 +9,7 @@ import {IForm} from "../../models/IForm";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ScaleService} from "../../services/ScaleService";
 import {Observable, tap} from "rxjs";
+import {PolymorpheusContent} from "@tinkoff/ng-polymorpheus";
 
 @Component({
   selector: 'app-new-form-page',
@@ -23,8 +24,9 @@ export class NewFormPageComponent implements OnInit {
   // Шкала
   scaleItems$: Observable<IScale[]>;
   formById$: Observable<IForm>;
-  formDefault : IForm
-  idFromRoute : number
+  formDefault: IForm
+  idFromRoute: number
+  urlId: string | null = '';
 
   readonly scaleChooseStringify = (item: IScale): string =>
     `${item.name}`;
@@ -36,9 +38,13 @@ export class NewFormPageComponent implements OnInit {
     private formService: FormService,
     private activatedRoute: ActivatedRoute,
     private scaleService: ScaleService,
-    private router: Router
+    private router: Router,
+    @Inject(TuiDialogService) private readonly dialogs: TuiDialogService
   ) {
     this.mainFG = this.fb.group({});
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.urlId = params.get('form_id');
+    });
   }
 
   ngOnInit(): void {
@@ -66,7 +72,7 @@ export class NewFormPageComponent implements OnInit {
           })
         )
       }
-    }).unsubscribe()
+    })
 
     this.formDefault = {
       name: 'Название формы',
@@ -81,16 +87,16 @@ export class NewFormPageComponent implements OnInit {
     })
   }
 
-  deleteForm(index: number) {
-    this.formService.deleteForm(index).subscribe(() => {
-      this.alerts.open('Анкета удалена', {status: 'success'}).subscribe();
-      this.router.navigate([`/form/list`]).then(() => {
-        window.location.reload()
-      });
-    })
+  deleteForm() {
+    if (this.urlId != null && this.urlId != "new" && Number(this.urlId) != 0)  {
+      this.formService.deleteForm(Number(this.urlId)).subscribe(() => {
+        this.alerts.open('Анкета удалена', {status: 'success'}).subscribe();
+      })
+      this.router.navigate([`/form/list`]);
+    }
   }
 
-  collectFormData(){
+  collectFormData() {
     this.questionConstructor.setValueTypeQuestionOnControl();
     let newQuestion = this.questionConstructor.mainQuestionsFG.controls
     this.mainFG.addControl("questions", this.fb.array([]));
@@ -124,5 +130,9 @@ export class NewFormPageComponent implements OnInit {
     } else {
       this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();
     }
+  }
+
+  showDialog(content: PolymorpheusContent<TuiDialogContext>): void {
+    this.dialogs.open(content).subscribe();
   }
 }
