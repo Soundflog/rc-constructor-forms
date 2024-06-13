@@ -1,13 +1,25 @@
 @import '@taiga-ui/core/styles/taiga-ui-local.less';
+.tui_row{
+  max-width: max-content;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: flex-start;
+}
 
 .tui-col_md-4{
+  width: 27.5rem;
+  padding-left: 1%;
+  padding-right: 1%;
+  box-sizing: border-box;
   @media @tui-mobile{
     width: -webkit-fill-available;
   }
 }
-.mobileDescription{
-  display: none;
-  @media @tui-mobile{
-    display: flex;
-  }
+.demo-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }

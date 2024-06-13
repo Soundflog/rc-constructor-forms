@@ -1,4 +1,4 @@
-<tui-island>
+<tui-island class="root">
   <div *ngIf="forms$ | async as forms">
     <div *ngIf="forms.length > 0; else addButton">
       <app-forms-home [formsInput]="forms"/>
