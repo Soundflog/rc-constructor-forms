@@ -1,6 +1,7 @@
 <div class="align-middle justify-items-center flex-auto">
   <tui-app-bar class="color">
     <button
+      title="Уведомления"
       iconRight="tuiIconBell"
       tuiIconButton
       tuiSlot="right"
@@ -9,13 +10,20 @@
     </button>
     <app-dropdown-menu-nav tuiSlot="right"/>
     <a
-      title="User"
+      title="Выйти"
       tuiIconButton
       icon="tuiIconUserLarge"
       tuiSlot="right"
       (click)="logout()"
     ></a>
+    <tui-avatar
+      src="RS"
+      size="m"
+      class="text"
+      tuiSlot="left"
+    ></tui-avatar>
     <a
+      title="Анкеты"
       tuiSlot="left"
       routerLink="/form/list"
     >
