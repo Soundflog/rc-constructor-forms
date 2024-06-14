@@ -114,17 +114,13 @@ export class NewFormPageComponent implements OnInit {
       if (formData.id > 0) {
         this.formService.updateForm(formData).subscribe(form => {
           this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
-          this.router.navigate([`/form/list`]).then(() => {
-            window.location.reload()
-          });
+          this.router.navigate([`/form/list`]);
         })
       } else {
         this.formService.createForm(formData).subscribe(form => {
           this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
           this.mainFG.patchValue({id: form.id})
-          this.router.navigate([`/form/list`]).then(() => {
-            window.location.reload()
-          });
+          this.router.navigate([`/form/list`]);
         })
       }
     } else {

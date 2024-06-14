@@ -49,6 +49,7 @@
     <div *ngIf="this.idFromRoute != null; else defaultForm">
       <ng-container *ngIf="formById$ | async as form; else loading">
         <app-question-constructor [anketa]="form"></app-question-constructor>
+
       </ng-container>
       <ng-template #loading>
         <app-loading/>
