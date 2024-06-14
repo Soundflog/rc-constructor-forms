@@ -359,7 +359,8 @@ export class NewFormPageComponent implements OnInit {
       // Проверить совпадают ли name и изменившийся вопрос
       if (field.name === `${i}`) {
         const questionFG = this.mainQuestionsFG.get(field.name) as FormGroup;
-        const comboBoxField = this.comboBoxFields.find(item => item === field.type.value);
+        const comboBoxField =
+          this.comboBoxFields.find(item => item === field.type.value);
         if (comboBoxField) {
           questionFG.controls['type'].setValue(comboBoxField.type);
         }

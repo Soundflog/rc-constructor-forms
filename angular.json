@@ -20,7 +20,9 @@
             "allowedCommonJsDependencies": [
               "lodash",
               "@taiga-ui/kit",
-              "@tinkoff/ng-dompurify"
+              "@tinkoff/ng-dompurify",
+              "text-mask-core",
+              "dompurify"
             ],
             "outputPath": "dist/rc-constructor-forms",
             "index": "src/index.html",
