@@ -1,31 +1,4 @@
 <form [formGroup]="interpretationFormGroup">
-  <!--<form
-    *tuiLet="scaleItems$ | async as items"
-    class="b-form"
-    [tuiTextfieldCleaner]="true"
-  >
-    <tui-combo-box
-      class="tui-space_bottom-5"
-      tuiTextfieldSize="l"
-      [formControl]="scaleFromGroup"
-      [stringify]="scaleChooseStringify"
-      [valueContent]=""
-      (tuiValueChanges)="changeScaleCombobox()"
-      (searchChange)="onSearchChange($event)"
-    >
-      Найти шкалу по названию
-      <input
-        placeholder="Type a name"
-        tuiTextfield
-        (input)="onSearchChange(extractValueFromEvent($event))"
-      />
-      <tui-data-list-wrapper
-        *tuiDataList
-        [itemContent]="scaleChooseStringify | tuiStringifyContent"
-        [items]="items"
-      ></tui-data-list-wrapper>
-    </tui-combo-box>
-  </form>-->
   <tui-textarea
     class="tui-space_bottom-5"
     tuiTextfieldSize="l"

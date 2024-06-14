@@ -1,0 +1,73 @@
+@import '../../../../../node_modules/@taiga-ui/core/styles/taiga-ui-local.less';
+
+.container {
+  max-width: 75%;
+  padding: 0 15% 15%;
+  @media @tui-mobile{
+    padding: 0 0 0;
+    max-width: 100%;
+  }
+  @media @tui-tablet{
+    padding: 0 0 0;
+    max-width: 100%;
+  }
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container::after {
+  content: 'Подсказка';
+  position: absolute;
+  top: 100%;
+  right: 0;
+  font-size: 12px;
+  color: #777;
+}
+
+.wrapper:not(:last-child) {
+  margin-bottom: 1rem;
+}
+
+.button_group_variants{
+  align-items: center;
+  margin: auto;
+  padding: 2%;
+}
+
+.tui-col_md-3{
+  @media @tui-mobile{
+    width: 35%;
+  }
+}
+
+.accordion-item{
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+.dialog{
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+.dialog_buttons{
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+.dialog_title{
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}

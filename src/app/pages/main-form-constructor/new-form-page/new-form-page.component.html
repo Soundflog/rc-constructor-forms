@@ -1,0 +1,270 @@
+<div class="container">
+  <!--    ПОЛЯ-АНКЕТЫ (name, description) ОБЯЗАТЕЛЬНЫЕ НЕИЗМЕНЯЕМЫЕ ПОЛЯ-->
+  <form [formGroup]="mainFG">
+    <tui-island
+      class="tui-space_bottom-5"
+      [hoverable]=false
+      size="l"
+      textAlign="left"
+    >
+      <tui-textarea
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        formControlName="name"
+      >
+        Название анкеты
+        <textarea
+          maxlength="220"
+          placeholder="Название анкеты"
+          tuiTextfield
+        ></textarea>
+      </tui-textarea>
+      <tui-textarea
+        class="tui-space_bottom-5"
+        tuiTextfieldSize="l"
+        formControlName="description">
+        Описание анкеты
+        <textarea
+          maxlength="220"
+          placeholder="Описание анкеты"
+          tuiTextfield
+        ></textarea>
+      </tui-textarea>
+
+      <label>
+        <tui-combo-box
+          formControlName="scaleId"
+          [stringify]="scaleChooseStringify"
+          [tuiTextfieldLabelOutside]="true"
+        >
+          Шкала
+          <tui-data-list-wrapper
+            *tuiDataList
+            [itemContent]="scaleChooseStringify | tuiStringifyContent"
+            [items]="scaleItems$ | async | tuiFilterByInputWith: scaleChooseStringify"
+          ></tui-data-list-wrapper>
+        </tui-combo-box>
+      </label>
+
+      <!--      QUESTION - CONSTRUCTOR -->
+      <div class="tui-space_top-5">
+        <form [formGroup]="mainQuestionsFG" (ngSubmit)="onSubmitForm()">
+          <!--    ACCORDION-->
+          <div style="display: flex; justify-content: center" *ngIf="fields.length <= 0">
+            <button
+              appearance="primary"
+              tuiButton
+              title="Добавить Вопрос"
+              icon="tuiIconPlusSquareLarge"
+              size="l"
+              (click)="addField(0)"
+            >
+            </button>
+          </div>
+          <div
+            class="tui-space_bottom-5"
+            *ngFor="let field of fields; let questionIndex = index"
+            [formGroupName]="questionIndex"
+          >
+            <tui-accordion-item class="accordion-item" [open]="true">
+              Вопрос {{ questionIndex + 1 }}
+              <ng-template tuiAccordionItemContent>
+                <div class="tui-row tui-space_bottom-6">
+                  <tui-textarea
+                    class="tui-col_md-6"
+                    [tuiTextfieldCleaner]=true
+                    tuiTextfieldSize="l"
+                    formControlName="content"
+                  >
+                    Вопрос
+                    <textarea
+                      maxlength="120"
+                      placeholder="Вопрос"
+                      tuiTextfield
+                    ></textarea>
+                  </tui-textarea>
+                  <tui-select
+                    class="tui-col_md-6"
+                    [formControl]="field.type"
+                    [stringify]="comboBoxStringify"
+                    [tuiTextfieldLabelOutside]="true"
+                  >
+                    {{ comboBoxFields[0].value }}
+                    <tui-data-list-wrapper
+                      *tuiDataList
+                      [itemContent]="comboBoxStringify | tuiStringifyContent"
+                      [items]="comboBoxFields | tuiFilterByInputWith: comboBoxStringify"
+                    >
+                    </tui-data-list-wrapper>
+                  </tui-select>
+                </div>
+                <!--          VARIANTS -->
+                <ng-container class="tui-row">
+                  <div class="group" formArrayName="variants">
+                    <button
+                      appearance="outline"
+                      tuiButton
+                      class="tui-space_bottom-5"
+                      size="s"
+                      [disabled]="field.type.value.type === QuestionType.SCALE"
+                      (click)="addVariant(questionIndex)"
+                    >
+                      Добавить Вариант
+                    </button>
+                    <tui-elastic-container
+                      *ngFor="let variant of field.variants; let variantIndex=index"
+                      class="tui-space_bottom-5 m-auto"
+                    >
+                      <div class="tui-row" style="margin: auto" [formGroupName]="variantIndex">
+                        <div *ngIf="field.type.value.type === QuestionType.SINGLE_CHOICE">
+                          <tui-radio class="tui-space_top-4" size="l" [formControl]="radioControl"/>
+                        </div>
+                        <div *ngIf="field.type.value.type === QuestionType.MULTIPLE_CHOICE">
+                          <tui-checkbox
+                            class="tui-space_top-4"
+                            [formControl]="checkboxControl"
+                            size="l"
+                            [readOnly]="true"
+                          >
+                          </tui-checkbox>
+                        </div>
+                        <tui-input
+                          class="tui-col_md-7"
+                          [tuiTextfieldCleaner]="true"
+                          tuiTextfieldSize="l"
+                          formControlName="content"
+                        >
+                          Вариант
+                          <input
+                            tuiTextfield
+                          />
+                        </tui-input>
+                        <tui-input-count
+                          class="tui-col_md-3"
+                          formControlName="score"
+                          [tuiTextfieldLabelOutside]="true"
+                        ></tui-input-count>
+                        <div class="group button_group_variants" tuiGroup orientation="horizontal">
+                          <button
+                            appearance="flat"
+                            icon="tuiIconCopy"
+                            shape="rounded"
+                            size="s"
+                            title="Copy"
+                            tuiIconButton
+                            (click)="copyVariant(questionIndex, variantIndex)"
+                          ></button>
+                          <button
+                            appearance="flat"
+                            icon="tuiIconTrash"
+                            shape="rounded"
+                            size="s"
+                            title="Remove"
+                            tuiIconButton
+                            (click)="removeVariant(questionIndex, variantIndex)"
+                          ></button>
+                        </div>
+                      </div>
+                    </tui-elastic-container>
+                  </div>
+                </ng-container>
+                <!--        Нижняя панель управления вопросом - Компонент-->
+                <ng-container class="tui-row" tuiAccordionItemContent>
+                  <hr class="tui-space_bottom-5 size-2">
+                  <div tuiGroup class="group" [collapsed]="true">
+                    <button
+                      appearance="flat"
+                      tuiButton
+                      title="Добавить Вопрос"
+                      icon="tuiIconPlusSquareLarge"
+                      size="s"
+                      (click)="addField(questionIndex)"
+                    >
+                    </button>
+                    <button
+                      appearance="flat"
+                      tuiButton
+                      title="Удалить Вопрос"
+                      size="s"
+                      icon="tuiIconTrash2Large"
+                      (click)="removeField(questionIndex)"
+                    >
+                    </button>
+                    <label class="tui-space_right-2"> Обязательный вопрос
+                      <tui-toggle
+                        formControlName="required"
+                        title="Обязательный вопрос"
+                        size="l"
+                        [showIcons]="true"
+                      ></tui-toggle>
+                    </label>
+                  </div>
+                </ng-container>
+              </ng-template>
+            </tui-accordion-item>
+          </div>
+        </form>
+      </div>
+
+    </tui-island>
+    <div class="group" tuiGroup>
+      <button
+        tuiButton
+        size="xl"
+        class=""
+        (click)="showDialog(template, 'Вы действительно хотите Сохранить?')"
+      >
+        Сохранить
+      </button>
+      <button
+        class=""
+        appearance="secondary-destructive"
+        tuiButton
+        title="Удалить Форму"
+        size="xl"
+        [style.display]="urlId == null ? 'none' : 'flex'"
+        (click)="showDialog(template, 'Вы действительно хотите Удалить?')"
+      >
+        Удалить
+      </button>
+    </div>
+    <ng-template
+      #template
+      let-observer
+      class="dialog"
+    >
+      <div class="dialog_buttons">
+        <button
+          size="m"
+          tuiButton
+          type="button"
+          class="tui-space_right-3"
+          (click)="onSubmitForm(); observer.complete()"
+        >
+          OK
+        </button>
+        <button
+          appearance="secondary-destructive"
+          size="m"
+          tuiButton
+          type="button"
+          class="tui-space_right-3"
+          [style.display]="urlId == null ? 'none' : 'inline-block'"
+          (click)="deleteForm(); observer.complete()"
+        >
+          Удалить
+        </button>
+        <button
+          size="m"
+          tuiButton
+          appearance="accent"
+          type="button"
+          (click)="observer.cancel()"
+        >
+          Отменить
+        </button>
+      </div>
+    </ng-template>
+  </form>
+</div>
+

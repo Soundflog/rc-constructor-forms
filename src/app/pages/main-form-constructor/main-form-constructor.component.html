@@ -1,0 +1,13 @@
+<div class="tui-space_top-5" *ngIf="this.idFromRoute != null; else defaultForm">
+  <ng-container *ngIf="formById$ | async as form; else loading">
+    <app-new-form-page [formInput]="form"></app-new-form-page>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading/>
+  </ng-template>
+</div>
+<ng-template #defaultForm>
+  <app-new-form-page [formInput]="formDefault"></app-new-form-page>
+  <!--        <app-question-constructor [anketa]="formDefault"></app-question-constructor>-->
+</ng-template>
+

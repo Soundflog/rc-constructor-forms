@@ -53,9 +53,8 @@ import {TuiDocNavigationModule} from "@taiga-ui/addon-doc";
 import {TuiLetModule, TuiRepeatTimesModule, TuiValueChangesModule} from "@taiga-ui/cdk";
 import { FormsHomeComponent } from './components/forms-home/forms-home.component';
 import { DropdownMenuNavComponent } from './components/dropdown-menu-nav/dropdown-menu-nav.component';
-import { NewFormPageComponent } from './pages/new-form-page/new-form-page.component';
+import { NewFormPageComponent } from './pages/main-form-constructor/new-form-page/new-form-page.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { QuestionConstructorComponent } from './components/question-constructor/question-constructor.component';
 import { AuthPageComponent } from './pages/auth-page/auth-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { ScaleListPageComponent } from './pages/scale-list-page/scale-list-page.component';
@@ -69,6 +68,7 @@ import { ScaleConstructorComponent } from './components/scale-constructor/scale-
 import {httpInterceptorProviders} from "./services/auth-interceptor";
 import { NotFoundPageComponent } from './pages/not-found-page/not-found-page.component';
 import {TuiBlockStatusModule} from "@taiga-ui/layout";
+import { MainFormConstructorComponent } from './pages/main-form-constructor/main-form-constructor.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +78,6 @@ import {TuiBlockStatusModule} from "@taiga-ui/layout";
     FormsHomeComponent,
     DropdownMenuNavComponent,
     NewFormPageComponent,
-    QuestionConstructorComponent,
     AuthPageComponent,
     HomePageComponent,
     ScaleListPageComponent,
@@ -89,7 +88,8 @@ import {TuiBlockStatusModule} from "@taiga-ui/layout";
     LoadingComponent,
     ScaleConstructorPageComponent,
     ScaleConstructorComponent,
-    NotFoundPageComponent
+    NotFoundPageComponent,
+    MainFormConstructorComponent
   ],
   imports: [
     BrowserModule,

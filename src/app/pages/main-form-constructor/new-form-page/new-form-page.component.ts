@@ -1,16 +1,22 @@
 import {ChangeDetectionStrategy, Component, Inject, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {TuiAlertService} from "@taiga-ui/core";
-import {FieldInterface} from 'src/app/models/form/field.interface';
-import {ComboTypeQuestion} from "../../models/form/comboTypeQuestion.interface";
-import {QuestionType} from "../../models/form/questionType.enum";
-import {IForm} from "../../models/IForm";
+import {TuiAlertService, TuiDialogContext, TuiDialogService} from "@taiga-ui/core";
+import {IScale} from "../../../models/IScale";
+import {FormService} from "../../../services/FormService";
+import {IForm} from "../../../models/IForm";
+import {ActivatedRoute, Router} from "@angular/router";
+import {ScaleService} from "../../../services/ScaleService";
+import {Observable, tap} from "rxjs";
+import {PolymorpheusContent} from "@tinkoff/ng-polymorpheus";
 import {tuiInputCountOptionsProvider} from "@taiga-ui/kit";
+import {ComboTypeQuestion} from "../../../models/form/comboTypeQuestion.interface";
+import {QuestionType} from "../../../models/form/questionType.enum";
+import {FieldInterface} from "../../../models/form/field.interface";
 
 @Component({
-  selector: 'app-question-constructor',
-  templateUrl: './question-constructor.component.html',
-  styleUrls: ['./question-constructor.component.less'],
+  selector: 'app-new-form-page',
+  templateUrl: './new-form-page.component.html',
+  styleUrls: ['./new-form-page.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     tuiInputCountOptionsProvider({
@@ -25,13 +31,21 @@ import {tuiInputCountOptionsProvider} from "@taiga-ui/kit";
     }),
   ],
 })
-export class QuestionConstructorComponent implements OnInit {
-  @Input() anketa: IForm;
-  // Данные для отправки на сервер
+export class NewFormPageComponent implements OnInit {
+  // @ViewChild(QuestionConstructorComponent) questionConstructor: QuestionConstructorComponent;
+  @Input() formInput: IForm
+  mainFG: FormGroup;
+  // Шкала
+  scaleItems$: Observable<IScale[]>;
+  // formById$: Observable<IForm>;
+  idFromRoute: number
+  urlId: string | null = '';
+
+  // question-constructor
+  // anketa: IForm
   mainQuestionsFG: FormGroup; // questions form group
   variantsFG: FormGroup; // variants form group
   questionsFG: FormGroup; // variants form group
-
   // Заглушки
   readonly radioControl = new FormControl();
   readonly checkboxControl = new FormControl();
@@ -47,10 +61,67 @@ export class QuestionConstructorComponent implements OnInit {
 
   readonly comboBoxStringify = (item: ComboTypeQuestion): string =>
     `${item.value}`;
+  readonly scaleChooseStringify = (item: IScale): string =>
+    `${item.name}`;
+
+  constructor(
+    @Inject(TuiAlertService)
+    private readonly alerts: TuiAlertService,
+    private fb: FormBuilder,
+    private formService: FormService,
+    private activatedRoute: ActivatedRoute,
+    private scaleService: ScaleService,
+    private router: Router,
+    @Inject(TuiDialogService) private readonly dialogs: TuiDialogService
+  ) {
+    this.mainFG = this.fb.group({});
+    this.activatedRoute.paramMap.subscribe(params => {
+      this.urlId = params.get('form_id');
+    });
+
+    this.mainQuestionsFG = this.fb.group({});
+    this.variantsFG = this.fb.group({
+      content: new FormControl("Вариант 1", Validators.required),
+      score: new FormControl(5.00, Validators.required)
+    })
+  }
 
   ngOnInit(): void {
+    this.scaleItems$ = this.scaleService.getScales(null).pipe(
+      tap(items => {
+        if (items.length === 0) {
+          this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'}).subscribe();
+        }
+      })
+    )
+
+    this.mainFG = this.fb.group({
+      name: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      scaleId: new FormControl(),
+    })
+
+    this.activatedRoute.params.subscribe(params => {
+      this.idFromRoute = params['form_id'];
+      if (this.idFromRoute) {
+        this.mainFG.patchValue({
+          name: this.formInput.name,
+          description: this.formInput.description,
+          scaleId: this.formInput.scaleId
+        })
+        this.mainFG.addControl("id", new FormControl(this.formInput.id));
+      } else{
+        this.mainFG.addControl("id", new FormControl(0));
+      }
+      this.questionConstructor();
+    })
+
+  }
+
+  questionConstructor(){
     // Добавление FormControl для каждого вопроса в форме
-    if (this.anketa.questions.length === 0) {
+    // this.formById$ = this.formService
+    if (this.formInput.questions.length === 0) {
       this.variantsFG = this.fb.group({
         content: new FormControl("Вариант 1", Validators.required),
         score: new FormControl(1.00, Validators.required)
@@ -87,7 +158,7 @@ export class QuestionConstructorComponent implements OnInit {
         ]
       })
     } else {
-      this.anketa.questions.forEach((question, index) => {
+      this.formInput.questions.forEach((question, index) => {
         const questionGroup = this.fb.group({
           id: [question.id],
           content: [question.content, Validators.required],
@@ -125,16 +196,49 @@ export class QuestionConstructorComponent implements OnInit {
     }
   }
 
-  constructor(
-    @Inject(TuiAlertService)
-    private readonly alerts: TuiAlertService,
-    private fb: FormBuilder
-  ) {
-    this.mainQuestionsFG = this.fb.group({});
-    this.variantsFG = this.fb.group({
-      content: new FormControl("Вариант 1", Validators.required),
-      score: new FormControl(5.00, Validators.required)
+  deleteForm() {
+    if (this.urlId != null && this.urlId != "new" && Number(this.urlId) != 0)  {
+      this.formService.deleteForm(Number(this.urlId)).subscribe(() => {
+        this.alerts.open('Анкета удалена', {status: 'success'}).subscribe();
+      })
+      this.router.navigate([`/form/list`]).then(() => window.location.reload());
+    }
+  }
+
+  collectFormData() {
+    this.setValueTypeQuestionOnControl();
+    let newQuestion = this.mainQuestionsFG.controls
+    this.mainFG.addControl("questions", this.fb.array([]));
+    // Очищаем форму, избежать дублирования
+    (this.mainFG.get("questions") as FormArray).clear()
+    this.fields.forEach((item, index) => {
+      (this.mainFG.get("questions") as FormArray).push(newQuestion[index])
     })
+  }
+
+  onSubmitForm() {
+    if (this.mainFG.valid) {
+      this.collectFormData()
+      const formData = this.mainFG.value;
+      if (formData.id > 0) {
+        this.formService.updateForm(formData).subscribe(_ => {
+          this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
+          this.router.navigate([`/form/list`]).then(() => window.location.reload());
+        })
+      } else {
+        this.formService.createForm(formData).subscribe(form => {
+          this.alerts.open('Данные сохранены', {status: 'success'}).subscribe();
+          this.mainFG.patchValue({id: form.id})
+          this.router.navigate([`/form/list`]).then(() => window.location.reload());
+        })
+      }
+    } else {
+      this.alerts.open(`Не все поля заполнены`, {status: 'error'}).subscribe();
+    }
+  }
+
+  showDialog(content: PolymorpheusContent<TuiDialogContext>, action: string): void {
+    this.dialogs.open(content, {label:  action}).subscribe();
   }
 
   // Функция добавления вопроса в форму
@@ -261,11 +365,6 @@ export class QuestionConstructorComponent implements OnInit {
         }
       }
     })
-  }
-
-  onSubmit() {
-    // Перед отправкой на сервер
-    this.setValueTypeQuestionOnControl();
   }
 
   protected readonly QuestionType = QuestionType;

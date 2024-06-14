@@ -1,7 +1,5 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {tuiArrayRemove} from "@taiga-ui/cdk";
-import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {IInterpretation} from "../../models/IInterpretation";
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {FormControl} from "@angular/forms";
 import {InterpretationService} from "../../services/InterpretationService";
 import {Observable} from "rxjs";
 import {IScaleInterpretationResponse} from "../../models/ScaleInterpretationResponse";
