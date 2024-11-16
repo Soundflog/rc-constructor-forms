@@ -6,12 +6,13 @@ import {FormService} from "../../../services/FormService";
 import {IForm} from "../../../models/IForm";
 import {ActivatedRoute, Router} from "@angular/router";
 import {ScaleService} from "../../../services/ScaleService";
-import {Observable, tap} from "rxjs";
+import {Observable, Subject, tap} from "rxjs";
 import {PolymorpheusContent} from "@tinkoff/ng-polymorpheus";
 import {tuiInputCountOptionsProvider} from "@taiga-ui/kit";
 import {ComboTypeQuestion} from "../../../models/form/comboTypeQuestion.interface";
 import {QuestionType} from "../../../models/form/questionType.enum";
 import {FieldInterface} from "../../../models/form/field.interface";
+import {scales} from "../../../data/scales";
 
 @Component({
   selector: 'app-new-form-page',
@@ -36,8 +37,8 @@ export class NewFormPageComponent implements OnInit {
   @Input() formInput: IForm
   mainFG: FormGroup;
   // Шкала
-  scaleItems$: Observable<IScale[]>;
-  // formById$: Observable<IForm>;
+  // scaleItems$: Observable<IScale[]>;
+  scaleItems$: Subject<IScale[]>;
   idFromRoute: number
   urlId: string | null = '';
 
@@ -87,14 +88,14 @@ export class NewFormPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.scaleItems$ = this.scaleService.getScales(null).pipe(
-      tap(items => {
-        if (items.length === 0) {
-          this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'}).subscribe();
-        }
-      })
-    )
-
+    // this.scaleItems$ = this.scaleService.getScales(null).pipe(
+    //   tap(items => {
+    //     if (items.length === 0) {
+    //       this.alerts.open('Нет шкал. Добавьте шкалы в настройках', {status: 'warning'}).subscribe();
+    //     }
+    //   })
+    // )
+    this.scaleItems$.next(scales)
     this.mainFG = this.fb.group({
       name: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required),

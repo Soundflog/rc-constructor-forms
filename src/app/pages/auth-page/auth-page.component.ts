@@ -30,6 +30,7 @@ export class AuthPageComponent extends AbstractTuiControl<string> {
   @ViewChild(TuiPrimitiveTextfieldComponent)
   private readonly textfield?: TuiPrimitiveTextfieldComponent;
   private isPasswordHidden = true;
+
   constructor(
     @Optional()
     @Self()
@@ -51,12 +52,14 @@ export class AuthPageComponent extends AbstractTuiControl<string> {
 
   onSubmit(): void {
     if (this.authForm.valid) {
-      this.authService.login(this.authForm.value).subscribe(
-        () => {
-          this.router.navigate(['/form/list']).then(() => {
-          })
-          this.alerts.open('Вы успешно вошли в систему', {status: 'success'}).subscribe()
-        });
+      // this.authService.login(this.authForm.value).subscribe(
+      //   () => {
+      //     this.router.navigate(['/form/list']).then(() => {
+      //     })
+      //     this.alerts.open('Вы успешно вошли в систему', {status: 'success'}).subscribe()
+      //   });
+      this.router.navigate(['/form/list']).then(() => {
+      })
     } else {
       this.alerts.open('Заполните все поля', {status: 'warning'}).subscribe()
     }

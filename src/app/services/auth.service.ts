@@ -11,7 +11,7 @@ import {API_URL} from "../const/constants";
 })
 export class AuthService {
   // real-project = false
-  isAuthSig = signal<boolean>(false)
+  isAuthSig = signal<boolean>(true)
 
   constructor(
     private http: HttpClient,

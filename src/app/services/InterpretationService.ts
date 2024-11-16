@@ -2,7 +2,6 @@ import {Injectable} from "@angular/core";
 import {ErrorService} from "./ErrorService";
 import {HttpClient, HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {BehaviorSubject, catchError, Observable, tap, throwError} from "rxjs";
-import {IInterpretation} from "../models/IInterpretation";
 import {API_URL} from "../const/constants";
 import {IScaleInterpretationResponse} from "../models/ScaleInterpretationResponse";
 
@@ -35,7 +34,7 @@ export class InterpretationService {
       .pipe(
         tap(interpre => {
           this.interpretationSubject.next(interpre);
-          console.log(interpre);
+          console.log("GetAllInterpretations: ",interpre);
         }),
         catchError(this.errorHandler.bind(this))
       )

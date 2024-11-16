@@ -48,7 +48,7 @@
 
       <!--      QUESTION - CONSTRUCTOR -->
       <div class="tui-space_top-5">
-        <form [formGroup]="mainQuestionsFG" (ngSubmit)="onSubmitForm()">
+        <form [formGroup]="mainQuestionsFG">
           <!--    ACCORDION-->
           <div style="display: flex; justify-content: center" *ngIf="fields.length <= 0">
             <button

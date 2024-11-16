@@ -4,6 +4,7 @@ import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {IScale} from "../models/IScale";
 import {BehaviorSubject, catchError, tap, throwError} from "rxjs";
 import {API_URL} from "../const/constants";
+import {scales} from "../data/scales";
 
 @Injectable({
   providedIn: 'root'
@@ -19,11 +20,12 @@ export class ScaleService {
   }
 
   getScales(name:string | null) {
-    return this._http.get<IScale[]>(`${this._baseUrl}/all`)
-      .pipe(
-        tap(scales => this.scalesSubject.next(scales)),
-        catchError(this.errorHandler.bind(this))
-      )
+    return this.scalesSubject.next(scales)
+    // return this._http.get<IScale[]>(`${this._baseUrl}/all`)
+    //   .pipe(
+    //     tap(scales => this.scalesSubject.next(scales)),
+    //     catchError(this.errorHandler.bind(this))
+    //   )
   }
 
   deleteScale(id: number)  {

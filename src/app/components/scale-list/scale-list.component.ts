@@ -1,8 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
-import {IInterpretation} from "../../models/IInterpretation";
 import {FormBuilder, FormControl, Validators} from "@angular/forms";
-import {InterpretationService} from "../../services/InterpretationService";
-import {tuiArrayRemove} from "@taiga-ui/cdk";
 import {IScaleInterpretationResponse} from "../../models/ScaleInterpretationResponse";
 
 @Component({
@@ -39,7 +36,7 @@ export class ScaleListComponent implements OnInit {
       })
       this.scaleFormGroup.addControl(`${index}`, scaleGroup);
     });
-    console.log(this.scaleFormGroup.value);
+    console.log("Scale Form Group: ",this.scaleFormGroup.value);
   }
 
   shortString(str: string): string {

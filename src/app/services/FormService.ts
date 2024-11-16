@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from "@angular/common/http";
 import {IForm} from "../models/IForm";
-import {BehaviorSubject, catchError, delay, Observable, retry, tap, throwError} from "rxjs";
+import {BehaviorSubject, catchError, delay, map, Observable, retry, tap, throwError} from "rxjs";
 import {ErrorService} from "./ErrorService";
 import {API_URL} from "../const/constants";
+import {forms} from "../data/forms";
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +16,15 @@ export class FormService {
 
   constructor(private http: HttpClient,
               private errorService: ErrorService) {
-    this.getAllForms()
+    // this.getAllForms()
   }
 
-  private getAllForms(): void {
-    this.getAll().pipe(
-      tap(forms => this.formsSubject.next(forms)),
-      catchError(this.errorHandler.bind(this))
-    );
-  }
+  // private getAllForms(): void {
+  //   this.getAll().pipe(
+  //     tap(forms => this.formsSubject.next(forms)),
+  //     catchError(this.errorHandler.bind(this))
+  //   );
+  // }
 
   createForm(form: IForm): Observable<IForm> {
     return this.http.post<IForm>(`${this._baseUrl}/create`, form)
@@ -49,15 +50,16 @@ export class FormService {
   }
 
   getAll(): Observable<IForm[]> {
-    return this.http.get<IForm[]>(`${this._baseUrl}/all`).pipe(
-      tap(forms => {
-        console.log(forms)
-      }),
-      catchError(this.errorHandler.bind(this))
-    )
+    return this.formsSubject;
+    // return this.http.get<IForm[]>(`${this._baseUrl}/all`).pipe(
+    //   tap(forms => {
+    //     console.log(forms)
+    //   }),
+    //   catchError(this.errorHandler.bind(this))
+    // )
   }
 
-  getById(id: number): Observable<IForm> {
+  getById(id: number): Observable<IForm>{
     return this.http.get<IForm>(`${this._baseUrl}/${id}`)
       .pipe(
         catchError(this.errorHandler.bind(this))

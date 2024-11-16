@@ -1,7 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {Observable} from "rxjs";
+import {Observable, Subject, switchMap} from "rxjs";
 import {IForm} from "../../models/IForm";
 import {FormService} from "../../services/FormService";
+import {forms} from "../../data/forms";
 
 @Component({
   selector: 'app-home-table-forms',
@@ -11,9 +12,14 @@ import {FormService} from "../../services/FormService";
 })
 export class HomeTableFormsComponent implements OnInit{
   forms$ : Observable<IForm[]>;
+  formsStatic : IForm[] = forms
+  // forms$: Subject<IForm[]>;
+
   constructor(private formService: FormService) {
   }
+
   ngOnInit(): void {
-    this.forms$ = this.formService.getAll();
+    this.forms$ = this.formService.getAll()
+    // this.forms$.subscribe(this.formsStatic);
   }
 }

@@ -123,9 +123,11 @@ export class ScaleConstructorComponent implements OnInit {
     console.log("Inter FG after", this.interpretationFormGroup.value);
     if (this.interpretationFormGroup.valid) {
       if (this.interpretation?.id != null && this.interpretation?.id > 0) {
+        console.log("Update Interpretation")
         this.interpretationService.update(this.interpretationFormGroup.value)
           .subscribe(() => this.routeToList())
       } else {
+        console.log("Create new Interpretation")
         this.interpretationService.create(this.interpretationFormGroup.value)
           .subscribe(() => this.routeToList())
       }

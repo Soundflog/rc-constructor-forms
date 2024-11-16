@@ -47,11 +47,9 @@ export class ScaleConstructorPageComponent implements OnInit {
           );
       } else{
         this.defaultInterpretation = {
-          id: 0,
           description: '',
           name: 'Добавить шкалу',
           interpretations:[{
-            id: 0,
             description: '',
             minValue: 0,
             maxValue: 100

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import {HomeTableFormsComponent} from "./pages/home-table-forms/home-table-forms.component";
-import {NewFormPageComponent} from "./pages/main-form-constructor/new-form-page/new-form-page.component";
 import {AuthPageComponent} from "./pages/auth-page/auth-page.component";
 import {HomePageComponent} from "./pages/home-page/home-page.component";
 import {authGuard} from "./services/auth.guard";
@@ -13,14 +12,14 @@ import {MainFormConstructorComponent} from "./pages/main-form-constructor/main-f
 const routes: Routes = [
   {path: '', component: AuthPageComponent},
   {path: 'form', component: HomePageComponent,
-    canActivate: [authGuard()],
+    // canActivate: [authGuard()],
     children: [
       {path: 'list', component: HomeTableFormsComponent},
       {path: 'new', component: MainFormConstructorComponent},
       {path: ':form_id', component: MainFormConstructorComponent}
     ]},
   {path: 'scale', component: ScaleListPageComponent,
-    canActivate: [authGuard()],
+    // canActivate: [authGuard()],
     children: [
       {path: 'list', component: ScalePageComponent},
       {path: 'new', component: ScaleConstructorPageComponent},

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Observable, tap} from "rxjs";
+import {map, Observable, tap} from "rxjs";
 import {IScale} from "../../models/IScale";
 import {IForm} from "../../models/IForm";
 import {ScaleService} from "../../services/ScaleService";
@@ -15,7 +15,8 @@ import {scales} from "../../data/scales";
 })
 export class MainFormConstructorComponent implements OnInit {
 
-  formById$: Observable<IForm>;
+  // formById$: Observable<IForm>;
+  formById$: Observable<IForm | undefined>;
   formDefault: IForm
   idFromRoute: number
   urlId: string | null = '';
@@ -31,12 +32,12 @@ export class MainFormConstructorComponent implements OnInit {
     this.activatedRoute.params.subscribe(params => {
       this.idFromRoute = params['form_id'];
       if (this.idFromRoute) {
-        this.formById$ = this.formService.getById(this.idFromRoute).pipe(
-          tap(form => {
-          })
+        this.formById$ = this.formService.getAll().pipe(
+          map(form => form.find(f => f.id === this.idFromRoute))
         )
       } else{
         this.formDefault = {
+          id: 0,
           name: 'Название формы',
           scaleId: scales[0],
           description: 'Описание формы',
